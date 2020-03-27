@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Breadcrumb, Icon, } from 'antd';
+import '../components/main-page.css';
 import '../App.css';
-import { Avatar } from 'antd';
-import { ShopOutlined, HomeOutlined, TeamOutlined ,AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
+import { Divider, Input, Calendar, Avatar } from 'antd';
+import { CopyrightOutlined, DashboardFilled, ShopOutlined, HomeOutlined, TeamOutlined ,AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
 import auth from "../auth";
 
 const { SubMenu } = Menu;
 const { Header, Footer, Content, Sider } = Layout;
+const { TextArea } = Input;
+const onChange = e => {
+  console.log(e);
+};
 
 const Proba = (props) => {
+
 return (
     <Layout style={{ height: '100vh' }}>
 
@@ -110,13 +116,20 @@ return (
          </Menu> */}
         </Sider>
         <Layout>
-          <Header className="site-layout-sub-header-background" style={{ padding: 0, background: 'white' }} />
-          <Content style={{ margin: '24px 16px 0' }}>
-            <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-              content
-        </div>
+          <div id="NaslovApp"> 
+            <div><DashboardFilled/> Merchant Dashboard</div>
+          </div>
+          <Content id = "bodyMain">
+              <Content>
+                <div  id = "kalendar" >
+                  <Calendar fullscreen={false}/>
+                </div>
+                <div id = "Notes" >
+                    <TextArea placeholder=" Write down the thoughts of the moment. Those that come unsought for are commonly the most valuable." allowClear onChange={onChange} />
+                </div>
+              </Content>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>Lima SI 2020</Footer>
+          <Footer id = "footer"> <CopyrightOutlined/> Lima SI 2020</Footer>
         </Layout>
       </Layout>
 );

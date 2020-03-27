@@ -1,0 +1,25 @@
+#NaslovApp {
+    font-size: 40px;
+    color: #04619f;
+    margin-top: 1%;
+    margin-left: 8%;
+    text-align: left;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font: large;
+}
+
+#bodyMain {
+    margin-top: 7%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+#kalendar {
+    padding-bottom: 20%;
+}
+
+#footer {
+    text-align: center;
+    font-style: italic;
+    font-size: 15px;
+}
