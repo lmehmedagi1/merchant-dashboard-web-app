@@ -1,0 +1,21 @@
+body {
+    background-image: linear-gradient(147deg, #000000 0%, #04619f 74%);
+    /*background-image: linear-gradient(147deg, #000000 0%, #2c3e50 74%);*/
+}
+
+
+#loginforma {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+h2 {
+    color: aliceblue;
+}
+
+h5 {
+    color: aliceblue;
+}
