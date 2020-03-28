@@ -19,6 +19,15 @@
   color: white;
 }
 
+#siderGlavni {
+  text-align: center;
+}
+
+.subMenuItem {
+  text-align: left;
+}
+
+
 .App-link {
   color: #61dafb;
 }
