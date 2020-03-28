@@ -14,9 +14,8 @@ const onChange = e => {
 };
 
 const Proba = (props) => {
-
 return (
-    <Layout style={{ height: '100vh' }}>
+    <Layout id="scena" style={{ height: '100vh' }}>
 
         <Sider style={{ paddingTop: '15px' }}
           breakpoint="lg"

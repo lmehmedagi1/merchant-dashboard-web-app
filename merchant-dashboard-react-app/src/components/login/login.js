@@ -21,6 +21,7 @@ const Login = (props) => {
   };
 
   return (
+    <div id="okvir">
     <div id="loginforma">
     <h2>Merchant Dashboard Login</h2>
     <article class="mw6 center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
@@ -77,6 +78,7 @@ const Login = (props) => {
     </Form>
     </article>
     <h5>Lima SI 2020</h5>
+    </div>
     </div>
   );
 };
