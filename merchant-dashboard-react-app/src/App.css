@@ -27,6 +27,19 @@
   text-align: left;
 }
 
+#listaNotifikacija {
+  text-align: left;
+}
+
+#naslovNotifikacije h1 {
+  color: #04619f;
+  font-weight: bold;
+}
+
+#ikonaNotifikacije {
+  font-size: 2em;
+  padding-right: 1em;
+}
 
 .App-link {
   color: #61dafb;
