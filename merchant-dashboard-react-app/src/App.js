@@ -4,7 +4,7 @@ import './App.css';
 
 import { ProtectedRoute } from "./protected.route";
 
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
 
@@ -37,6 +37,7 @@ const onChange = e => {
 
 function App(props) {
   return (
+    <BrowserRouter>
       <div className="App">
 
 <Layout style={{ height: '100vh' }}>
@@ -69,7 +70,7 @@ function App(props) {
           Account Settings</Menu.Item>
         <Menu.Item key='LogOut' onClick={() => {
           auth.logout(() => {
-            props.history.push("/");
+            window.location.href = '/'
           });
           }}>
           <CloseCircleFilled />
@@ -77,32 +78,46 @@ function App(props) {
       </Menu.ItemGroup>
     </SubMenu>
     <Menu.Item className = "subMenuItem" key="1">
+      <Link to='./app'>
       <DesktopOutlined />
       <span className="nav-text">Dashboard</span>
+      </Link>
     </Menu.Item>
     <Menu.Item className = "subMenuItem" key="2">
+      <Link to='/workshop'>
       <ShopOutlined />
       <span className="nav-text">Workshop</span>
+      </Link>
     </Menu.Item>
     <Menu.Item className = "subMenuItem" key="3">
+      <Link to='/employees'>
       <TeamOutlined />
       <span className="nav-text">Employees</span>
+      </Link>
     </Menu.Item>  
     <Menu.Item key="4" className = "subMenuItem">
+      <Link to='./statistics'>
       <AreaChartOutlined />
       <span className="nav-text">Statistics</span>
+      </Link>
     </Menu.Item>
     <Menu.Item key="5" className = "subMenuItem">
+      <Link to='./notifications'>
       <BellOutlined/>
       <span className="nav-text">Notifications</span>
+      </Link>
     </Menu.Item>
     <Menu.Item  style={{ position: 'absolute', bottom: '40px' }} key="6" className = "subMenuItem">
+      <Link to="./help">
       <QuestionCircleFilled />
       <span className="nav-text">Help</span>
+      </Link>
     </Menu.Item>
     <Menu.Item style={{ position: 'absolute', bottom: '0' }} key="7" className = "subMenuItem">
+      <Link to='./about'>
       <ReadOutlined />
       <span className="nav-text">About us</span>
+      </Link>
     </Menu.Item>
   </Menu>
 </Sider>
@@ -114,25 +129,24 @@ function App(props) {
     </div>
     <Content id = "bodyMain">
 
-          <BrowserRouter>
             <Switch>
               <Route exact path="/" component={Login} />
               <ProtectedRoute exact path="/app" component={Home} />
-              <Route exact path="/employees" component={Employees} />
-              <Route exact path="/workshop" component={Workshop} />
-              <Route exact path="/statistics" component={Statistics} />
-              <Route exact path="/notifications" component={Notifications} />
-              <Route exact path="/help" component={Help} />
-              <Route exact path="/about" component={About} />
-              <Route path="*" component={NotFound} />
+              <ProtectedRoute exact path="/employees" component={Employees} />
+              <ProtectedRoute exact path="/workshop" component={Workshop} />
+              <ProtectedRoute exact path="/statistics" component={Statistics} />
+              <ProtectedRoute exact path="/notifications" component={Notifications} />
+              <ProtectedRoute exact path="/help" component={Help} />
+              <ProtectedRoute exact path="/about" component={About} />
+              <ProtectedRoute path="*" component={NotFound} />
             </Switch>
-          </BrowserRouter>
 
     </Content>
     <Footer id = "footer"> <CopyrightOutlined/> Lima SI 2020</Footer>
 </Layout>
 </Layout>
 </div>
+</BrowserRouter>
     );
   }
 
