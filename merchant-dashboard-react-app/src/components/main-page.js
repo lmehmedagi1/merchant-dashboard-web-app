@@ -55,65 +55,30 @@ return (
             </SubMenu>
             <Menu.Item className = "subMenuItem" key="1">
               <DesktopOutlined />
-              <span className="nav-text">Početna</span>
+              <span className="nav-text">Dashboard</span>
             </Menu.Item>
-            <SubMenu className = "subMenuItem" key='2'
-              title={
-                <span>
-                  <ShopOutlined />
-                  <span>Poslovnice</span>
-                </span>
-              }
-            >
-              <Menu.Item key="pos1" className = "subMenuItem"> <HomeOutlined/> Tuzla</Menu.Item>
-              <Menu.Item key="pos2" className = "subMenuItem"> <HomeOutlined/> Kakanj</Menu.Item>
-              <Menu.Item key="pos3" className = "subMenuItem"> <HomeOutlined/> Travnik</Menu.Item>
-
-            </SubMenu>
-            <SubMenu 
-              key="3" className = "subMenuItem"
-              title={
-                <span>
-                  <TeamOutlined />
-                  <span>Uposlenici</span>
-                </span>
-              }
-            >
-              <Menu.Item key="upos1" className = "subMenuItem"> <UserOutlined />Arslan</Menu.Item>
-              <Menu.Item key="upos2" className = "subMenuItem"> <UserOutlined />Lejla</Menu.Item>
-              <Menu.Item key="upos3" className = "subMenuItem"> <UserOutlined />Jasmin</Menu.Item>
-
-            </SubMenu>  
+            <Menu.Item className = "subMenuItem" key="2">
+              <ShopOutlined />
+              <span className="nav-text">Workshop</span>
+            </Menu.Item>
+            <Menu.Item className = "subMenuItem" key="3">
+              <TeamOutlined />
+              <span className="nav-text">Employees</span>
+            </Menu.Item>  
             <Menu.Item key="4" className = "subMenuItem">
               <AreaChartOutlined />
-              <span className="nav-text">Statistike</span>
+              <span className="nav-text">Statistics</span>
             </Menu.Item>
-
-
-
-
             <Menu.Item  style={{ position: 'absolute', bottom: '40px' }} key="5" className = "subMenuItem">
               <QuestionCircleFilled />
-              <span className="nav-text">Pomoc</span>
+              <span className="nav-text">Help</span>
             </Menu.Item>
             <Menu.Item style={{ position: 'absolute', bottom: '0' }} key="6" className = "subMenuItem">
               <ReadOutlined />
-              <span className="nav-text">O nama</span>
+              <span className="nav-text">About us</span>
             </Menu.Item>
-
           </Menu>
 
-         {/*
-          <Menu style={{ position: 'absolute', bottom: '0' }} theme="dark" mode="inline">
-            <Menu.Item key="5" className = "subMenuItem">
-              <QuestionCircleFilled />
-              <span className="nav-text">Pomoc</span>
-            </Menu.Item>
-            <Menu.Item key="6" className = "subMenuItem">
-              <ReadOutlined />
-              <span className="nav-text">O nama</span>
-            </Menu.Item>
-         </Menu> */}
         </Sider>
         <Layout>
           <div id="NaslovApp"> 
