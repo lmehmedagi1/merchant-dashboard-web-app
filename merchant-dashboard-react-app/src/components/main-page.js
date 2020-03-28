@@ -3,7 +3,7 @@ import { Layout, Menu, Breadcrumb, Icon, } from 'antd';
 import '../components/main-page.css';
 import '../App.css';
 import { Divider, Input, Calendar, Avatar } from 'antd';
-import { CopyrightOutlined, DashboardFilled, ShopOutlined, HomeOutlined, TeamOutlined ,AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
+import { CopyrightOutlined, DashboardFilled, ShopOutlined, BellOutlined, TeamOutlined ,AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
 import auth from "../auth";
 
 const { SubMenu } = Menu;
@@ -69,11 +69,15 @@ return (
               <AreaChartOutlined />
               <span className="nav-text">Statistics</span>
             </Menu.Item>
-            <Menu.Item  style={{ position: 'absolute', bottom: '40px' }} key="5" className = "subMenuItem">
+            <Menu.Item key="5" className = "subMenuItem">
+              <BellOutlined/>
+              <span className="nav-text">Notifications</span>
+            </Menu.Item>
+            <Menu.Item  style={{ position: 'absolute', bottom: '40px' }} key="6" className = "subMenuItem">
               <QuestionCircleFilled />
               <span className="nav-text">Help</span>
             </Menu.Item>
-            <Menu.Item style={{ position: 'absolute', bottom: '0' }} key="6" className = "subMenuItem">
+            <Menu.Item style={{ position: 'absolute', bottom: '0' }} key="7" className = "subMenuItem">
               <ReadOutlined />
               <span className="nav-text">About us</span>
             </Menu.Item>
