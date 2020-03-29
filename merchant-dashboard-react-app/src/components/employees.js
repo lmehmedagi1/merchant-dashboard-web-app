@@ -105,15 +105,11 @@ class Employees extends React.Component {
           className="components-table-demo-control-bar"
           style={{ marginBottom: 16 }}
         >
-          <Form.Item label="Size">
-            <Radio.Group value={state.size} onChange={this.handleSizeChange} id="promjenaVelicine">
-              <Radio.Button value="middle">Middle</Radio.Button>
-              <Radio.Button value="small">Small</Radio.Button>
-            </Radio.Group>
-          </Form.Item>
         </Form>
           
-        <div id = "TabelaNaslov">List of employees</div>
+        <div id = "TabelaNaslov">
+          <h1>List of employees</h1>
+          </div>
         <Table
           {...this.state}
           columns={tableColumns}
