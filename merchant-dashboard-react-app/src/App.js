@@ -13,6 +13,8 @@ import Notifications from './components/notifications';
 import Statistics from './components/statistics';
 import About from './components/about';
 import Help from './components/help';
+import Recover from './components/login/recover';
+import Change from './components/login/change';
 import NotFound from './components/not-found';
 
 
@@ -135,6 +137,8 @@ function App(props) {
               <ProtectedRoute exact path="/notifications" component={Notifications} />
               <ProtectedRoute exact path="/help" component={Help} />
               <ProtectedRoute exact path="/about" component={About} />
+              <Route exact path="/recover-password" component={Recover} />
+              <Route exact path="/recover-password/:email" component={Recover} />
               <Route path="*" component={NotFound} />
             </Switch>
 

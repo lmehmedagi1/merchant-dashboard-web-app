@@ -1,25 +1,18 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './login.css';
 import auth, { getUser } from "../../auth";
+import { Link } from "react-router-dom";
 
 const Login = (props) => {
   const onFinish = values => {
     console.log(values);
-    // ovdje history.push('/main');
     auth.login(() => {
         if (getUser().name)
           document.getElementById("imeKorisnika").textContent=getUser().name + " " + getUser().surname;
         props.history.push("/app");
     }, values);
-
-    /*message.loading("You are logging in...", 1.5)
-      .then(() => {
-          message.success("You are logged in!", 1.0);
-          <Proba/>
-      });*/
   };
 
   return (
@@ -56,7 +49,7 @@ const Login = (props) => {
           },
         ]}
       >
-        <Input
+        <Input.Password
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
           placeholder="Password"
@@ -67,9 +60,10 @@ const Login = (props) => {
           <Checkbox>Remember me</Checkbox>
         </Form.Item>
 
-        <a className="login-form-forgot" href="">
-          Forgot password
-        </a>
+        <Link to='/recover-password'>
+          <span className="login-form-forgot">Forgot password</span>
+        </Link>
+
       </Form.Item>
 
       <Form.Item>
