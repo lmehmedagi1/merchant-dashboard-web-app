@@ -19,6 +19,28 @@
   color: white;
 }
 
+#siderGlavni {
+  text-align: center;
+}
+
+.subMenuItem {
+  text-align: left;
+}
+
+#listaNotifikacija {
+  text-align: left;
+}
+
+#naslovNotifikacije h1 {
+  color: #04619f;
+  font-weight: bold;
+}
+
+#ikonaNotifikacije {
+  font-size: 2em;
+  padding-right: 1em;
+}
+
 .App-link {
   color: #61dafb;
 }
@@ -30,4 +52,9 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+#TabelaNaslov {
+  color: #04619f;
+  font-weight: bold;
 }
