@@ -52,22 +52,13 @@ class Auth extends React.Component {
                 message.error("Something went wrong!");
                 return;
             }
-            console.log("ovo se nece ispisat EEEEEEEEEEEEEEEEEEEA" + response.data.token);
             // Rucno kreiramo usera, jer ne dobijemo nikakvu informaciju o user-u od servera osim tokena
             let user = {
-                username: response.data.profile.username,
-                email: response.data.profile.email,
-                name: response.data.profile.name,
-                surname: response.data.profile.surname,
-                address: response.data.profile.address,
-                phoneNumber: response.data.profile.phoneNumber,
-                country: response.data.profile.country,
-                city: response.data.profile.city
+                username: values.username,
+                role: "ROLE_MERCHANT"
             }
-            console.log("ovo se nece ispisat AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             console.log(user);
-            setUserSession(response.data.token, user);
-            console.log("ovo se nece ispisat");
+            setUserSession(response.token, user);
             this.authenticated = true;
             cb();
       }).catch(error => {
