@@ -5,8 +5,10 @@ import React, { Component } from 'react';
 import ReactDOM from "react-dom";
 import { HomeOutlined } from '@ant-design/icons';
 import InfiniteScroll from 'react-infinite-scroller';
+import { getToken } from '../auth';
+import Axios from 'axios';
 
-const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,nat&noinfo';
+const URL = 'https://main-server-si.herokuapp.com/api/business/offices';
 
 class InfiniteListExample extends React.Component {
   state = {
@@ -18,43 +20,23 @@ class InfiniteListExample extends React.Component {
   componentDidMount() {
     this.fetchData(res => {
       this.setState({
-        data: res.results,
+        data: res,
       });
     });
   }
 
   fetchData = callback => {
-    reqwest({
-      url: fakeDataUrl,
-      type: 'json',
-      method: 'get',
-      contentType: 'application/json',
-      success: res => {
-        callback(res);
-      },
-    });
-  };
-
-  handleInfiniteOnLoad = () => {
-    let { data } = this.state;
-    this.setState({
-      loading: true,
-    });
-    if (data.length > 14) {
-      message.warning('Infinite List loaded all');
-      this.setState({
-        hasMore: false,
-        loading: false,
+    const AuthStr = 'Bearer ' + (getToken());
+    Axios
+      .get(URL, { headers: { 'Authorization': AuthStr } }).then((response) => {
+        console.log(response.data);
+        if (response.data.length === 0) {
+          return;
+        }
+      callback(response.data);
+      }).catch(error => {
+        console.log(error);
       });
-      return;
-    }
-    this.fetchData(res => {
-      data = data.concat(res.results);
-      this.setState({
-        data,
-        loading: false,
-      });
-    });
   };
 
   render() {
@@ -63,7 +45,6 @@ class InfiniteListExample extends React.Component {
         <InfiniteScroll
           initialLoad={false}
           pageStart={0}
-          loadMore={this.handleInfiniteOnLoad}
           hasMore={!this.state.loading && this.state.hasMore}
           useWindow={false}
         >
@@ -75,10 +56,11 @@ class InfiniteListExample extends React.Component {
                   avatar={
                     <Avatar size="large" icon={<HomeOutlined />} />
                   }
-                  title={<a style={{float:'left'}} href="https://ant.design">{item.name.last}</a>}
-                  description={item.email}
+                  title={<div className='menadzerPodaciLista' style={{ float: 'left' }}><div>{item.manager.name + ' ' + item.manager.surname}</div>
+                      <div>{item.manager.phoneNumber + ', ' + item.manager.email}</div></div>}
+                  description={item.address + ', ' + item.city + ', ' + item.country}
                 />
-                <div>Content</div>
+                <div> { item.phoneNumber + ', ' + item.email }</div>
               </List.Item>
             )}
           >
