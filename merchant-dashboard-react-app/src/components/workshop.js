@@ -23,7 +23,7 @@ const Workshop = () => {
                     </InfiniteListExample>
                     
                 </div>
-                <Button type="dashed" block>
+                <Button onClick={() => { window.location.href='/addNewWorkshop'  }} type="dashed" block>
                     Add workshop
                 </Button>
             </div>
