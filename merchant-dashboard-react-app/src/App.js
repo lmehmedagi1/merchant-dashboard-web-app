@@ -3,10 +3,7 @@ import ReactDOM from "react-dom";
 import './App.css';
 
 import { ProtectedRoute } from "./protected.route";
-
 import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-
 
 import Login from './components/login/login'
 import Home from './components/home';
@@ -25,6 +22,7 @@ import './App.css';
 import { Divider, Input, Calendar, Avatar } from 'antd';
 import { CopyrightOutlined, DashboardFilled, ShopOutlined, BellOutlined, TeamOutlined ,AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
 import auth from "./auth";
+import { getUser } from "./auth";
 
 const { SubMenu } = Menu;
 const { Header, Footer, Content, Sider } = Layout;
@@ -59,8 +57,7 @@ function App(props) {
   <Menu theme="dark" mode="inline">
     <SubMenu style={{ textAlign: 'center' }}
       title={
-        <span >
-          Arslan Turkusic
+        <span id="imeKorisnika">
         </span>
       } >
 
@@ -138,7 +135,7 @@ function App(props) {
               <ProtectedRoute exact path="/notifications" component={Notifications} />
               <ProtectedRoute exact path="/help" component={Help} />
               <ProtectedRoute exact path="/about" component={About} />
-              <ProtectedRoute path="*" component={NotFound} />
+              <Route path="*" component={NotFound} />
             </Switch>
 
     </Content>
