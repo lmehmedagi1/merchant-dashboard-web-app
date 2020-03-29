@@ -11,7 +11,7 @@ const Login = (props) => {
     // ovdje history.push('/main');
     auth.login(() => {
         props.history.push("/app");
-    });
+    }, values);
 
     /*message.loading("You are logging in...", 1.5)
       .then(() => {

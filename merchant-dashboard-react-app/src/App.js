@@ -3,10 +3,7 @@ import ReactDOM from "react-dom";
 import './App.css';
 
 import { ProtectedRoute } from "./protected.route";
-
 import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-
 
 import Login from './components/login/login'
 import Home from './components/home';
@@ -138,7 +135,7 @@ function App(props) {
               <ProtectedRoute exact path="/notifications" component={Notifications} />
               <ProtectedRoute exact path="/help" component={Help} />
               <ProtectedRoute exact path="/about" component={About} />
-              <ProtectedRoute path="*" component={NotFound} />
+              <Route path="*" component={NotFound} />
             </Switch>
 
     </Content>
