@@ -1,45 +1,51 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import '../App.css';
+import { getToken } from '../auth';
+import Axios from 'axios';
+import './employees.css';
 import { Table, Switch, Radio, Form, Input} from 'antd';
-import { DownOutlined  } from '@ant-design/icons';
-const { TextArea } = Input;
+const URL = 'https://main-server-si.herokuapp.com/api/employees';
 
+const { TextArea } = Input;
 const columns = [
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: text => <a>{text}</a>,
+      render: text => <a className = "contentOfTable">{text}</a>,
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: 'Surname',
+      dataIndex: 'surname',
+      key: 'name',
+      render: text => <a className = "contentOfTable">{text}</a>,
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'contact',
+      render: text => <a className = "contentOfTable">{text}</a>,
+    },
+    {
+      title: 'Phone number',
+      dataIndex: 'phoneNumber',
+      key: 'contact',
+      render: text => <a className = "contentOfTable">{text}</a>,
     },
     {
       title: 'Role',
       dataIndex: 'role',
       key: 'role',
+      render: text => <a className = "contentOfTable">{text}</a>,
     },
   ];
 
+
+
 const title = () => 'List of the employees';
 const data = [];
-for (let i = 1; i <= 10; i++) {
-  data.push({
-    key: i,
-    name: 'John Brown',
-    age: `${i}2`,
-    address: `New York No. ${i} Lake Park`,
-    description: `My name is John Brown, I am ${i}2 years old, living in New York No. ${i} Lake Park.`,
-  });
-}
+
 
 class Employees extends React.Component {
     
@@ -48,7 +54,31 @@ class Employees extends React.Component {
         size: 'default',
         scroll: undefined,
         hasData: true,
+        data: [],
     };
+
+    componentDidMount() {
+      this.fetchData(res => {
+      this.setState({
+      data: res,
+      });
+      });
+    }
+
+    fetchData = callback => {
+      const AuthStr = 'Bearer ' + (getToken());
+      Axios
+        .get(URL, { headers: { 'Authorization': AuthStr } }).then((response) => {
+          console.log(response.data);
+          if (response.data.length === 0) {
+            return;
+          }
+        callback(response.data);
+        }).catch(error => {
+          console.log(error);
+        });
+    };
+
       handleToggle = prop => enable => {
         this.setState({ [prop]: enable });
       };
@@ -92,7 +122,7 @@ class Employees extends React.Component {
         <Table
           {...this.state}
           columns={tableColumns}
-          dataSource={state.hasData ? data : null}
+          dataSource={this.state.data}
           scroll={scroll}
         />
         </div>
