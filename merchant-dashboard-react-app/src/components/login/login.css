@@ -21,10 +21,10 @@ body {
 }
 
 
-h2 {
+h2, h5 {
     color: aliceblue;
 }
 
-h5 {
-    color: aliceblue;
+h3 {
+    color: black;
 }
