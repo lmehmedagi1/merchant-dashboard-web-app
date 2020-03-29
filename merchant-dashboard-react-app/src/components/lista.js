@@ -14,6 +14,8 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const URL = 'https://main-server-si.herokuapp.com/api/business/offices';
 
+let IDZaBrisanje = -1;
+
 const options = {
   title: 'Confirmation',
   message: 'Do you really want to delete this workshop?',
@@ -21,7 +23,18 @@ const options = {
     {
       label: 'Yes',
       onClick: () => {
-        
+        console.log(IDZaBrisanje);
+        Axios
+          .post('https://main-server-si.herokuapp.com/api/notifications/office/close', {
+            officeId:IDZaBrisanje
+          }).then((response) => {
+            if (response.data.statusCode !== 200) {
+              message.error("Something went wrong!");
+              return;
+            }
+          }).catch(error => {
+            message.error('error');
+          });
       }
     },
     {
@@ -62,6 +75,12 @@ class InfiniteListExample extends React.Component {
       });
   };
 
+  deleteAction(oficeID) {
+    console.log(oficeID);
+    IDZaBrisanje = oficeID;
+    confirmAlert(options);
+  }
+
   render() {
     return (
       <div className="demo-infinite-container">
@@ -81,10 +100,13 @@ class InfiniteListExample extends React.Component {
                   }
                   title={<div className='menadzerPodaciLista' style={{ float: 'left' }}><div>{item.manager.name + ' ' + item.manager.surname}</div>
                     <div>{item.manager.phoneNumber + ', ' + item.manager.email}</div></div>}
-                  description={item.address + ', ' + item.city + ', ' + item.country}
+                  description={item.phoneNumber + ', ' + item.email}
                 />
-                <div> {item.phoneNumber + ', ' + item.email}</div>
-                <Button onClick={() => { confirmAlert(options) }} style={{ margin: '10px' }} type="primary" icon={<DeleteOutlined />} size={'default'} />
+                <div> 
+                  <div>{item.address + ', ' + item.city + ', ' + item.country}</div>
+                  <div> Radno vrijeme: 06-20h </div>  
+                </div>
+                <Button onClick={() => { this.deleteAction(item.id); }} style={{ margin: '10px' }} type="primary" icon={<DeleteOutlined />} size={'default'} />
               </List.Item>
             )}
           >
