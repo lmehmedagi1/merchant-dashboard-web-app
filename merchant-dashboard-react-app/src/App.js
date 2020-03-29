@@ -16,6 +16,7 @@ import Help from './components/help';
 import Recover from './components/login/recover';
 import Change from './components/login/change';
 import NotFound from './components/not-found';
+import AddNewWorkshop from './components/add-new-workshop';
 
 
 import { Layout, Menu, Breadcrumb, Icon, } from 'antd';
@@ -137,6 +138,7 @@ function App(props) {
               <ProtectedRoute exact path="/notifications" component={Notifications} />
               <ProtectedRoute exact path="/help" component={Help} />
               <ProtectedRoute exact path="/about" component={About} />
+              <ProtectedRoute exact path="/addNewWorkshop" component={AddNewWorkshop} />
               <Route exact path="/recover-password" component={Recover} />
               <Route exact path="/recover-password/:email" component={Recover} />
               <Route path="*" component={NotFound} />
