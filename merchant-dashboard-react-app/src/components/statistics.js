@@ -1,10 +1,6 @@
 import React from 'react';
-import { Divider, Input, Calendar, Avatar, Icon } from 'antd';
+import { Input } from 'antd';
 import { Chart, Axis, Tooltip, Geom } from 'bizcharts';
-const { TextArea } = Input;
-const onChange = e => {
-    console.log(e);
-};
   
 const data = [
     {

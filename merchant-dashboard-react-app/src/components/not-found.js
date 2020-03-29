@@ -1,14 +1,8 @@
 import React from 'react';
-import { Layout, Menu, Breadcrumb, Icon, } from 'antd';
 import './not-found.css';
 import './../App.css';
 import {WarningOutlined} from '@ant-design/icons';
-import { Divider, Input, Calendar, Avatar } from 'antd';
-import { CopyrightOutlined, DashboardFilled, ShopOutlined, BellOutlined, TeamOutlined ,AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
-const { TextArea } = Input;
-const onChange = e => {
-    console.log(e);
-};
+import { Input } from 'antd';
 
 const NotFound = () => {
     return (

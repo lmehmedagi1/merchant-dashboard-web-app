@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Input, Calendar, Avatar } from 'antd';
+import { Input, Calendar } from 'antd';
 // Ovdje se nalaze podaci o korisniku
 import { getUser } from '../auth';
 import '../App.css'

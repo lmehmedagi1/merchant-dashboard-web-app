@@ -106,7 +106,7 @@ class Employees extends React.Component {
           style={{ marginBottom: 16 }}
         >
           <Form.Item label="Size">
-            <Radio.Group value={state.size} onChange={this.handleSizeChange}>
+            <Radio.Group value={state.size} onChange={this.handleSizeChange} id="promjenaVelicine">
               <Radio.Button value="middle">Middle</Radio.Button>
               <Radio.Button value="small">Small</Radio.Button>
             </Radio.Group>

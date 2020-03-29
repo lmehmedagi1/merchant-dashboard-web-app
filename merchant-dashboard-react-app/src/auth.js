@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, { useState } from 'react';
-import { message, Button } from 'antd';
+import React from 'react';
+import { message } from 'antd';
 
 // return the user data from the session storage
 export const getUser = () => {

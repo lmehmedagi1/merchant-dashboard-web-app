@@ -1,14 +1,8 @@
 
 import React from 'react';
-import { Divider, Input, Calendar, Avatar, Button } from 'antd';
+import {  Input, Button } from 'antd';
 import InfiniteListExample from './workshop-list.js'
-import Axios from 'axios';
 
-
-const { TextArea } = Input;
-const onChange = e => {
-    console.log(e);
-};
 
 const Workshop = () => {
     return (
