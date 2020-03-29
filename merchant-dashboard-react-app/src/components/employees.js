@@ -7,7 +7,6 @@ import './employees.css';
 import { Table, Switch, Radio, Form, Input} from 'antd';
 const URL = 'https://main-server-si.herokuapp.com/api/employees';
 
-const { TextArea } = Input;
 const columns = [
     {
       title: 'Name',
@@ -41,11 +40,7 @@ const columns = [
     },
   ];
 
-
-
-const title = () => 'List of the employees';
 const data = [];
-
 
 class Employees extends React.Component {
     

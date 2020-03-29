@@ -54,11 +54,16 @@ class Auth extends React.Component {
             }
             // Rucno kreiramo usera, jer ne dobijemo nikakvu informaciju o user-u od servera osim tokena
             let user = {
-                username: values.username,
-                role: "ROLE_MERCHANT"
+                username: response.data.profile.username,
+                email: response.data.profile.email,
+                name: response.data.profile.name,
+                surname: response.data.profile.surname,
+                address: response.data.profile.address,
+                phoneNumber: response.data.profile.phoneNumber,
+                country: response.data.profile.country,
+                city: response.data.profile.city
             }
-            console.log(user);
-            setUserSession(response.token, user);
+            setUserSession(response.data.token, user);
             this.authenticated = true;
             cb();
       }).catch(error => {
@@ -85,4 +90,3 @@ class Auth extends React.Component {
   }
   
   export default new Auth();
-  

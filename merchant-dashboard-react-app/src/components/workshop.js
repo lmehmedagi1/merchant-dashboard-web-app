@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Divider, Input, Calendar, Avatar, Button } from 'antd';
-import InfiniteListExample from './lista.js'
+import InfiniteListExample from './workshop-list.js'
 import Axios from 'axios';
 
 
