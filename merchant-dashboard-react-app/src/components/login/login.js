@@ -3,13 +3,15 @@ import ReactDOM from 'react-dom';
 import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './login.css';
-import auth from "../../auth";
+import auth, { getUser } from "../../auth";
 
 const Login = (props) => {
   const onFinish = values => {
     console.log(values);
     // ovdje history.push('/main');
     auth.login(() => {
+        if (getUser().name)
+          document.getElementById("imeKorisnika").textContent=getUser().name + " " + getUser().surname;
         props.history.push("/app");
     }, values);
 

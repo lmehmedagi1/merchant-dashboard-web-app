@@ -22,6 +22,7 @@ import './App.css';
 import { Divider, Input, Calendar, Avatar } from 'antd';
 import { CopyrightOutlined, DashboardFilled, ShopOutlined, BellOutlined, TeamOutlined ,AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
 import auth from "./auth";
+import { getUser } from "./auth";
 
 const { SubMenu } = Menu;
 const { Header, Footer, Content, Sider } = Layout;
@@ -56,8 +57,7 @@ function App(props) {
   <Menu theme="dark" mode="inline">
     <SubMenu style={{ textAlign: 'center' }}
       title={
-        <span >
-          Arslan Turkusic
+        <span id="imeKorisnika">
         </span>
       } >
 
