@@ -1,7 +1,6 @@
 import { List, message, Avatar, Spin, Button } from 'antd';
-import reqwest from 'reqwest';
 import './workshop.css';
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from "react-dom";
 import { HomeOutlined, DeleteOutlined } from '@ant-design/icons';
 import InfiniteScroll from 'react-infinite-scroller';

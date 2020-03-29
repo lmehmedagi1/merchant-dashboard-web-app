@@ -1,9 +1,5 @@
 import React from 'react';
-import { Divider, Input, Calendar, Avatar, Alert } from 'antd';
-const { TextArea } = Input;
-const onChange = e => {
-    console.log(e);
-};
+import { Input, Alert } from 'antd';
 
 const About = () => {
     return (

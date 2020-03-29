@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from "react-dom";
 import './App.css';
 
@@ -14,27 +14,19 @@ import Statistics from './components/statistics';
 import About from './components/about';
 import Help from './components/help';
 import Recover from './components/login/recover';
-import Change from './components/login/change';
 import NotFound from './components/not-found';
 import AddNewWorkshop from './components/add-new-workshop';
 
 
-import { Layout, Menu, Breadcrumb, Icon, } from 'antd';
+import { Layout, Menu } from 'antd';
 import './components/main-page.css';
 import './App.css';
-import { Divider, Input, Calendar, Avatar } from 'antd';
+import { Input, Avatar } from 'antd';
 import { CopyrightOutlined, DashboardFilled, ShopOutlined, BellOutlined, TeamOutlined ,AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
 import auth from "./auth";
-import { getUser } from "./auth";
 
 const { SubMenu } = Menu;
-const { Header, Footer, Content, Sider } = Layout;
-const { TextArea } = Input;
-
-const onChange = e => {
-  console.log(e);
-};
-
+const { Footer, Content, Sider } = Layout;
 
 function App(props) {
   return (

@@ -1,9 +1,8 @@
 import React from 'react';
-import { Input, Form, InputNumber, Button, message } from 'antd';
+import { Input, Form, Button, message } from 'antd';
 import axios from 'axios';
 import '../App.css';
 import { getToken } from '../auth';
-const { TextArea } = Input;
 
 
 const layout = {

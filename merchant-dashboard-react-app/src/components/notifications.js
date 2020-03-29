@@ -1,30 +1,50 @@
 import React from 'react';
 import '../App.css';
-import { Divider, Input, Calendar, Avatar, List } from 'antd';
+import {  message, List } from 'antd';
 import { MailOutlined } from '@ant-design/icons';
-const { TextArea } = Input;
-const onChange = e => {
-    console.log(e);
-};
+import { getToken } from '../auth';
+import axios from 'axios';
 
-
-
-const data = [
-  {
-    title: 'Poslovnica 1',
-  },
-  {
-    title: 'Admin',
-  },
-  {
-    title: 'Ne znam ko bi mogao slat',
-  },
-  {
-    title: 'Možda admin valjda',
-  },
-];
+const URL = 'https://main-server-si.herokuapp.com/api/notifications/unread';
   
-const Notifications = () => {
+class Notifications extends React.Component {
+    state = {
+      data: [],
+      loading: false,
+      hasMore: true,
+    };
+
+    componentDidMount() {
+      this.fetchData(res => {
+        this.setState({
+          data: res,
+        });
+      });
+    }
+
+    fetchData = callback => {
+      const AuthStr = 'Bearer ' + (getToken());
+      axios
+        .get(URL, { headers: { 'Authorization': AuthStr } }).then((response) => {
+          console.log(response.data);
+          if (response.data.length === 0) {
+            message.info("There are no notifications!")
+            return;
+          }
+          callback(response.data);
+        }).catch(error => {
+          message.error("Something went wrong!");
+          console.log(error);
+        });
+    };
+
+    ispisiPoruku = (hired, name, surname) => {
+      if (hired)
+        return name + " " + surname + " was hired."
+      return name + " " + surname + " was fired."
+    }
+
+    render() {
     return (
         <div>
             <div id="naslovNotifikacije">
@@ -33,13 +53,13 @@ const Notifications = () => {
             <div>
             <List id="listaNotifikacija"
                 itemLayout="horizontal"
-                dataSource={data}
+                dataSource={this.state.data}
                 renderItem={item => (
                 <List.Item>
                     <MailOutlined id = "ikonaNotifikacije"/>
                     <List.Item.Meta
-                        title={<a href="https://ant.design">{item.title}</a>}
-                        description="A new employee was added to Workshop XXX by YYY"
+                        title={item.date}
+                        description={this.ispisiPoruku(item.hired, item.employee.name, item.employee.surname)}
                     />
                 </List.Item>
                 )}
@@ -47,6 +67,7 @@ const Notifications = () => {
             </div>
         </div>
     );
+  }
 };
         
 export default Notifications;
