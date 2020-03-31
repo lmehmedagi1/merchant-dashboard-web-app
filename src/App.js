@@ -16,7 +16,7 @@ import Help from './components/help';
 import Recover from './components/login/recover';
 import NotFound from './components/not-found';
 import AddNewWorkshop from './components/add-new-workshop';
-
+import Profile from './components/profile';
 
 import { Layout, Menu } from 'antd';
 import './components/main-page.css';
@@ -24,9 +24,14 @@ import './App.css';
 import { Input, Avatar } from 'antd';
 import { CopyrightOutlined, DashboardFilled, ShopOutlined, BellOutlined, TeamOutlined ,AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
 import auth from "./auth";
+import {getUser} from "./auth";
 
 const { SubMenu } = Menu;
 const { Footer, Content, Sider } = Layout;
+
+let userName = "";
+if (getUser() != null && getUser().name != null)
+  userName = getUser().name + " " + getUser().surname;
 
 function App(props) {
   return (
@@ -53,13 +58,18 @@ function App(props) {
     <SubMenu style={{ textAlign: 'center' }}
       title={
         <span id="imeKorisnika">
+          {userName}
         </span>
       } >
 
       <Menu.ItemGroup key='Username' style={{ textAlign: 'left' }}>
         <Menu.Item key='accSettings'>
-        <SettingFilled />
-          Account Settings</Menu.Item>
+          <Link to='./profile'>
+          <SettingFilled />
+            <span className="nav-text">Profile</span>
+          </Link>
+        
+        </Menu.Item>
         <Menu.Item key='LogOut' onClick={() => {
           auth.logout(() => {
             window.location.href = '/'
@@ -131,6 +141,7 @@ function App(props) {
               <ProtectedRoute exact path="/help" component={Help} />
               <ProtectedRoute exact path="/about" component={About} />
               <ProtectedRoute exact path="/addNewWorkshop" component={AddNewWorkshop} />
+              <ProtectedRoute exact path="/profile" component={Profile} />
               <Route exact path="/recover-password" component={Recover} />
               <Route exact path="/recover-password/:email" component={Recover} />
               <Route path="*" component={NotFound} />
