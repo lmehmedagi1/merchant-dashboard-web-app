@@ -1,20 +1,18 @@
-import { List, message, Avatar, Spin, Button } from 'antd';
-import './workshop.css';
 import React from 'react';
-import ReactDOM from "react-dom";
+import {Table,Input, Button, message, Avatar, Spin } from 'antd';
+import InfiniteListExample from './workshop-list.js';
 import { HomeOutlined, DeleteOutlined } from '@ant-design/icons';
 import InfiniteScroll from 'react-infinite-scroller';
-import { getToken } from '../auth';
+import { SearchOutlined } from '@ant-design/icons';
 import Axios from 'axios';
-import './workshop.css';
+import { getToken } from '../auth.js';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-
-
-const URL = 'https://main-server-si.herokuapp.com/api/business/offices';
-
+ 
+ 
+const { Search } = Input;
 let IDZaBrisanje = -1;
-
+ 
 const options = {
   title: 'Confirmation',
   message: 'Do you really want to delete this workshop?',
@@ -39,88 +37,186 @@ const options = {
     {
       label: 'No',
       onClick: () => {
-
+ 
       }
     }
   ]
 };
-
-class InfiniteListExample extends React.Component {
-  state = {
-    data: [],
-    loading: false,
-    hasMore: true,
-  };
-
-  componentDidMount() {
-    this.fetchData(res => {
+ 
+class Workshop extends React.Component {
+ 
+    constructor() {
+      super();
+      this.state = {
+        workshops: [],
+        filteredInfo: null,
+        sortedInfo: null,
+        empl: [],
+        searchText: '',
+        searchedColumn: '',
+      }
+    }
+    componentWillMount() {
+      this.getWorkshops();
+    }
+ 
+    getWorkshops() {
+      Axios.get('https://main-server-si.herokuapp.com/api/business/offices',
+       { headers: { Authorization: 'Bearer ' + getToken() } })
+        .then(response => {
+          this.setState({ workshop: response.data }, () => {
+            console.log(response.data);
+          })
+        })
+        .catch(err => console.log(err));
+    }
+ 
+    handleChange = (pagination, filters, sorter) => {
+      console.log('Various parameters', pagination, filters);
       this.setState({
-        data: res,
+        filteredInfo: filters,
+       
       });
-    });
-  }
-
-  fetchData = callback => {
-    const AuthStr = 'Bearer ' + (getToken());
-    Axios
-      .get(URL, { headers: { 'Authorization': AuthStr } }).then((response) => {
-        console.log(response.data);
-        if (response.data.length === 0) {
-          return;
-        }
-        callback(response.data);
-      }).catch(error => {
-        console.log(error);
+      console.log("lol", this.state);
+    };
+ 
+    clearFilters = () => {
+      this.setState({ filteredInfo: null });
+    };
+ 
+    clearAll = () => {
+      this.setState({
+        filteredInfo: null,
+        searchText: ''
       });
-  };
-
-  deleteAction(oficeID) {
-    console.log(oficeID);
-    IDZaBrisanje = oficeID;
-    confirmAlert(options);
-  }
-
-  render() {
-    return (
-      <div className="demo-infinite-container">
-        <InfiniteScroll
-          initialLoad={false}
-          pageStart={0}
-          hasMore={!this.state.loading && this.state.hasMore}
-          useWindow={false}
-        >
-          <List
-            dataSource={this.state.data}
-            renderItem={item => (
-              <List.Item key={item.id}>
-                <List.Item.Meta
-                  avatar={
-                    <Avatar size="large" icon={<HomeOutlined />} />
-                  }
-                  title={<div className='menadzerPodaciLista' style={{ float: 'left' }}><div>{item.manager.name + ' ' + item.manager.surname}</div>
-                    <div>{item.manager.phoneNumber + ', ' + item.manager.email}</div></div>}
-                  description={item.phoneNumber + ', ' + item.email}
-                />
-                <div> 
-                  <div>{item.address + ', ' + item.city + ', ' + item.country}</div>
-                  <div> Radno vrijeme: 06-20h </div>  
-                </div>
-                <Button onClick={() => { this.deleteAction(item.id); }} style={{ margin: '10px' }} type="primary" icon={<DeleteOutlined />} size={'default'} />
-              </List.Item>
-            )}
+    };
+ 
+    deleteAction(oficeID) {
+      console.log(oficeID);
+      IDZaBrisanje = oficeID;
+      confirmAlert(options);
+    }
+ 
+    getColumnSearchProps = dataIndex => ({
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            ref={node => {
+              this.searchInput = node;
+            }}
+            placeholder={`Search ${dataIndex}`}
+            value={selectedKeys[0]}
+            onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+ 
+            onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+            style={{ width: 188, marginBottom: 8, display: 'block' }}
+          />
+          <Button
+            type="primary"
+            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90, marginRight: 8 }}
           >
-            {this.state.loading && this.state.hasMore && (
-              <div className="demo-loading-container">
-                <Spin />
-              </div>
-            )}
-          </List>
-        </InfiniteScroll>
-      </div>
-    );
+            Search
+          </Button>
+          <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+            Reset
+          </Button>
+        </div>
+      ),
+      filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+      onFilter: (value, record) =>
+        record[dataIndex]
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase()),
+      onFilterDropdownVisibleChange: visible => {
+        if (visible) {
+          setTimeout(() => this.searchInput.select());
+        }
+      },
+       
+     
+    });
+ 
+    handleSearch = (selectedKeys, confirm, dataIndex) => {
+      console.log(this.state);
+      confirm();
+      this.setState({
+        searchText: selectedKeys[0],
+        searchedColumn: dataIndex,
+      });
+    };
+ 
+    handleReset = clearFilters => {
+      clearFilters();
+      this.setState({ searchText: '' });
+    };
+ 
+ 
+    render() {
+     
+     
+      let filteredInfo = this.state.filteredInfo;
+     
+      filteredInfo = filteredInfo || {};
+      const columns = [
+        {
+          title: 'Address',
+          dataIndex: 'address',
+          key: 'address',
+          filteredValue: filteredInfo.address || null,
+          ellipsis: true,
+          ...this.getColumnSearchProps('address'),
+        },
+        {
+          title: 'City',
+          dataIndex: 'city',
+          key: 'city',
+          filteredValue: filteredInfo.city || null,
+         
+   
+          ellipsis: true,
+          ...this.getColumnSearchProps('city'),
+        },
+        {
+          title: 'Email',
+          dataIndex: 'email',
+          key: 'email',
+          filteredValue: filteredInfo.email || null,
+         
+ 
+          ellipsis: true,
+          ...this.getColumnSearchProps('email'),
+        },
+           
+        {
+          title: 'DELETE',
+          dataIndex: 'delete',
+          render : (text, record) =>
+          2>=1 ? (
+            <Button onClick={() => { this.deleteAction(record.id); }} style={{ margin: '10px' }} type="primary" icon={<DeleteOutlined />} size={'default'} />            
+          ) : null,
+        }
+      ];
+      return (
+        <div>
+ 
+          <div className="table-operations">
+            <Button onClick={this.clearAll}>Clear filters</Button>
+           
+          </div>
+         
+          <div>
+ 
+          <Table columns={columns} dataSource={this.state.workshop} onChange={this.handleChange} />
+          </div></div>
+      );
+ 
+    }
   }
-}
-const rootElement = document.getElementById("root");
-ReactDOM.render(<InfiniteListExample />, rootElement);
-
-export default InfiniteListExample;
+ 
+ 
+ 
+export default Workshop;

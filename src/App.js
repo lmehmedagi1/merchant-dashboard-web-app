@@ -88,7 +88,7 @@ function App(props) {
     <Menu.Item className = "subMenuItem" key="2">
       <Link to='/workshop'>
       <ShopOutlined />
-      <span className="nav-text">Workshop</span>
+      <span className="nav-text">Shops</span>
       </Link>
     </Menu.Item>
     <Menu.Item className = "subMenuItem" key="3">
