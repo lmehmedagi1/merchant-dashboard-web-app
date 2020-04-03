@@ -1,9 +1,11 @@
 import React from 'react';
-import { Input, Form, Button, message } from 'antd';
+import { Input, Form, Button, message, TimePicker } from 'antd';
 import axios from 'axios';
 import '../App.css';
 import { getToken } from '../auth';
+import moment from 'moment';
 
+const format = 'HH:mm';
 
 const layout = {
     labelCol: { span: 8 },
@@ -62,10 +64,16 @@ const AddNewWorkshop = () => {
                     <Form.Item name={['user', 'phone_number']} label="Phone number" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
+                    <Form.Item name={['user', 'workDayStart']} label="Open hour" rules={[{ required: true }]}>
+                        <TimePicker defaultValue={moment('00:00', format)} format={format} />
+                    </Form.Item>
+                    <Form.Item name={['user', 'workDayEnd']} label="Close hour" rules={[{ required: true }]}>
+                        <TimePicker defaultValue={moment('23:59', format)} format={format} />
+                    </Form.Item>
                     <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
                         <Button type="primary" htmlType="submit">
                             Send request
-                    </Button>
+                        </Button>
                     </Form.Item>
                 </Form>
             </div>
