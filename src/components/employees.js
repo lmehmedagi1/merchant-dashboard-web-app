@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import '../App.css';
 import { getToken } from '../auth';
 import Axios from 'axios';
 import './employees.css';
-import { Table, Switch, Radio, Form, Input,Button } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { Table, Form} from 'antd';
 
-
+const data = [];
 const URL = 'https://main-server-si.herokuapp.com/api/employees';
 
 const columns = [{
@@ -31,22 +30,20 @@ const columns = [{
     {
         title: 'Phone number',
         dataIndex: 'phoneNumber',
-        key: 'contact',
+        key: 'phoneNumber',
         render: text => <a className = "contentOfTable" > { text } </a>,
     },
     {
         title: 'Role',
-        dataIndex: 'role',
-        key: 'role',
-        render: text => <a className = "contentOfTable" > { text } </a>,
+        dataIndex: "roles",
+    render: data => { 
+        if (data.length === 1) 
+            return <a className = "contentOfTable" > { data[0].rolename }</a>
+        else 
+            return <a className = "contentOfTable" > { data[0].rolename + ", " + data[1].rolename}</a>
+     } 
     },
 ];
-
-const data = [];
-
-
-
-
 
 class Employees extends React.Component {
 
@@ -65,7 +62,9 @@ class Employees extends React.Component {
             this.setState({
                 data: res,
             });
-        });
+            for (let i = 0; i < res.length; i++) 
+                data[i].roles = res[i].roles.rolenamee;
+            });
     }
 
 
@@ -73,10 +72,11 @@ class Employees extends React.Component {
         const AuthStr = 'Bearer ' + (getToken());
         Axios
             .get(URL, { headers: { 'Authorization': AuthStr } }).then((response) => {
-                console.log(response.data);
                 if (response.data.length === 0) {
                     return;
                 }
+                console.log(response.data[0].roles);
+                //data.roles = response.data.roles;
                 callback(response.data);
             }).catch(error => {
                 console.log(error);
@@ -92,10 +92,6 @@ class Employees extends React.Component {
     handleSizeChange = e => {
         this.setState({ size: e.target.value });
     };
-
-   
-       
-   
 
     render() {
         const { xScroll, yScroll, ...state } = this.state;
@@ -122,10 +118,10 @@ class Employees extends React.Component {
             </Form>
 
             <div id = "TabelaNaslov" >
-            <h1 > List of employees </h1> </div > <
-            Table {...this.state }
+            <h1 > List of employees </h1> </div > 
+            <Table {...this.state }
             columns = { tableColumns }
-            dataSource = { this.state.data }
+            dataSource = { this.state.data}
             scroll = { scroll }
             /> </div >
 
@@ -135,6 +131,6 @@ class Employees extends React.Component {
 };
 const rootElement = document.getElementById("root");
 
-ReactDOM.render( < Employees / > , rootElement);
+ReactDOM.render( <Employees/> , rootElement);
 
 export default Employees;
