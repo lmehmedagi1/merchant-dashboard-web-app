@@ -38,13 +38,33 @@ const options = {
   ]
 };
 
-const expandable = { expandedRowRender: record => { 
-    return <div>
-          <h1 style= { { marginLeft: '10px', fontSize: '12pt'} }> Cash registers </h1>
-          <div style= { { marginLeft: '15px'} }><p> {record.email} </p></div>
-           
-          </div>; 
-  }};
+const getCashRegisterData = (id) => {
+  Axios
+    .get('https://main-server-si.herokuapp.com/api/business/offices/' + id + '/cashRegisters',
+      { headers: { Authorization: 'Bearer ' + getToken() } }).then(response => {
+        let kase = "<h3 > Cash registers </h3><div>";
+        for (let i = 0; i < response.data.length; i++) {
+          kase += "<hr></hr><p > Cash register name : " + response.data[i].name + " </p>";
+          kase += "<p > Daily profit : " + response.data[i].dailyProfit + " KM </p>";
+          kase += "<p > Total profit : " + response.data[i].totalProfit + " KM </p>";
+        }
+        kase += "</div>";
+        if (response.data.length == 0) return;
+        document.getElementById("expandDiv").innerHTML = kase;
+      })
+    .catch(err => console.log(err));
+}
+
+const expandable = {
+  expandedRowRender: record => {
+    getCashRegisterData(record.id);
+    return <div id='expandDiv'>
+      No data
+       </div>;
+
+  }
+
+};
 
 class Workshop extends React.Component {
 
@@ -68,7 +88,7 @@ class Workshop extends React.Component {
     Axios.get('https://main-server-si.herokuapp.com/api/business/offices',
       { headers: { Authorization: 'Bearer ' + getToken() } })
       .then(response => {
-        for(let i = 0; i < response.data.length; i++) {
+        for (let i = 0; i < response.data.length; i++) {
           response.data[i]["key"] = i;
         }
         this.setState({ workshop: response.data }, () => {
@@ -248,7 +268,7 @@ class Workshop extends React.Component {
         </div>
 
         <div>
-          <Table  columns={columns} expandable={expandable} dataSource={this.state.workshop} onChange={this.handleChange} />
+          <Table columns={columns} expandable={expandable} dataSource={this.state.workshop} onChange={this.handleChange} />
         </div></div>
     );
 
