@@ -54,15 +54,18 @@ class Auth extends React.Component {
             }
             // Rucno kreiramo usera, jer ne dobijemo nikakvu informaciju o user-u od servera osim tokena
             let user = {
-                username: response.data.profile.username,
-                email: response.data.profile.email,
-                name: response.data.profile.name,
-                surname: response.data.profile.surname,
-                address: response.data.profile.address,
-                phoneNumber: response.data.profile.phoneNumber,
-                country: response.data.profile.country,
-                city: response.data.profile.city
-            }
+              id: response.data.profile.userId,
+              username: response.data.profile.username,
+              email: response.data.profile.email,
+              name: response.data.profile.name,
+              surname: response.data.profile.surname,
+              dateofbirth: response.data.profile.dateOfBirth,
+              jmbg: response.data.profile.jmbg,
+              address: response.data.profile.address,
+              phoneNumber: response.data.profile.phoneNumber,
+              country: response.data.profile.country,
+              city: response.data.profile.city,
+          }
             setUserSession(response.data.token, user);
             this.authenticated = true;
             cb();

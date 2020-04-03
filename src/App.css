@@ -63,3 +63,19 @@
   width: 20px;
 }
 
+#karticaPodaci {
+  width: 25%;
+  margin: 0 auto;
+  margin-top: 16; 
+}
+
+
+#podaci{
+  text-align: left;
+  font: 30;
+}
+
+#naziv h1{
+  font-style: italic;
+  color: #04619f;
+}
