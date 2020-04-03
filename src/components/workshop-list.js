@@ -72,10 +72,10 @@ class Workshop extends React.Component {
     }
  
     handleChange = (pagination, filters, sorter) => {
-      console.log('Various parameters', pagination, filters);
+      console.log('Various parameters', pagination, filters,sorter);
       this.setState({
         filteredInfo: filters,
-       
+        sortedInfo: sorter, 
       });
       console.log("lol", this.state);
     };
@@ -87,6 +87,7 @@ class Workshop extends React.Component {
     clearAll = () => {
       this.setState({
         filteredInfo: null,
+        sortedInfo: null,
         searchText: ''
       });
     };
@@ -159,14 +160,17 @@ class Workshop extends React.Component {
      
      
       let filteredInfo = this.state.filteredInfo;
-     
+      let sortedInfo = this.state.sortedInfo;
       filteredInfo = filteredInfo || {};
+      sortedInfo = sortedInfo || {};
       const columns = [
         {
           title: 'Address',
           dataIndex: 'address',
           key: 'address',
           filteredValue: filteredInfo.address || null,
+          sorter: (a, b) => { return a.address.localeCompare(b.address) },
+          sortOrder: sortedInfo.columnKey === 'address' && sortedInfo.order,
           ellipsis: true,
           ...this.getColumnSearchProps('address'),
         },
@@ -175,8 +179,8 @@ class Workshop extends React.Component {
           dataIndex: 'city',
           key: 'city',
           filteredValue: filteredInfo.city || null,
-         
-   
+          sorter: (a, b) => { return a.city.localeCompare(b.city) },
+          sortOrder: sortedInfo.columnKey === 'city' && sortedInfo.order,
           ellipsis: true,
           ...this.getColumnSearchProps('city'),
         },
@@ -185,12 +189,41 @@ class Workshop extends React.Component {
           dataIndex: 'email',
           key: 'email',
           filteredValue: filteredInfo.email || null,
-         
- 
+          sorter: (a, b) => { return a.email.localeCompare(b.email) },
+          sortOrder: sortedInfo.columnKey === 'email' && sortedInfo.order,
           ellipsis: true,
           ...this.getColumnSearchProps('email'),
         },
-           
+        {
+          title: 'Open hour',
+          dataIndex: 'workDayStart',
+          key: 'workDayStart',
+          filteredValue: filteredInfo.workDayStart || null,
+          sorter: (a, b) =>  {
+            let x2 = parseInt(a.workDayStart.replace(':', ''));
+            let y2 = parseInt(b.workDayStart.replace(':', ''));
+            
+            return x2 < y2
+            },
+          sortOrder: sortedInfo.columnKey === 'workDayStart' && sortedInfo.order,
+          ellipsis: true,
+          ...this.getColumnSearchProps('workDayStart'),
+        },
+        {
+          title: 'Close hour',
+          dataIndex: 'workDayEnd',
+          key: 'workDayEnd',
+          filteredValue: filteredInfo.workDayEnd || null,
+          sorter: (a, b) => {
+            let x2 = parseInt(a.workDayEnd.replace(':', ''));
+            let y2 = parseInt(b.workDayEnd.replace(':', ''));
+            
+            return x2 < y2
+            },
+         sortOrder: sortedInfo.columnKey=== 'workDayEnd' && sortedInfo.order,
+          ellipsis: true,
+          ...this.getColumnSearchProps('workDayEnd'),
+        },
         {
           title: 'DELETE',
           dataIndex: 'delete',
@@ -204,7 +237,7 @@ class Workshop extends React.Component {
         <div>
  
           <div className="table-operations">
-            <Button onClick={this.clearAll}>Clear filters</Button>
+            <Button onClick={this.clearAll}>Clear filters and sorters</Button>
            
           </div>
          
