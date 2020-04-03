@@ -24,7 +24,7 @@ import 'antd/dist/antd.css';*/
 
 //let user = getUser();
 
-  const FormLayoutDemo = () => {
+  /*const FormLayoutDemo = () => {
     const [form] = Form.useForm();
     const [formLayout, setFormLayout] = useState('horizontal');
   
@@ -51,16 +51,16 @@ import 'antd/dist/antd.css';*/
               offset: 4,
             },
           }
-        : null;
+        : null;*/
 
 const Profile = () => {
     return (
         
         <div id="naziv">
         <h1> User profile </h1>
+        </div>
         
-        
-    <div>
+    /*<div>
       <Form
         {...formItemLayout}
         layout={formLayout}
@@ -86,15 +86,11 @@ const Profile = () => {
         
       </Form>
     </div>
-
-
-   
+    
   );
-  
 
 };
-ReactDOM.render(<FormLayoutDemo />, mountNode);
-</div>
+ReactDOM.render(<FormLayoutDemo />, mountNode);*/
 
        
     );
