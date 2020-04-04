@@ -9,17 +9,60 @@
 }
 
 #bodyMain {
-    margin-top: 7%;
+    margin-top: 3%;
     margin-left: 10%;
     margin-right: 10%;
-}
-
-#kalendar {
-    padding-bottom: 10%;
 }
 
 #footer {
     text-align: center;
     font-style: italic;
     font-size: 15px;
+    margin-bottom: 0;
 }
+
+
+#notifikacijeMain {
+    width: 60%;
+    padding-bottom: 5%;
+    padding-top: 5%;
+    float: left;
+}
+
+#kalendarMain {
+    width: 30%;
+    float: right;
+    padding-bottom: 5%;
+    padding-top: 5%;
+}
+#naslovNotifikacijeMain h2 {
+    color: #04619f;
+    font-weight: bold;
+    padding-right: 2%;
+}
+
+#naslovNotifikacijeMain {
+    display: flex;
+}
+
+#listaNotifikacija {
+    min-height: 250px;
+}
+
+hr {
+    color: lightcyan;
+}
+
+.demo-infinite-container {
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    overflow: auto;
+    padding: 8px 24px;
+    height: 300px;
+  }
+  .demo-loading-container {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    text-align: center;
+  }

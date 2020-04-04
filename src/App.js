@@ -9,24 +9,28 @@ import Login from './components/login/login'
 import Home from './components/home';
 import Workshop from './components/workshop';
 import Employees from './components/employees';
-import Notifications from './components/notifications';
 import Statistics from './components/statistics';
 import About from './components/about';
 import Help from './components/help';
 import Recover from './components/login/recover';
 import NotFound from './components/not-found';
 import AddNewWorkshop from './components/add-new-workshop';
-
+import Profile from './components/profile';
 
 import { Layout, Menu } from 'antd';
 import './components/main-page.css';
 import './App.css';
-import { Input, Avatar } from 'antd';
+import { Avatar } from 'antd';
 import { CopyrightOutlined, DashboardFilled, ShopOutlined, BellOutlined, TeamOutlined ,AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
 import auth from "./auth";
+import {getUser} from "./auth";
 
 const { SubMenu } = Menu;
 const { Footer, Content, Sider } = Layout;
+
+let userName = "";
+if (getUser() != null && getUser().name != null)
+  userName = getUser().name + " " + getUser().surname;
 
 function App(props) {
   return (
@@ -53,13 +57,18 @@ function App(props) {
     <SubMenu style={{ textAlign: 'center' }}
       title={
         <span id="imeKorisnika">
+          {userName}
         </span>
       } >
 
       <Menu.ItemGroup key='Username' style={{ textAlign: 'left' }}>
         <Menu.Item key='accSettings'>
-        <SettingFilled />
-          Account Settings</Menu.Item>
+          <Link to='./profile'>
+          <SettingFilled />
+            <span className="nav-text">Profile</span>
+          </Link>
+        
+        </Menu.Item>
         <Menu.Item key='LogOut' onClick={() => {
           auth.logout(() => {
             window.location.href = '/'
@@ -76,9 +85,9 @@ function App(props) {
       </Link>
     </Menu.Item>
     <Menu.Item className = "subMenuItem" key="2">
-      <Link to='/workshop'>
+      <Link to='/shops'>
       <ShopOutlined />
-      <span className="nav-text">Workshop</span>
+      <span className="nav-text">Shops</span>
       </Link>
     </Menu.Item>
     <Menu.Item className = "subMenuItem" key="3">
@@ -92,13 +101,7 @@ function App(props) {
       <AreaChartOutlined />
       <span className="nav-text">Statistics</span>
       </Link>
-    </Menu.Item>
-    <Menu.Item key="5" className = "subMenuItem">
-      <Link to='./notifications'>
-      <BellOutlined/>
-      <span className="nav-text">Notifications</span>
-      </Link>
-    </Menu.Item>
+      </Menu.Item>
     <Menu.Item  style={{ position: 'absolute', bottom: '40px' }} key="6" className = "subMenuItem">
       <Link to="./help">
       <QuestionCircleFilled />
@@ -125,12 +128,12 @@ function App(props) {
               <Route exact path="/" component={Login} />
               <ProtectedRoute exact path="/app" component={Home} />
               <ProtectedRoute exact path="/employees" component={Employees} />
-              <ProtectedRoute exact path="/workshop" component={Workshop} />
+              <ProtectedRoute exact path="/shops" component={Workshop} />
               <ProtectedRoute exact path="/statistics" component={Statistics} />
-              <ProtectedRoute exact path="/notifications" component={Notifications} />
               <ProtectedRoute exact path="/help" component={Help} />
               <ProtectedRoute exact path="/about" component={About} />
               <ProtectedRoute exact path="/addNewWorkshop" component={AddNewWorkshop} />
+              <ProtectedRoute exact path="/profile" component={Profile} />
               <Route exact path="/recover-password" component={Recover} />
               <Route exact path="/recover-password/:email" component={Recover} />
               <Route path="*" component={NotFound} />

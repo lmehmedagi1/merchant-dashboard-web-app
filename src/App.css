@@ -63,3 +63,30 @@
   width: 20px;
 }
 
+#karticaPodaci {
+  width: 35%;
+  margin: 0 auto;
+  margin-top: 16; 
+}
+
+
+#podaci{
+  text-align: left;
+  font: 30;
+}
+
+#naziv h1{
+  font-style: italic;
+  color: #04619f;
+}
+
+#dijagrami {
+  padding-top: 2%;
+}
+
+#numberEmployees {
+padding-top: 5%;
+margin-right: 80%;
+padding-bottom: 3%;
+color: royalblue;
+}

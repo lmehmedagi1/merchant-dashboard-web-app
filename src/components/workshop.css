@@ -12,3 +12,7 @@
     width: 100%;
     text-align: center;
   }
+
+  .hidden .ant-table-row-expand-icon-cell span {
+    display: none;
+  }
