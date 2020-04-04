@@ -132,7 +132,7 @@ function App(props) {
               <ProtectedRoute exact path="/statistics" component={Statistics} />
               <ProtectedRoute exact path="/help" component={Help} />
               <ProtectedRoute exact path="/about" component={About} />
-              <ProtectedRoute exact path="/addNewWorkshop" component={AddNewWorkshop} />
+              <ProtectedRoute exact path="/addShop" component={AddNewWorkshop} />
               <ProtectedRoute exact path="/profile" component={Profile} />
               <Route exact path="/recover-password" component={Recover} />
               <Route exact path="/recover-password/:email" component={Recover} />

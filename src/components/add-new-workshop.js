@@ -40,7 +40,7 @@ const AddNewWorkshop = () => {
                 message.error("Something went wrong!");
                 return;
             }
-            window.location.href = '/workshop';
+            window.location.href = '/shops';
         }).catch(error => {
             message.error("Something went wrong!");
         });
