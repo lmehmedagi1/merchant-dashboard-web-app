@@ -11,7 +11,7 @@ const Login = (props) => {
     auth.login(() => {
         if (getUser().name)
           document.getElementById("imeKorisnika").textContent=getUser().name + " " + getUser().surname;
-        props.history.push("/app");
+          window.location.href = '/app'
     }, values);
   };
 

@@ -16,7 +16,10 @@ let mode = "unread";
 let otherMode = "read";
 let clickedNotificationID = "";
 
-
+let username = "";
+if (getUser() != null && getUser().name != null && getUser().surname != null) {
+    username = getUser().name + " " + getUser().surname;
+}
 
 class Home extends React.Component {
     state = {
@@ -24,6 +27,11 @@ class Home extends React.Component {
         loading: false,
         hasMore: true,
     };
+
+    constructor() {
+        super();
+        this.showMessages();
+    }
 
     menu = (
         <Menu onClick={this.markMessage}>
@@ -74,7 +82,8 @@ class Home extends React.Component {
                 loading: false
             });
         }).catch(error => {
-            message.error("Something went wrong!");
+            if (window.location.href == '\app')
+                 message.error("Something went wrong!");
             console.log(error);
         });
     };
@@ -136,7 +145,7 @@ class Home extends React.Component {
     return (
         <div id = "mainPageContent">
         <div id="welcomeText">
-            <h1>Welcome, {getUser().name} {getUser().surname}</h1>
+            <h1>Welcome, {username}</h1>
         </div>
 
         <div id="notifikacijeIKalendar">
