@@ -52,7 +52,6 @@ class Auth extends React.Component {
                 message.error("Something went wrong!");
                 return;
             }
-            // Rucno kreiramo usera, jer ne dobijemo nikakvu informaciju o user-u od servera osim tokena
             let user = {
               id: response.data.profile.userId,
               username: response.data.profile.username,

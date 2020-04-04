@@ -2,7 +2,6 @@ import React from 'react';
 import './not-found.css';
 import './../App.css';
 import {WarningOutlined} from '@ant-design/icons';
-import { Input } from 'antd';
 
 const NotFound = () => {
     return (

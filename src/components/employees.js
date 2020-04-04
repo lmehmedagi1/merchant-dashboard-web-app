@@ -75,8 +75,6 @@ class Employees extends React.Component {
                 if (response.data.length === 0) {
                     return;
                 }
-                console.log(response.data[0].roles);
-                //data.roles = response.data.roles;
                 callback(response.data);
             }).catch(error => {
                 console.log(error);

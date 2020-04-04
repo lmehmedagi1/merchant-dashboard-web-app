@@ -2,16 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 import { Input, Calendar, message, List, Radio, Menu, Dropdown, Button, Spin  } from 'antd';
-import { MailOutlined, CheckOutlined } from '@ant-design/icons';
+import { MailOutlined} from '@ant-design/icons';
 import { getUser, getToken } from '../auth';
 import '../App.css';
 import './main-page.css';
 import axios from 'axios';
 const { TextArea } = Input;
-const onChange = e => {
-    console.log(e);
-};
 
+const onChange = e => {};
 const AuthStr = 'Bearer ' + (getToken());
 let URL = 'https://main-server-si.herokuapp.com/api/notifications/unread';
 let mode = "unread";
@@ -68,7 +66,6 @@ class Home extends React.Component {
         axios
         .get(URL, { headers: { 'Authorization': AuthStr } })
         .then((response) => {
-            console.log(response.data);
             if (response.data.length === 0) {
                 message.info("There are no notifications!");
             }
@@ -96,7 +93,6 @@ class Home extends React.Component {
     }
 
     markMessage = () => {
-        console.log("Tu sad", clickedNotificationID);
         axios
         .post(`https://main-server-si.herokuapp.com/api/notifications/${clickedNotificationID}/markRead`, {},  { headers: { 'Authorization': AuthStr } })
         .then((response) => {
@@ -121,20 +117,14 @@ class Home extends React.Component {
 
 
     markAll = async () => {
-        console.log(this.state.data);
-
         let ids = [];
-        
         let i = 0;
         for (i = 0; i < this.state.data.length; i++) {
             ids.push(this.state.data[i].id);
         }
 
-        console.log(ids);
-
         for (i = 0; i < ids.length; i++) {
             clickedNotificationID = ids[i];
-            console.log("SADA PREBACUJEM " + ids[i]);
             let gotovo = await axios
             .post(`https://main-server-si.herokuapp.com/api/notifications/${clickedNotificationID}/markRead`, {},  { headers: { 'Authorization': AuthStr } });
             this.showMessages();
@@ -192,8 +182,6 @@ class Home extends React.Component {
             <hr/>
             <Button type="link" onClick={this.markAll}> Mark all as {otherMode} </Button>
             </div>
-
-
             <div id="kalendarMain">
             <Calendar fullscreen={false}/>
             </div>
