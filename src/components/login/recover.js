@@ -14,7 +14,6 @@ const Recover = (props) => {
     const onFinishPassword = values => {
         newPassword = values.password;
         token = values.token;
-        //.....
 
         axios
         .post('https://main-server-si.herokuapp.com/api/user/savePassword', {
@@ -40,8 +39,6 @@ const Recover = (props) => {
 
     const onFinish = values => {
         email = values.email;
-        //window.location.href = `/recover-password/${email}`;
-
         axios
         .post('https://main-server-si.herokuapp.com/api/user/resetPassword', {
             email: email

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Alert } from 'antd';
+import { Alert } from 'antd';
 
 const About = () => {
     return (
@@ -9,7 +9,7 @@ const About = () => {
             </div>
             <Alert
                 message="Creators"
-                description="Jasmin Bajrić, Lejla Mehmedagić, Arslan Turkišić, Venesa Šeremet, Adna Ćatić, Sara Makešoska-Džebo"
+                description="Jasmin Bajrić, Lejla Mehmedagić, Arslan Turkušić, Venesa Šeremet, Adna Ćatić, Sara Makešoska-Džebo"
                 type="info"
             />
             <Alert
@@ -22,7 +22,6 @@ const About = () => {
             <Alert
                 message="Contact Us"
                 description="E-mail: merchantservice@gmail.com"
-                
                 type="info"
             />
         </div>

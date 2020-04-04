@@ -9,7 +9,6 @@ import Login from './components/login/login'
 import Home from './components/home';
 import Workshop from './components/workshop';
 import Employees from './components/employees';
-import Notifications from './components/notifications';
 import Statistics from './components/statistics';
 import About from './components/about';
 import Help from './components/help';
@@ -21,7 +20,7 @@ import Profile from './components/profile';
 import { Layout, Menu } from 'antd';
 import './components/main-page.css';
 import './App.css';
-import { Input, Avatar } from 'antd';
+import { Avatar } from 'antd';
 import { CopyrightOutlined, DashboardFilled, ShopOutlined, BellOutlined, TeamOutlined ,AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
 import auth from "./auth";
 import {getUser} from "./auth";
@@ -86,7 +85,7 @@ function App(props) {
       </Link>
     </Menu.Item>
     <Menu.Item className = "subMenuItem" key="2">
-      <Link to='/workshop'>
+      <Link to='/shops'>
       <ShopOutlined />
       <span className="nav-text">Shops</span>
       </Link>
@@ -102,13 +101,7 @@ function App(props) {
       <AreaChartOutlined />
       <span className="nav-text">Statistics</span>
       </Link>
-    </Menu.Item>
-    <Menu.Item key="5" className = "subMenuItem">
-      <Link to='./notifications'>
-      <BellOutlined/>
-      <span className="nav-text">Notifications</span>
-      </Link>
-    </Menu.Item>
+      </Menu.Item>
     <Menu.Item  style={{ position: 'absolute', bottom: '40px' }} key="6" className = "subMenuItem">
       <Link to="./help">
       <QuestionCircleFilled />
@@ -135,9 +128,8 @@ function App(props) {
               <Route exact path="/" component={Login} />
               <ProtectedRoute exact path="/app" component={Home} />
               <ProtectedRoute exact path="/employees" component={Employees} />
-              <ProtectedRoute exact path="/workshop" component={Workshop} />
+              <ProtectedRoute exact path="/shops" component={Workshop} />
               <ProtectedRoute exact path="/statistics" component={Statistics} />
-              <ProtectedRoute exact path="/notifications" component={Notifications} />
               <ProtectedRoute exact path="/help" component={Help} />
               <ProtectedRoute exact path="/about" component={About} />
               <ProtectedRoute exact path="/addNewWorkshop" component={AddNewWorkshop} />

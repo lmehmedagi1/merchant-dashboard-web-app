@@ -58,9 +58,7 @@ const getCashRegisterData = (id) => {
 const expandable = {
   expandedRowRender: record => {
     getCashRegisterData(record.id);
-    return <div id='expandDiv'>
-      No data
-       </div>;
+    return <div id='expandDiv'> No data </div>;
 
   }
 
@@ -99,7 +97,6 @@ class Workshop extends React.Component {
   }
 
   handleChange = (pagination, filters, sorter) => {
-    console.log('Various parameters', pagination, filters, sorter);
     this.setState({
       filteredInfo: filters,
       sortedInfo: sorter,
