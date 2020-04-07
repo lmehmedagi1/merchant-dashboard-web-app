@@ -56,7 +56,7 @@ class Statistics extends React.Component{
               id: response.data[i].id,
               cashRegisterName: response.data[i].name,
               barData: {
-                labels: ['Daily profit', 'Total profit', 'January', 'February', 'March', 'April'],
+                labels: ['Daily traffic', 'Total traffic', 'January', 'February', 'March', 'April'],
                 datasets: [
                   {
                     fill: false,

@@ -51,15 +51,15 @@ const getCashRegisterData = (id) => {
         let kase = "<h3 > Cash registers </h3><div>";
         for (let i = 0; i < response.data.length; i++) {
           kase += "<hr></hr><p > Cash register name : " + response.data[i].name + " </p>";
-          kase += "<p > Daily income : " + response.data[i].dailyProfit + " KM </p>";
-          kase += "<p > Total income : " + response.data[i].totalProfit + " KM </p>";
+          kase += "<p > Daily traffic : " + response.data[i].dailyProfit + " KM </p>";
+          kase += "<p > Total traffic : " + response.data[i].totalProfit + " KM </p>";
 
           totalDaily += response.data[i].dailyProfit;
           totalTotal +=  response.data[i].totalProfit;
         }
 
-        kase += "<hr></hr><p> Total daily income : " + totalDaily.toFixed(2) + " KM </p>";
-        kase += "<p> Total income : " + totalTotal.toFixed(2) + " KM </p>";
+        kase += "<hr></hr><p> Total daily traffic : " + totalDaily.toFixed(2) + " KM </p>";
+        kase += "<p> Total traffic : " + totalTotal.toFixed(2) + " KM </p>";
         kase += "</div>";
         if (response.data.length == 0)
           document.getElementById(id).innerHTML ="No data";
