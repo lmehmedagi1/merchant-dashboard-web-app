@@ -44,12 +44,22 @@ const getCashRegisterData = (id) => {
   Axios
     .get('https://main-server-si.herokuapp.com/api/business/offices/' + id + '/cashRegisters',
       { headers: { Authorization: 'Bearer ' + getToken() } }).then(response => {
+        
+        let totalDaily = 0;
+        let totalTotal = 0;
+
         let kase = "<h3 > Cash registers </h3><div>";
         for (let i = 0; i < response.data.length; i++) {
           kase += "<hr></hr><p > Cash register name : " + response.data[i].name + " </p>";
-          kase += "<p > Daily profit : " + response.data[i].dailyProfit + " KM </p>";
-          kase += "<p > Total profit : " + response.data[i].totalProfit + " KM </p>";
+          kase += "<p > Daily income : " + response.data[i].dailyProfit + " KM </p>";
+          kase += "<p > Total income : " + response.data[i].totalProfit + " KM </p>";
+
+          totalDaily += response.data[i].dailyProfit;
+          totalTotal +=  response.data[i].totalProfit;
         }
+
+        kase += "<hr></hr><p> Total daily income : " + totalDaily.toFixed(2) + " KM </p>";
+        kase += "<p> Total income : " + totalTotal.toFixed(2) + " KM </p>";
         kase += "</div>";
         if (response.data.length == 0)
           document.getElementById(id).innerHTML ="No data";
