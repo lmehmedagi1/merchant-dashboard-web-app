@@ -236,8 +236,39 @@ class Employees extends React.Component {
                     let allRoles = "";
                     let i = 0;
                     for (i = 0; i<data.length; i++) {
-                        allRoles += data[i].rolename;
-                        if (i != data.length-1) allRoles += ", ";
+                      switch (data[i].rolename) {
+                        case 'ROLE_MERCHANT':
+                          data[i].rolename = 'Merchant';
+                          break;
+                        case 'ROLE_ADMIN':
+                          data[i].rolename = 'Administrator';
+                          break;
+                        case 'ROLE_MANAGER':
+                          data[i].rolename = 'Manager';
+                          break;
+                        case 'ROLE_WAREMAN':
+                          data[i].rolename = 'Warehouse manager';
+                          break;
+                        case 'ROLE_PRP':
+                          data[i].rolename = 'Public Relations with Privileges';
+                          break;
+                        case 'ROLE_PRW':
+                          data[i].rolename = 'Public Relations worker';
+                          break;
+                        case 'ROLE_CASHIER':
+                          data[i].rolename = 'Cashier';
+                          break;
+                        case 'ROLE_OFFICEMAN':
+                          data[i].rolename = 'Office manager';
+                          break;
+                        case 'ROLE_BARTENDER':
+                          data[i].rolename = 'Bartender';
+                          break;
+                        default: 
+                          break;
+                      }
+                      allRoles += data[i].rolename;
+                      if (i != data.length-1) allRoles += ", ";
                     }
                     return <a className = "contentOfTable" > {allRoles} </a>
             } 
