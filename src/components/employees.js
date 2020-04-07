@@ -194,35 +194,35 @@ class Employees extends React.Component {
                 filters: [
                     {
                       text: 'ADMIN',
-                      value: 'ADMIN',
+                      value: 'Administrator',
                     },
                     {
                       text: 'MANAGER',
-                      value: 'MANAGER',
+                      value: 'Manager',
                     },
                     {
                       text: 'MERCHANT',
-                      value: 'MERCHANT',
+                      value: 'Merchant',
                     },
                     {
-                      text: 'WAREMAN',
-                      value: 'WAREMAN',
+                      text: 'WAREHOUSE',
+                      value: 'Warehouse manager',
                     },
                     {
-                      text: 'PRW',
-                      value: 'PRW',
+                      text: 'PR WORKER',
+                      value: 'Public Relations worker' || 'Public Relations with Privileges',
                     },
                     {
                       text: 'CASHIER',
-                      value: 'CASHIER',
+                      value: 'Cashier',
                     },
                     {
-                      text: 'OFFICEMAN',
-                      value: 'OFFICEMAN',
+                      text: 'OFFICE MANAGER',
+                      value: 'Office manager',
                     },
                     {
                       text: 'BARTENDER',
-                      value: 'BARTENDER',
+                      value: 'Bartender',
                     },
                 ],
                 filteredValue: filteredInfo.roles || null,
