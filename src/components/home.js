@@ -102,6 +102,7 @@ class Home extends React.Component {
     }
 
     markMessage = () => {
+        console.log(clickedNotificationID);
         axios
         .post(`https://main-server-si.herokuapp.com/api/notifications/${clickedNotificationID}/markRead`, {},  { headers: { 'Authorization': AuthStr } })
         .then((response) => {
@@ -175,7 +176,7 @@ class Home extends React.Component {
                         title={item.date}
                         description={this.ispisiPoruku(item.hired, item.employee.name, item.employee.surname, item.time)}
                     />
-                    <div id="components-dropdown-demo-dropdown-button">
+                    <div  id="components-dropdown-dmo-dropdown-button">
                         <Dropdown.Button onClick={this.buttonClick(item.id)} overlay={this.menu} trigger={['click']}/>
                     </div>
                 </List.Item>
