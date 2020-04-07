@@ -29,6 +29,12 @@
 
 #listaNotifikacija {
   text-align: left;
+  overflow-y:scroll;
+  height: 250px;
+}
+
+#components-dropdown-dmo-dropdown-button {
+  margin-right: 2%;
 }
 
 #naslovNotifikacije h1 {
