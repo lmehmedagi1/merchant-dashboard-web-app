@@ -1,17 +1,48 @@
-import React from 'react';
-import { Input, Form, Button, message, TimePicker } from 'antd';
-import axios from 'axios';
-import '../App.css';
+import React from 'react'
+import { Form, Input, Button ,Switch, message} from 'antd';
+import { TimePicker } from 'antd';
 import { getToken } from '../auth';
-import moment from 'moment';
 
-const format = 'HH:mm';
+const { RangePicker } = TimePicker;
 
+function AddNewWorkshop(props)
+{   
+    function addOffice(values){
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + getToken());
+        var raw = JSON.stringify({
+            "email":values.office.email,
+            "city":values.office.city,
+            "address":values.office.address,
+            "country":values.office.country,
+            "phoneNumber":values.office.phoneNumber,
+            "workDayStart":values.office.time[0].format("kk:mm"),
+            "workDayEnd":values.office.time[1].format("kk:mm")
+        });
+        console.log(raw);
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+        };
+        
+        fetch(`https://main-server-si.herokuapp.com/api/notifications/office/open`, requestOptions)
+          .then(result => {
+              message.success("Your request was successfully sent");
+              window.location.href = '/shops';
+            });
+    }
+     
 const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
+    labelCol: {
+      span: 8,
+    },
+    wrapperCol: {
+      span: 16,
+    },
   };
-  
   const validateMessages = {
     required: 'This field is required!',
     types: {
@@ -22,62 +53,44 @@ const layout = {
       range: 'Must be between ${min} and ${max}',
     },
   };
-
-
-const AddNewWorkshop = () => {
-
+  
     const onFinish = values => {
-        const AuthStr = 'Bearer ' + (getToken());
-        axios
-        .post('https://main-server-si.herokuapp.com/api/notifications/office/open', {
-            address: values.user.address,
-            city: values.user.city,
-            country: values.user.country,
-            email: values.user.email,
-            phoneNumber: values.user.phone_number
-        }, { headers: { 'Authorization': AuthStr } }).then((response) => {
-            if (response.data.length === 0) {
-                message.error("Something went wrong!");
-                return;
-            }
-            window.location.href = '/shops';
-        }).catch(error => {
-            message.error("Something went wrong!");
-        });
-    }
-
-        return (
-            <div id="formaDodaj" >
-                <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
-                    <Form.Item name={['user', 'address']} label="Address" rules={[{ required: true }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name={['user', 'city']} label="City" rules={[{  required: true }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name={['user', 'country']} label="Country" rules={[{ required: true }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name={['user', 'email']} label="Email"  rules={[{ type: 'email', required: true }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name={['user', 'phone_number']} label="Phone number" rules={[{ required: true }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name={['user', 'workDayStart']} label="Open hour" rules={[{ required: true }]}>
-                        <TimePicker defaultValue={moment('00:00', format)} format={format} />
-                    </Form.Item>
-                    <Form.Item name={['user', 'workDayEnd']} label="Close hour" rules={[{ required: true }]}>
-                        <TimePicker defaultValue={moment('23:59', format)} format={format} />
-                    </Form.Item>
-                    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                        <Button type="primary" htmlType="submit">
-                            Send request
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </div>
-        );
+        addOffice(values)
     };
+  
+    return (
+      <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+        <Form.Item name={['office', 'email']} label="Email" rules={[ { type: 'email',},{required:true}]}>
+          <Input />
+        </Form.Item>
+        <Form.Item name={['office', 'address']} label="Address" rules={[{required: true,},]}>
+          <Input />
+        </Form.Item>
+        <Form.Item name={['office', 'city']} label="City" rules={[{required: true,},]}>
+          <Input />
+        </Form.Item>
+        <Form.Item name={['office', 'country']} label="Country" rules={[{required: true,},]}>
+          <Input />
+        </Form.Item>
+        <Form.Item name={['office', 'phoneNumber']} label="Phone number" rules={[{required: true,}]}>
+          <Input />
+        </Form.Item>
+        <Form.Item name={['office', 'time']} label="Working hours" rules={[{required: true,}]}>
+          <RangePicker/>
+        </Form.Item>
+     
+        <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }} >
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    );
 
-    export default AddNewWorkshop;
+
+
+
+    return 
+}
+
+export default AddNewWorkshop;

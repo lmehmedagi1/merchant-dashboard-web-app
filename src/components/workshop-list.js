@@ -17,13 +17,15 @@ const options = {
       onClick: () => {
         console.log(IDZaBrisanje);
         Axios
-          .post('https://main-server-si.herokuapp.com/api/notifications/office/close', {
+          .post('https://main-server-si.herokuapp.com/api/notifications/office/close',
+          {
             officeId: IDZaBrisanje
-          }).then((response) => {
+          }, { headers: { Authorization: 'Bearer ' + getToken()}}).then((response) => {
             if (response.data.statusCode !== 200) {
               message.error("Something went wrong!");
               return;
             }
+            message.success("Your request was successfully sent")
           }).catch(error => {
             message.error('error');
           });
@@ -49,8 +51,10 @@ const getCashRegisterData = (id) => {
           kase += "<p > Total profit : " + response.data[i].totalProfit + " KM </p>";
         }
         kase += "</div>";
-        if (response.data.length == 0) return;
-        document.getElementById("expandDiv").innerHTML = kase;
+        if (response.data.length == 0)
+          document.getElementById(id).innerHTML ="No data";
+        else
+          document.getElementById(id).innerHTML = kase;
       })
     .catch(err => console.log(err));
 }
@@ -58,8 +62,7 @@ const getCashRegisterData = (id) => {
 const expandable = {
   expandedRowRender: record => {
     getCashRegisterData(record.id);
-    return <div id='expandDiv'> No data </div>;
-
+    return <div id={record.id}> No data </div>;
   }
 
 };
