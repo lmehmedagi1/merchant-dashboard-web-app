@@ -70,11 +70,11 @@ class Statistics extends React.Component{
                     pointBorderColor: 'rgba(75,192,192,1)',
                     pointBackgroundColor: '#fff',
                     pointBorderWidth: 1,
-                    pointHoverRadius: 5,
+                    pointHoverRadius: 4,
                     pointHoverBackgroundColor: 'rgba(75,192,192,1)',
                     pointHoverBorderColor: 'rgba(220,220,220,1)',
                     pointHoverBorderWidth: 2,
-                    pointRadius: 5,
+                    pointRadius: 4,
                     pointHitRadius: 10,
                     data: novacKase
                   },
@@ -90,11 +90,11 @@ class Statistics extends React.Component{
                     pointBorderColor: 'rgba(75,192,192,1)',
                     pointBackgroundColor: '#fff',
                     pointBorderWidth: 1,
-                    pointHoverRadius: 5,
+                    pointHoverRadius: 4,
                     pointHoverBackgroundColor: 'rgba(75,192,192,1)',
                     pointHoverBorderColor: 'rgba(220,220,220,1)',
                     pointHoverBorderWidth: 2,
-                    pointRadius: 5,
+                    pointRadius: 4,
                     pointHitRadius: 10,
                     data: [23,30,30,424,422,23]
                   }
