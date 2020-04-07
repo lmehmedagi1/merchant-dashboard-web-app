@@ -1,18 +1,25 @@
 import React from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import Axios from 'axios';
 import { getToken } from '../auth.js';
 import '../App.css';
-import { Select, List} from 'antd';
+import moment from 'moment';
+import { DatePicker,Select, List} from 'antd';
 
+const { RangePicker } = DatePicker;
+const { Option } = Select;
  
 function onBlur() {}
  
 function onFocus() {}
  
 function onSearch(val) {}
- 
-const { Option } = Select;
+
+
+function disabledDate(current) {
+  // Can not select days before today and today
+  return current > moment().endOf('day');
+}
  
 class Statistics extends React.Component{
   state = {
@@ -44,21 +51,55 @@ class Statistics extends React.Component{
             let novacKase  = [];
             novacKase.push(response.data[i].dailyProfit);
             novacKase.push(response.data[i].totalProfit);
-
+            console.log(response.data);
             let newData = {
               id: response.data[i].id,
               cashRegisterName: response.data[i].name,
               barData: {
-                labels: ['Daily profit', 'Total profit'],
+                labels: ['Daily profit', 'Total profit', 'January', 'February', 'March', 'April'],
                 datasets: [
                   {
-                    backgroundColor: ['rgba(255,99,132,0.2)', 'rgba(54,162,235,0.6)'],
-                    borderColor: 'rgba(255,99,132,1)',
-                    borderWidth: 1,
-                    hoverBorderColor: 'rgba(255,99,132,1)',
+                    fill: false,
+                    lineTension: 0.8,
+                    backgroundColor: 'rgba(75,192,192,0.4)',
+                    borderColor: 'rgba(75,192,192,1)',
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: 'rgba(75,192,192,1)',
+                    pointBackgroundColor: '#fff',
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                    pointHoverBorderColor: 'rgba(220,220,220,1)',
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHitRadius: 10,
                     data: novacKase
+                  },
+                  {
+                    fill: false,
+                    lineTension: 0.8,
+                    backgroundColor: 'rgba(75,192,192,0.4)',
+                    borderColor: 'rgba(75,192,192,1)',
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: 'rgba(75,192,192,1)',
+                    pointBackgroundColor: '#fff',
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                    pointHoverBorderColor: 'rgba(220,220,220,1)',
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHitRadius: 10,
+                    data: [23,30,30,424,422,23]
                   }
-                ]
+                ],
+                
               },
               barOptions: {
                 title: {
@@ -123,17 +164,19 @@ class Statistics extends React.Component{
         </Select>
         </div>
         </div>
+        <br/>
+        <div id = "vremenskiRasponStatistika">
+          <RangePicker disabledDate={disabledDate} format = "DD.MM.YYYY"/>
+        </div>
         <div id = "dijagrami">
-        <h3 id = "numberEmployees">
-          
-        </h3>
+        <h3 id = "numberEmployees"/>
         <List
                 grid={{  column: 2 }}
                 dataSource={this.state.chartData}
                 renderItem={item => (
                 <List.Item key={item.id}>
                     <div style={{ width: "100%" }}>
-                        <Bar redraw={true} data={item.barData} options={item.barOptions}/>
+                        <Line redraw={true} data={item.barData} options={item.barOptions}/>
                     </div>
                 </List.Item>
                 )}
