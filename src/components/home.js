@@ -10,20 +10,20 @@ import axios from 'axios';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 const { TextArea } = Input;
-
+ 
 const onChange = e => {};
 const AuthStr = 'Bearer ' + (getToken());
 let URL = 'https://main-server-si.herokuapp.com/api/notifications/unread';
 let mode = "unread";
 let otherMode = "read";
 let clickedNotificationID = "";
-
+ 
 let ids = [];
 let username = "";
 if (getUser() != null && getUser().name != null && getUser().surname != null) {
     username = getUser().name + " " + getUser().surname;
 }
-
+ 
 const options = {
     title: 'Confirmation',
     message: 'Do you really want to delete all notifications?',
@@ -31,7 +31,7 @@ const options = {
       {
         label: 'Yes',
         onClick: async () => {
-
+ 
           for (let i = 0; i < ids.length; i++) {
                 clickedNotificationID = ids[i];
                 let gotovo = await axios
@@ -43,24 +43,24 @@ const options = {
       {
         label: 'No',
         onClick: () => {
-  
+ 
         }
       }
     ]
   };
-
+ 
 class Home extends React.Component {
     state = {
         data: [],
         loading: false,
         hasMore: true,
     };
-
+ 
     constructor() {
         super();
         this.showMessages();
     }
-
+ 
     menu = (
         <Menu onClick={(e) => {this.markMessage(e)}}>
             <Menu.Item key="1">
@@ -75,11 +75,11 @@ class Home extends React.Component {
             </Menu.Item>
         </Menu>
     );
-  
+ 
     componentDidMount() {
         this.showMessages();
     }
-
+ 
     handleInfiniteOnLoad = () => {
         let { data } = this.state;
         this.setState({
@@ -95,14 +95,14 @@ class Home extends React.Component {
         }
         this.showMessages();
       };
-
-  
+ 
+ 
     ispisiPoruku = (hired, name, surname, time) => {
         if (hired)
           return name + " " + surname + " was hired at " + time + ".";
         return name + " " + surname + " was fired at " + time + ".";
     }
-
+ 
     showMessages = () => {
         axios
         .get(URL, { headers: { 'Authorization': AuthStr } })
@@ -110,6 +110,17 @@ class Home extends React.Component {
             if (response.data.length === 0) {
                 message.info("There are no notifications!");
             }
+            let nizDatuma = [];
+            for (let i = 0; i < response.data.length; i++)
+                nizDatuma.push(response.data[i].date);
+            nizDatuma.sort(function(a, b){
+                a = a.split('.');
+                b = b.split('.');
+                return b[2] - a[2] || b[1] - a[1] || b[0] - a[0];
+            });
+            console.log("notifikacije" + nizDatuma);
+            for (let i = 0; i < response.data.length; i++)
+                response.data[i].date = nizDatuma[i];
             this.setState({
                 data: response.data,
                 loading: false
@@ -120,7 +131,7 @@ class Home extends React.Component {
             console.log(error);
         });
     };
-
+ 
     buttonClick = id => {
         clickedNotificationID = id;
         this.menu = (
@@ -138,14 +149,14 @@ class Home extends React.Component {
             </Menu>
         );
     }
-
+ 
     markMessage = (menuKey) => {
         let notificationURL = `https://main-server-si.herokuapp.com/api/notifications/${clickedNotificationID}/markRead`;
-
+ 
         if (menuKey.key == "2") {
             notificationURL = `https://main-server-si.herokuapp.com/api/notifications/${clickedNotificationID}/delete`;
         }
-
+ 
         axios
         .post(notificationURL, {},  { headers: { 'Authorization': AuthStr } })
         .then((response) => {
@@ -158,22 +169,22 @@ class Home extends React.Component {
             message.error("Something went wrong!");
         });
     }
-
+ 
     switchedNotifications = e => {
         otherMode = mode;
         mode = e.target.value;
         URL = "https://main-server-si.herokuapp.com/api/notifications/" + mode;
         this.showMessages();
     }
-
-
+ 
+ 
     markAll = async () => {
         let ids = [];
         let i = 0;
         for (i = 0; i < this.state.data.length; i++) {
             ids.push(this.state.data[i].id);
         }
-
+ 
         for (i = 0; i < ids.length; i++) {
             clickedNotificationID = ids[i];
             let gotovo = await axios
@@ -181,29 +192,29 @@ class Home extends React.Component {
             this.showMessages();
         }
     }
-
+ 
     deleteAll = async () => {
         ids = [];
         for (let i = 0; i < this.state.data.length; i++) {
             ids.push(this.state.data[i].id);
         }
-
+ 
         confirmAlert(options);
     }
-
+ 
     render() {
-        
+       
     return (
         <div id = "mainPageContent">
         <div id="welcomeText">
             <h1>Welcome, {username}</h1>
         </div>
-
+ 
         <div id="notifikacijeIKalendar">
-            
+           
             <div id="notifikacijeMain">
             <div id="naslovNotifikacijeMain">
-                <h2>Notifications </h2> 
+                <h2>Notifications </h2>
                 <Radio.Group onChange={this.switchedNotifications} value={mode} style={{ marginBottom: 8 }}>
                     <Radio.Button value="read">Read</Radio.Button>
                     <Radio.Button value="unread">Unread</Radio.Button>
@@ -249,9 +260,9 @@ class Home extends React.Component {
             <div id="kalendarMain">
             <Calendar fullscreen={false}/>
             </div>
-
+ 
         </div>
-
+ 
         <div id="notes">
             <TextArea placeholder=" Write down the thoughts of the moment. Those that come unsought for are commonly the most valuable." allowClear onChange={onChange} />
         </div>
@@ -259,9 +270,9 @@ class Home extends React.Component {
     );
     }
 };
-
+ 
 const rootElement = document.getElementById("root");
 ReactDOM.render( <Home/> , rootElement);
-
-        
+ 
+       
 export default Home;
