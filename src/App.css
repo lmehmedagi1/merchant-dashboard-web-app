@@ -79,6 +79,7 @@
 #podaci{
   text-align: left;
   font: 30;
+  color: black;
 }
 
 #naziv h1{
@@ -91,8 +92,13 @@
 }
 
 #numberEmployees {
-padding-top: 5%;
-margin-right: 80%;
-padding-bottom: 3%;
-color: royalblue;
+  padding-top: 5%;
+  margin-right: 80%;
+  padding-bottom: 3%;
+  color: black;
+}
+
+#tabelaPoslovnica {
+  margin-top: 1%;
+  color:black;
 }

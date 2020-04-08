@@ -8,7 +8,8 @@ import { DatePicker,Select, List} from 'antd';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
- 
+const dateFormat = "DD.MM.YYYY";
+
 function onBlur() {}
  
 function onFocus() {}
@@ -166,7 +167,7 @@ class Statistics extends React.Component{
         </div>
         <br/>
         <div id = "vremenskiRasponStatistika">
-          <RangePicker disabledDate={disabledDate} format = "DD.MM.YYYY"/>
+          <RangePicker defaultValue={[moment(moment().toDate(), dateFormat), moment(moment().toDate(), dateFormat)]} disabledDate={disabledDate} format = {dateFormat}/>
         </div>
         <div id = "dijagrami">
         <h3 id = "numberEmployees"/>

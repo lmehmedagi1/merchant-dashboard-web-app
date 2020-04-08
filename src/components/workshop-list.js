@@ -271,6 +271,7 @@ class Workshop extends React.Component {
     ];
     return (
       <div>
+        <div id = "TabelaNaslov"><h1 > List of shops </h1> </div>
 
         <div className="table-operations">
           <Button onClick={this.clearAll}>Clear filters and sorters</Button>
@@ -278,7 +279,7 @@ class Workshop extends React.Component {
         </div>
 
         <div>
-          <Table columns={columns} expandable={expandable} dataSource={this.state.workshop} onChange={this.handleChange} />
+          <Table id = "tabelaPoslovnica" columns={columns} expandable={expandable} dataSource={this.state.workshop} onChange={this.handleChange} />
         </div></div>
     );
 

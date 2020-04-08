@@ -200,8 +200,12 @@ class Employees extends React.Component {
                 key: 'roles',
                 filters: [
                     {
-                      text: 'ADMIN',
-                      value: 'Administrator',
+                      text: 'BARTENDER',
+                      value: 'Bartender',
+                    },
+                    {
+                      text: 'CASHIER',
+                      value: 'Cashier',
                     },
                     {
                       text: 'MANAGER',
@@ -212,26 +216,18 @@ class Employees extends React.Component {
                       value: 'Merchant',
                     },
                     {
-                      text: 'WAREHOUSE',
-                      value: 'Warehouse manager',
+                      text: 'OFFICE MANAGER',
+                      value: 'Office manager',
                     },
                     {
                       text: 'PR WORKER',
                       value: 'Public Relations worker' || 'Public Relations with Privileges',
                     },
                     {
-                      text: 'CASHIER',
-                      value: 'Cashier',
+                      text: 'WAREHOUSE',
+                      value: 'Warehouse manager',
                     },
-                    {
-                      text: 'OFFICE MANAGER',
-                      value: 'Office manager',
-                    },
-                    {
-                      text: 'BARTENDER',
-                      value: 'Bartender',
-                    },
-                ],
+                  ],
                 filteredValue: filteredInfo.roles || null,
                 onFilter: (value, record) => {
                     for (let i = 0; i<record.roles.length; i++) {
@@ -246,9 +242,6 @@ class Employees extends React.Component {
                       switch (data[i].rolename) {
                         case 'ROLE_MERCHANT':
                           data[i].rolename = 'Merchant';
-                          break;
-                        case 'ROLE_ADMIN':
-                          data[i].rolename = 'Administrator';
                           break;
                         case 'ROLE_MANAGER':
                           data[i].rolename = 'Manager';
@@ -299,19 +292,16 @@ class Employees extends React.Component {
 
         return (
         <div>
+          <div id = "TabelaNaslov"><h1 > List of employees </h1> </div>
             <Form layout = "inline"
             className = "components-table-demo-control-bar"
             style = {
                 { marginBottom: 16 }
             } >
             </Form>
-
-            
-
-            <div id = "TabelaNaslov"><h1 > List of employees </h1> </div>
             <div className="table-operations"><Button onClick={this.clearAll}>Clear filters and sorters</Button></div> 
 
-            <Table {...this.state }
+            <Table id ="tabelaUposlenika" {...this.state }
             columns = { tableColumns }
             dataSource = { this.state.data}
             scroll = { scroll }
