@@ -153,21 +153,35 @@ class Home extends React.Component {
     markMessage = (menuKey) => {
         let notificationURL = `https://main-server-si.herokuapp.com/api/notifications/${clickedNotificationID}/markRead`;
  
-        if (menuKey.key == "2") {
-            notificationURL = `https://main-server-si.herokuapp.com/api/notifications/${clickedNotificationID}/delete`;
+        if (menuKey.key == "1") {
+            axios
+            .post(notificationURL, {},  { headers: { 'Authorization': AuthStr } })
+            .then((response) => {
+                if (!response.data.id) {
+                    message.error("Something went wrong!");
+                    return;
+                }
+                this.showMessages();
+            }).catch(error => {
+                message.error("Something went wrong!");
+            });
+        }
+        else if (menuKey.key == "2") {
+            notificationURL = `https://main-server-si.herokuapp.com/api/notifications/${clickedNotificationID}`;
+            axios
+            .delete(notificationURL, { headers: { 'Authorization': AuthStr } }, {})
+            .then((response) => {
+                if (response.data.length == 0) {
+                    message.error("Something went wrong!");
+                    return;
+                }
+                this.showMessages();
+            }).catch(error => {
+                message.error("Something went wrong!");
+            });
         }
  
-        axios
-        .post(notificationURL, {},  { headers: { 'Authorization': AuthStr } })
-        .then((response) => {
-            if (!response.data.id) {
-                message.error("Something went wrong!");
-                return;
-            }
-            this.showMessages();
-        }).catch(error => {
-            message.error("Something went wrong!");
-        });
+        
     }
  
     switchedNotifications = e => {
