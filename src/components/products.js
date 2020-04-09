@@ -57,7 +57,6 @@ class ShopProduct extends React.Component {
     this.setState({allReceipts: racuni.data});
   };
 
-
   fetchShops = callback => {
     Axios
     .get('https://main-server-si.herokuapp.com/api/business/offices', { headers: { Authorization: 'Bearer ' + getToken() } })
@@ -74,13 +73,21 @@ class ShopProduct extends React.Component {
   };
 
 
-  onChange = value => {
-    console.log("ON CHANGE " , value);
-    // value je value
+  onChange = async value => {
     mapaProizvoda = new Map();
     keyMapa = [];
+    let idKasa = [];
+    let x = value[0];
+    if (x == "p") {
+      let kase = await Axios
+      .get(`https://main-server-si.herokuapp.com/api/business/offices/${value.slice(2)}/cashRegisters`, { headers: { Authorization: 'Bearer ' + getToken() } });
+      for(let j = 0; j < kase.data.length; j++) 
+        idKasa.push(kase.data[j].id);
+    }
+    else 
+      idKasa.push(value);
     for (let i=0; i<this.state.allReceipts.length; i++) {
-      if (this.state.allReceipts[i].cashRegisterId == value) {
+      if (idKasa.includes(this.state.allReceipts[i].cashRegisterId)) {
         //let vrijemeProdajeProdukta = this.state.allReceipts[i].timestamp;
         let stavkeRacuna = this.state.allReceipts[i].receiptItems;
         for(let j=0; j < stavkeRacuna.length; j++) {
