@@ -102,3 +102,26 @@
   margin-top: 1%;
   color:black;
 }
+
+#listaProizvoda {
+  margin-top: 2%;
+}
+
+#InfoProduktKartica {
+  text-align: left;
+  width: 50%;
+  padding-top: 5%;
+  float: left;
+}
+
+#divSlike {
+  width: 30%;
+  float: right;
+}
+
+#slikaPr {
+  float:  left;
+  width:  300%;
+  height: 160px;
+  background-size: cover;
+}
