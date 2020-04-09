@@ -52,7 +52,7 @@ class Statistics extends React.Component{
             let novacKase  = [];
             novacKase.push(response.data[i].dailyProfit);
             novacKase.push(response.data[i].totalProfit);
-            console.log(response.data);
+            
             let newData = {
               id: response.data[i].id,
               cashRegisterName: response.data[i].name,

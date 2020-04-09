@@ -14,9 +14,7 @@ const About = () => {
             />
             <Alert
                 message="Goals"
-                description="Our experience is basically addressed to support
-                company in its challenges,
-                working side by side with entepreneur and company managers. Our goals are to make our costumers happy and satisfied. "
+                description="Our experience is basically addressed to support company in its challenges, working side by side with entepreneur and company managers. Our goals are to make our costumers happy and satisfied. "
                 type="info"
             />
             <Alert

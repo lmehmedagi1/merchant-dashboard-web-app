@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 
 const Login = (props) => {
   const onFinish = values => {
-    console.log(values);
     auth.login(() => {
         if (getUser().name)
           document.getElementById("imeKorisnika").textContent=getUser().name + " " + getUser().surname;

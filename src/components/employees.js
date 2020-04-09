@@ -65,7 +65,6 @@ class Employees extends React.Component {
           filteredInfo: filters,
           sortedInfo: sorter,
         });
-        console.log("lol", this.state);
       };
     
       clearFilters = () => {
@@ -124,7 +123,6 @@ class Employees extends React.Component {
       });
     
       handleSearch = (selectedKeys, confirm, dataIndex) => {
-        console.log(this.state);
         confirm();
         this.setState({
           searchText: selectedKeys[0],
