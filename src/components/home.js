@@ -118,7 +118,6 @@ class Home extends React.Component {
                 b = b.split('.');
                 return b[2] - a[2] || b[1] - a[1] || b[0] - a[0];
             });
-            console.log("notifikacije" + nizDatuma);
             for (let i = 0; i < response.data.length; i++)
                 response.data[i].date = nizDatuma[i];
             this.setState({

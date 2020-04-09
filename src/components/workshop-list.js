@@ -15,7 +15,6 @@ const options = {
     {
       label: 'Yes',
       onClick: () => {
-        console.log(IDZaBrisanje);
         Axios
           .post('https://main-server-si.herokuapp.com/api/notifications/office/close',
           {
@@ -103,7 +102,6 @@ class Workshop extends React.Component {
           response.data[i]["key"] = i;
         }
         this.setState({ workshop: response.data }, () => {
-          console.log(response.data);
         })
       })
       .catch(err => console.log(err));
@@ -114,7 +112,6 @@ class Workshop extends React.Component {
       filteredInfo: filters,
       sortedInfo: sorter,
     });
-    console.log("lol", this.state);
   };
 
   clearFilters = () => {
@@ -130,7 +127,6 @@ class Workshop extends React.Component {
   };
 
   deleteAction(oficeID) {
-    console.log(oficeID);
     IDZaBrisanje = oficeID;
     confirmAlert(options);
   }
@@ -179,7 +175,6 @@ class Workshop extends React.Component {
   });
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
-    console.log(this.state);
     confirm();
     this.setState({
       searchText: selectedKeys[0],

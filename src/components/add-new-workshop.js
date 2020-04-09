@@ -20,7 +20,6 @@ function AddNewWorkshop(props)
             "workDayStart":values.office.time[0].format("kk:mm"),
             "workDayEnd":values.office.time[1].format("kk:mm")
         });
-        console.log(raw);
         var requestOptions = {
           method: 'POST',
           headers: myHeaders,
