@@ -125,3 +125,13 @@
   height: 160px;
   background-size: cover;
 }
+
+#mainOfficediv {
+  position: relative;
+  text-align: left;
+  margin-top: 2%;
+}
+
+#radioMO {
+  margin-left: 1%;
+}

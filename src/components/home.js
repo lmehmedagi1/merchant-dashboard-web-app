@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 import { Input, Calendar, message, List, Radio, Menu, Dropdown, Button, Spin  } from 'antd';
-import { MailOutlined, EllipsisOutlined} from '@ant-design/icons';
+import { MailOutlined, EllipsisOutlined, ShopOutlined} from '@ant-design/icons';
 import { getUser, getToken } from '../auth';
 import '../App.css';
 import './main-page.css';
@@ -222,7 +222,6 @@ class Home extends React.Component {
         <div id="welcomeText">
             <h1>Welcome, {username}</h1>
         </div>
- 
         <div id="notifikacijeIKalendar">
            
             <div id="notifikacijeMain">
