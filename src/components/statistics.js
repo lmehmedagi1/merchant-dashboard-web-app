@@ -3,7 +3,8 @@ import { Line } from 'react-chartjs-2';
 import Axios from 'axios';
 import { getToken } from '../auth.js';
 import '../App.css';
-import { DatePicker,Select, List, message} from 'antd';
+import {DatePicker,Select, List, message} from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 
 const Moment = require('moment');
 const MomentRange = require('moment-range');
@@ -57,7 +58,6 @@ class Statistics extends React.Component{
   state = {
       poslovnice: [],
       chartData: [],
-      brojUposlenika: null,
   };
 
   componentDidMount() {
@@ -78,7 +78,7 @@ class Statistics extends React.Component{
 }
 
   onChange = id => {
-    this.setState({allReceipts: [], chartData: []});
+    this.setState({allReceipts: [], chartData: [], uposlenici: []});
     Axios
         .post(`https://main-server-si.herokuapp.com/api/receipts/filtered`, 
               { from: startDate, to: endDate,},
@@ -94,6 +94,7 @@ class Statistics extends React.Component{
           });
           let filtriraniRacuni = allReceipts.data;
           let mapaNovca = new Map();
+          let mapaUposlenika = new Map();
           let iznos = 0;
           for (let datum in nizDatumaLabel) 
             mapaNovca.set(nizDatumaLabel[datum],iznos);
@@ -104,11 +105,23 @@ class Statistics extends React.Component{
               let noviIznos = oldInfo+filtriraniRacuni[i].totalPrice;
               noviIznos = this.round(noviIznos,2);
               mapaNovca.set(date,noviIznos);
+              if (!mapaUposlenika.has(filtriraniRacuni[i].username)) {
+                mapaUposlenika.set(filtriraniRacuni[i].username,0);
+              }
+              else {
+                let a = mapaUposlenika.get(filtriraniRacuni[i].username);
+                let b = a+filtriraniRacuni[i].totalPrice;
+                b = this.round(b,2);
+                mapaUposlenika.set(filtriraniRacuni[i].username,b);
+              }
             }
           }
           let vrijednosti = []
           for (let i = 0; i < nizDatumaLabel.length; i++) 
             vrijednosti.push(mapaNovca.get(nizDatumaLabel[i]));
+          document.getElementById('employeesTraffic').innerHTML = "";
+          for (let username of mapaUposlenika.keys()) 
+            document.getElementById('employeesTraffic').innerHTML += "<br/> Employee " + username + " has " + mapaUposlenika.get(username) + " KM" + " of traffic.";
           for (let i = 0; i < response.data.length; i++) {
             let newData = {
               id: response.data[i].id,
@@ -121,7 +134,7 @@ class Statistics extends React.Component{
                     fill: false,
                     lineTension: 0.8,
                     backgroundColor: 'rgba(75,192,192,0.4)',
-                    borderColor: '#696969', //DimGrey
+                    borderColor: '#DAA520', //GoldenRod
                     borderCapStyle: 'butt',
                     borderDash: [],
                     borderDashOffset: 0.0,
@@ -157,176 +170,11 @@ class Statistics extends React.Component{
           .then(response => {
             this.setState({
               chartData: newDataArray,
-              brojUposlenika: response.data.length,
-          });
-          document.getElementById('numberEmployees').innerHTML = "Number of employees: " + this.state.brojUposlenika;
-          })  
-          .catch(err => console.log(err));
+          });}).catch(err => console.log(err));
         }
       })
               }).catch(error => {message.error('error');});
-      /*Axios
-        .get(`https://main-server-si.herokuapp.com/api/business/offices/${id}/cashRegisters`, { headers: { Authorization: 'Bearer ' + getToken() } })
-        .then(response => {
-          if (nizDatumaLabel.length) {
-            console.log(nizDatumaLabel);
-            let newDataArray = [];
-            this.setState({
-            chartData: newDataArray,
-          });
-          let filtriraniRacuni = this.state.allReceipts;
-          let mapaNovca = new Map();
-          for (let datum in nizDatumaLabel) 
-            if(!mapaNovca.has(datum))
-              mapaNovca.set(datum,0);
-          for (let i = 0; i < filtriraniRacuni.length; i++) {
-            if (filtriraniRacuni[i].cashRegisterId == id) {
-              let date = moment(filtriraniRacuni[i].timestamp).format("DD.MM.YYYY");
-              let oldInfo = mapaNovca.get(date);
-              mapaNovca.set(date,oldInfo+filtriraniRacuni[i].totalPrice);
-            }
-            let newData = {
-              id: response.data[i].id,
-              cashRegisterName: response.data[i].name,
-              barData: {
-                labels: nizDatumaLabel,
-                datasets: [
-                  {
-                    label: 'Total traffic',
-                    fill: false,
-                    lineTension: 0.8,
-                    backgroundColor: 'rgba(75,192,192,0.4)',
-                    borderColor: '#696969', //DimGrey
-                    borderCapStyle: 'butt',
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
-                    pointBorderColor: 'rgba(75,192,192,1)',
-                    pointBackgroundColor: '#fff',
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 4,
-                    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                    pointHoverBorderColor: 'rgba(220,220,220,1)',
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 4,
-                    pointHitRadius: 10,
-                    data: mapaNovca
-                  }
-                ],
-                
-              },
-              barOptions: {
-                title: {
-                  display: true,
-                  text: response.data[i].name
-                },
-                legend: {
-                  display: true
-                }
-              }
-            }
-            newDataArray.push(newData);
-          }
-          Axios
-          .get(`https://main-server-si.herokuapp.com/api/offices/${id}/employees`, { headers: { Authorization: 'Bearer ' + getToken() } })
-          .then(response => {
-            this.setState({
-              chartData: newDataArray,
-              brojUposlenika: response.data.length,
-          });
-          document.getElementById('numberEmployees').innerHTML = "Number of employees: " + this.state.brojUposlenika;
-          })  
-          .catch(err => console.log(err));
-        }
-      });*/
-
-      /*Axios
-        .get(`https://main-server-si.herokuapp.com/api/business/offices/${id}/cashRegisters`, { headers: { Authorization: 'Bearer ' + getToken() } })
-        .then(response => {
-
-            for (let i = 0; i < response.data.length; i++) {
-              let dailyProfit  = [];
-              let totalProfit = [];
-              dailyProfit.push(response.data[i].dailyProfit);
-              totalProfit.push(response.data[i].totalProfit);
-              
-              let newData = {
-                id: response.data[i].id,
-                cashRegisterName: response.data[i].name,
-                barData: {
-                  labels: nizDatumaLabel,
-                  datasets: [
-                    {
-                      label: 'Daily traffic',
-                      fill: false,
-                      lineTension: 0.8,
-                      backgroundColor: 'rgba(75,192,192,0.4)',
-                      borderColor: '#B8860B', //DarkGoldenRod
-                      borderCapStyle: 'butt',
-                      borderDash: [],
-                      borderDashOffset: 0.0,
-                      borderJoinStyle: 'miter',
-                      pointBorderColor: 'rgba(75,192,192,1)',
-                      pointBackgroundColor: '#fff',
-                      pointBorderWidth: 1,
-                      pointHoverRadius: 4,
-                      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                      pointHoverBorderColor: 'rgba(220,220,220,1)',
-                      pointHoverBorderWidth: 2,
-                      pointRadius: 4,
-                      pointHitRadius: 10,
-                      data: dailyProfit
-                    },
-                    {
-                      label: 'Total traffic',
-                      fill: false,
-                      lineTension: 0.8,
-                      backgroundColor: 'rgba(75,192,192,0.4)',
-                      borderColor: '#696969', //DimGrey
-                      borderCapStyle: 'butt',
-                      borderDash: [],
-                      borderDashOffset: 0.0,
-                      borderJoinStyle: 'miter',
-                      pointBorderColor: 'rgba(75,192,192,1)',
-                      pointBackgroundColor: '#fff',
-                      pointBorderWidth: 1,
-                      pointHoverRadius: 4,
-                      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                      pointHoverBorderColor: 'rgba(220,220,220,1)',
-                      pointHoverBorderWidth: 2,
-                      pointRadius: 4,
-                      pointHitRadius: 10,
-                      data: totalProfit
-                    }
-                  ],
-                  
-                },
-                barOptions: {
-                  title: {
-                    display: true,
-                    text: response.data[i].name
-                  },
-                  legend: {
-                    display: true
-                  }
-                }
-              }
-              newDataArray.push(newData);
-            }
-            Axios
-            .get(`https://main-server-si.herokuapp.com/api/offices/${id}/employees`, { headers: { Authorization: 'Bearer ' + getToken() } })
-            .then(response => {
-              this.setState({
-                chartData: newDataArray,
-                brojUposlenika: response.data.length,
-            });
-            document.getElementById('numberEmployees').innerHTML = "Number of employees: " + this.state.brojUposlenika;
-            })  
-            .catch(err => console.log(err));
-            
-            
-        })  
-        .catch(err => console.log(err));  */
+        
       } 
 
   fetchShops = callback => {
@@ -371,8 +219,9 @@ class Statistics extends React.Component{
         </Select>
         </div>
         </div>
+        <h2 id = "trafficH2">Total traffic by employees: </h2>
+        <h3 id = "employeesTraffic"/>
         <div id = "dijagrami">
-        <h3 id = "numberEmployees"/>
         <List
                 grid={{  column: 2 }}
                 dataSource={this.state.chartData}
@@ -384,7 +233,7 @@ class Statistics extends React.Component{
                 </List.Item>
                 )}
           />
-        </div>
+          </div>
       </div>
     );
   }
