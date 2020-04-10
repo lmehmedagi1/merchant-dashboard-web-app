@@ -51,9 +51,8 @@ class ShopProduct extends React.Component {
     var mm = String(datum.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = datum.getFullYear();
     datum = dd + "." + mm + "." + yyyy;
-    let racuni =  await Axios.post(`https://main-server-si.herokuapp.com/api/receipts/filtered`, { from: "01.01.2018", to: datum},
+    let racuni =  await Axios.post(`https://main-server-si.herokuapp.com/api/receipts/filtered`, { from: "01.01.2000", to: datum},
     { headers: { Authorization: 'Bearer ' + getToken() } });
-    console.log(racuni);
     this.setState({allReceipts: racuni.data});
   };
 
