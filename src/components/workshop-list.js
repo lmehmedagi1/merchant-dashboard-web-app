@@ -1,12 +1,13 @@
 import React from 'react';
-import { Table, Input, Button, message } from 'antd';
-import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
+import { Table, Input, Button, message, ReactDOM, Alert} from 'antd';
+import { DeleteOutlined, SearchOutlined, CheckSquareOutlined } from '@ant-design/icons';
 import Axios from 'axios';
 import { getToken } from '../auth.js';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 let IDZaBrisanje = -1;
+let IDMainOffice = -1;
 
 const options = {
   title: 'Confirmation',
@@ -32,6 +33,50 @@ const options = {
     },
     {
       label: 'No',
+      onClick: () => {
+
+      }
+    }
+  ]
+};
+
+const optionsMainOffice = {
+  title: 'Confirmation',
+  message: 'Do you really want this office to be the main one?',
+  buttons: [
+    {
+      label: 'Yes',
+      onClick: () => {
+        Axios
+          .put('https://main-server-si.herokuapp.com/api/business/mainOffice',
+          {
+            mainOfficeId: IDMainOffice
+          }, { headers: { Authorization: 'Bearer ' + getToken()}}).then((response) => {
+            if (response.data.statusCode !== 200) {
+              message.error("Something went wrong!");
+              return;
+            }
+            message.success("Your request was successfully sent")
+          }).catch(error => {
+            message.error('error');
+          });
+      }
+    },
+    {
+      label: 'No',
+      onClick: () => {
+
+      }
+    }
+  ]
+};
+
+const alreadyMO = {
+  title: 'Alert',
+  message: 'This is already the main office!',
+  buttons: [
+    {
+      label: 'OK',
       onClick: () => {
 
       }
@@ -92,6 +137,7 @@ class Workshop extends React.Component {
   }
   componentWillMount() {
     this.getWorkshops();
+    this.getMainOffice();
   }
 
   getWorkshops() {
@@ -103,6 +149,15 @@ class Workshop extends React.Component {
         }
         this.setState({ workshop: response.data }, () => {
         })
+      })
+      .catch(err => console.log(err));
+  }
+
+  getMainOffice() {
+    IDMainOffice = Axios.get('https://main-server-si.herokuapp.com/api/business/mainOffice',
+      { headers: { Authorization: 'Bearer ' + getToken() } })
+      .then(response => {
+        IDMainOffice = response.mainOfficeId;
       })
       .catch(err => console.log(err));
   }
@@ -129,6 +184,16 @@ class Workshop extends React.Component {
   deleteAction(oficeID) {
     IDZaBrisanje = oficeID;
     confirmAlert(options);
+  }
+
+  setMainOffice(oficeID) {
+    if (IDMainOffice == oficeID) {
+      confirmAlert(alreadyMO);
+    }
+    else {
+      IDMainOffice = oficeID;
+      confirmAlert(optionsMainOffice);
+    }
   }
 
   getColumnSearchProps = dataIndex => ({
@@ -255,12 +320,21 @@ class Workshop extends React.Component {
         ...this.getColumnSearchProps('workDayEnd'),
       },
       {
-        title: 'DELETE',
+        title: 'Delete office',
         dataIndex: 'delete',
         key: 'delete',
         render: (text, record) =>
           2 >= 1 ? (
             <Button onClick={() => { this.deleteAction(record.id); }} style={{ margin: '10px' }} type="primary" icon={<DeleteOutlined />} size={'default'} />
+          ) : null,
+      },
+      {
+        title: 'Set main office',
+        dataIndex: 'makemainoffice',
+        key: 'makemainoffice',
+        render: (text, record) =>
+          2 >= 1 ? (
+            <Button id = "button" onClick={() => { this.setMainOffice(record.id); }} style={{ margin: '10px' }} type="primary" icon={<CheckSquareOutlined />} size={'default'} />
           ) : null,
       }
     ];
