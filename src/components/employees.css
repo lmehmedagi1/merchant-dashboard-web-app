@@ -1,8 +1,13 @@
 .contentOfTable {
-    font-style: italic;
+    font-style: normal;
+    color: black;
 }
 
 #TabelaNaslov h1{
     color: #04619f;
     font-weight: bold;
+}
+
+#tabelaUposlenika {
+    margin-top: 1%;
 }

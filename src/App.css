@@ -29,6 +29,19 @@
 
 #listaNotifikacija {
   text-align: left;
+  overflow-y:scroll;
+  height: 250px;
+}
+
+#components-dropdown-dmo-dropdown-button {
+  margin-right: 2%;
+}
+
+#footer {
+  text-align: center;
+    font-style: italic;
+    font-size: 15px;
+    margin-bottom: 0;
 }
 
 #naslovNotifikacije h1 {
@@ -73,6 +86,7 @@
 #podaci{
   text-align: left;
   font: 30;
+  color: black;
 }
 
 #naziv h1{
@@ -80,13 +94,56 @@
   color: #04619f;
 }
 
-#dijagrami {
-  padding-top: 2%;
+#tabelaPoslovnica {
+  margin-top: 1%;
+  color:black;
 }
 
-#numberEmployees {
-padding-top: 5%;
-margin-right: 80%;
-padding-bottom: 3%;
-color: royalblue;
+#listaProizvoda {
+  margin-top: 2%;
+}
+
+#InfoProduktKartica {
+  text-align: left;
+  width: 50%;
+  padding-top: 5%;
+  float: left;
+}
+
+#divSlike {
+  width: 30%;
+  float: right;
+}
+
+#slikaPr {
+  float:  left;
+  width:  300%;
+  height: 160px;
+  background-size: cover;
+}
+
+#trafficH2 {
+  float: left;
+  color: #04619f;
+  font-weight: 600;
+  margin-top: 1%;
+
+}
+
+#employeesTraffic {
+  color: rgb(60, 169, 189);
+  text-align: left;
+  margin-top: 3%;
+  margin-left: 3%;
+}
+
+
+#dijagrami {
+  margin-bottom: 5%;
+  height: 70%;
+}
+
+#graf {
+  width: 67%;
+  margin: 0 auto;
 }

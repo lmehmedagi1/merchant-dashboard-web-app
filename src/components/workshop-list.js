@@ -1,12 +1,13 @@
 import React from 'react';
-import { Table, Input, Button, message } from 'antd';
-import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
+import { Table, Input, Button, message, ReactDOM, Alert} from 'antd';
+import { DeleteOutlined, SearchOutlined, CheckSquareOutlined } from '@ant-design/icons';
 import Axios from 'axios';
 import { getToken } from '../auth.js';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 let IDZaBrisanje = -1;
+let IDMainOffice = -1;
 
 const options = {
   title: 'Confirmation',
@@ -15,7 +16,6 @@ const options = {
     {
       label: 'Yes',
       onClick: () => {
-        console.log(IDZaBrisanje);
         Axios
           .post('https://main-server-si.herokuapp.com/api/notifications/office/close',
           {
@@ -40,16 +40,70 @@ const options = {
   ]
 };
 
+const optionsMainOffice = {
+  title: 'Confirmation',
+  message: 'Do you really want this office to be the main one?',
+  buttons: [
+    {
+      label: 'Yes',
+      onClick: () => {
+        Axios
+          .put('https://main-server-si.herokuapp.com/api/business/mainOffice',
+          {
+            mainOfficeId: IDMainOffice
+          }, { headers: { Authorization: 'Bearer ' + getToken()}}).then((response) => {
+            if (response.data.statusCode !== 200) {
+              message.error("Something went wrong!");
+              return;
+            }
+            message.success("Your request was successfully sent")
+          }).catch(error => {
+            message.error('error');
+          });
+      }
+    },
+    {
+      label: 'No',
+      onClick: () => {
+
+      }
+    }
+  ]
+};
+
+const alreadyMO = {
+  title: 'Alert',
+  message: 'This is already the main office!',
+  buttons: [
+    {
+      label: 'OK',
+      onClick: () => {
+
+      }
+    }
+  ]
+};
+
 const getCashRegisterData = (id) => {
   Axios
     .get('https://main-server-si.herokuapp.com/api/business/offices/' + id + '/cashRegisters',
       { headers: { Authorization: 'Bearer ' + getToken() } }).then(response => {
+        
+        let totalDaily = 0;
+        let totalTotal = 0;
+
         let kase = "<h3 > Cash registers </h3><div>";
         for (let i = 0; i < response.data.length; i++) {
           kase += "<hr></hr><p > Cash register name : " + response.data[i].name + " </p>";
-          kase += "<p > Daily profit : " + response.data[i].dailyProfit + " KM </p>";
-          kase += "<p > Total profit : " + response.data[i].totalProfit + " KM </p>";
+          kase += "<p > Daily traffic : " + response.data[i].dailyProfit + " KM </p>";
+          kase += "<p > Total traffic : " + response.data[i].totalProfit + " KM </p>";
+
+          totalDaily += response.data[i].dailyProfit;
+          totalTotal +=  response.data[i].totalProfit;
         }
+
+        kase += "<hr></hr><p> Total daily traffic : " + totalDaily.toFixed(2) + " KM </p>";
+        kase += "<p> Total traffic : " + totalTotal.toFixed(2) + " KM </p>";
         kase += "</div>";
         if (response.data.length == 0)
           document.getElementById(id).innerHTML ="No data";
@@ -83,6 +137,7 @@ class Workshop extends React.Component {
   }
   componentWillMount() {
     this.getWorkshops();
+    this.getMainOffice();
   }
 
   getWorkshops() {
@@ -93,8 +148,16 @@ class Workshop extends React.Component {
           response.data[i]["key"] = i;
         }
         this.setState({ workshop: response.data }, () => {
-          console.log(response.data);
         })
+      })
+      .catch(err => console.log(err));
+  }
+
+  getMainOffice() {
+    IDMainOffice = Axios.get('https://main-server-si.herokuapp.com/api/business/mainOffice',
+      { headers: { Authorization: 'Bearer ' + getToken() } })
+      .then(response => {
+        IDMainOffice = response.mainOfficeId;
       })
       .catch(err => console.log(err));
   }
@@ -104,7 +167,6 @@ class Workshop extends React.Component {
       filteredInfo: filters,
       sortedInfo: sorter,
     });
-    console.log("lol", this.state);
   };
 
   clearFilters = () => {
@@ -120,9 +182,18 @@ class Workshop extends React.Component {
   };
 
   deleteAction(oficeID) {
-    console.log(oficeID);
     IDZaBrisanje = oficeID;
     confirmAlert(options);
+  }
+
+  setMainOffice(oficeID) {
+    if (IDMainOffice == oficeID) {
+      confirmAlert(alreadyMO);
+    }
+    else {
+      IDMainOffice = oficeID;
+      confirmAlert(optionsMainOffice);
+    }
   }
 
   getColumnSearchProps = dataIndex => ({
@@ -169,7 +240,6 @@ class Workshop extends React.Component {
   });
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
-    console.log(this.state);
     confirm();
     this.setState({
       searchText: selectedKeys[0],
@@ -250,17 +320,27 @@ class Workshop extends React.Component {
         ...this.getColumnSearchProps('workDayEnd'),
       },
       {
-        title: 'DELETE',
+        title: 'Delete office',
         dataIndex: 'delete',
         key: 'delete',
         render: (text, record) =>
           2 >= 1 ? (
             <Button onClick={() => { this.deleteAction(record.id); }} style={{ margin: '10px' }} type="primary" icon={<DeleteOutlined />} size={'default'} />
           ) : null,
+      },
+      {
+        title: 'Set main office',
+        dataIndex: 'makemainoffice',
+        key: 'makemainoffice',
+        render: (text, record) =>
+          2 >= 1 ? (
+            <Button id = "button" onClick={() => { this.setMainOffice(record.id); }} style={{ margin: '10px' }} type="primary" icon={<CheckSquareOutlined />} size={'default'} />
+          ) : null,
       }
     ];
     return (
       <div>
+        <div id = "TabelaNaslov"><h1 > List of shops </h1> </div>
 
         <div className="table-operations">
           <Button onClick={this.clearAll}>Clear filters and sorters</Button>
@@ -268,7 +348,7 @@ class Workshop extends React.Component {
         </div>
 
         <div>
-          <Table columns={columns} expandable={expandable} dataSource={this.state.workshop} onChange={this.handleChange} />
+          <Table id = "tabelaPoslovnica" columns={columns} expandable={expandable} dataSource={this.state.workshop} onChange={this.handleChange} />
         </div></div>
     );
 
