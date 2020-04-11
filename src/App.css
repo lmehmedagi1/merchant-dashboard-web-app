@@ -37,6 +37,13 @@
   margin-right: 2%;
 }
 
+#footer {
+  text-align: center;
+    font-style: italic;
+    font-size: 15px;
+    margin-bottom: 0;
+}
+
 #naslovNotifikacije h1 {
   color: #04619f;
   font-weight: bold;
@@ -87,10 +94,6 @@
   color: #04619f;
 }
 
-#dijagrami {
-  padding-top: 2%;
-}
-
 #tabelaPoslovnica {
   margin-top: 1%;
   color:black;
@@ -132,4 +135,15 @@
   text-align: left;
   margin-top: 3%;
   margin-left: 3%;
+}
+
+
+#dijagrami {
+  margin-bottom: 5%;
+  height: 70%;
+}
+
+#graf {
+  width: 67%;
+  margin: 0 auto;
 }

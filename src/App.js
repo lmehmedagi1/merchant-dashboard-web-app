@@ -20,7 +20,6 @@ import ShopProduct from './components/products';
 
 import { Layout, Menu } from 'antd';
 import './components/main-page.css';
-import './App.css';
 import { Avatar } from 'antd';
 import { CopyrightOutlined, DashboardFilled, ShopOutlined, ShoppingCartOutlined, TeamOutlined, AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
 import auth from "./auth";
@@ -149,7 +148,7 @@ function App(props) {
               </Switch>
 
             </Content>
-            <Footer id="footer"> <CopyrightOutlined /> Lima SI 2020</Footer>
+            <Footer id="footer"> <CopyrightOutlined /> Softverski inženjering - LIMA 2019/2020</Footer>
           </Layout>
         </Layout>
       </div>
