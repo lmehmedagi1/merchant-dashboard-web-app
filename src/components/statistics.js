@@ -68,6 +68,10 @@ class Statistics extends React.Component{
   };  
 
   onChangeDate = values =>{
+    if (!values) {
+      nizDatumaLabel = [];
+      return;
+    }
     nizDatumaLabel = rasponDatuma(values[0]._d,values[1]._d);
   }
 
@@ -134,7 +138,7 @@ class Statistics extends React.Component{
           
           
             let datasetsKasa = [];
-            let boje = ['#DAA520', 'rgba(0, 255, 0, 0.3)', 'rgba(255, 0, 0, 0.3)', 'rgba(0, 0, 255, 0.3)'];
+            let boje = ['#DAA520', 'rgba(255, 0, 0, 0.3)', 'rgba(0, 255, 0, 0.3)', 'rgba(0, 0, 255, 0.3)'];
           
             for (let i = 0; i < response.data.length; i++) {
               let newDataset = {
