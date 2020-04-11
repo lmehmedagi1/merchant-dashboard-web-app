@@ -48,7 +48,7 @@ class ShopProduct extends React.Component {
     this.setState({allReceipts: []});
     var datum = new Date();
     var dd = String(datum.getDate()).padStart(2, '0');
-    var mm = String(datum.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var mm = String(datum.getMonth() + 1).padStart(2, '0'); 
     var yyyy = datum.getFullYear();
     datum = dd + "." + mm + "." + yyyy;
     let racuni =  await Axios.post(`https://main-server-si.herokuapp.com/api/receipts/filtered`, { from: "01.01.2000", to: datum},
@@ -87,7 +87,6 @@ class ShopProduct extends React.Component {
       idKasa.push(value);
     for (let i=0; i<this.state.allReceipts.length; i++) {
       if (idKasa.includes(this.state.allReceipts[i].cashRegisterId)) {
-        //let vrijemeProdajeProdukta = this.state.allReceipts[i].timestamp;
         let stavkeRacuna = this.state.allReceipts[i].receiptItems;
         for(let j=0; j < stavkeRacuna.length; j++) {
           let info = {};

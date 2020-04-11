@@ -4,7 +4,6 @@ import Axios from 'axios';
 import { getToken } from '../auth.js';
 import '../App.css';
 import {DatePicker,Select, List, message} from 'antd';
-import { UserOutlined } from '@ant-design/icons';
 
 const Moment = require('moment');
 const MomentRange = require('moment-range');
@@ -69,8 +68,11 @@ class Statistics extends React.Component{
   };  
 
   onChangeDate = values =>{
+    if (!values) {
+      nizDatumaLabel = [];
+      return;
+    }
     nizDatumaLabel = rasponDatuma(values[0]._d,values[1]._d);
-
   }
 
   round(value, decimals) {
@@ -93,13 +95,21 @@ class Statistics extends React.Component{
             chartData: newDataArray,
           });
           let filtriraniRacuni = allReceipts.data;
+
+          let labeleKasa      = [];
+          let vrijednostiKasa = [];
+          let mapaUposlenika  = new Map();
+
+          for (let k=0; k<response.data.length; k++) {
+            labeleKasa.push(response.data[k].name);
+
           let mapaNovca = new Map();
-          let mapaUposlenika = new Map();
+          
           let iznos = 0;
           for (let datum in nizDatumaLabel) 
             mapaNovca.set(nizDatumaLabel[datum],iznos);
           for (let i = 0; i < filtriraniRacuni.length; i++) {
-            if (filtriraniRacuni[i].cashRegisterId == id) {
+            if (filtriraniRacuni[i].cashRegisterId == response.data[k].id) {
               let date = moment(filtriraniRacuni[i].timestamp).format("DD.MM.YYYY");
               let oldInfo = mapaNovca.get(date);
               let noviIznos = oldInfo+filtriraniRacuni[i].totalPrice;
@@ -119,22 +129,24 @@ class Statistics extends React.Component{
           let vrijednosti = []
           for (let i = 0; i < nizDatumaLabel.length; i++) 
             vrijednosti.push(mapaNovca.get(nizDatumaLabel[i]));
+
+          vrijednostiKasa.push(vrijednosti);
+        }
           document.getElementById('employeesTraffic').innerHTML = "";
           for (let username of mapaUposlenika.keys()) 
             document.getElementById('employeesTraffic').innerHTML += "<br/> Employee " + username + " has " + mapaUposlenika.get(username) + " KM" + " of traffic.";
-          for (let i = 0; i < response.data.length; i++) {
-            let newData = {
-              id: response.data[i].id,
-              cashRegisterName: response.data[i].name,
-              barData: {
-                labels: nizDatumaLabel,
-                datasets: [
-                  {
-                    label: 'Total traffic',
+          
+          
+            let datasetsKasa = [];
+            let boje = ['#DAA520', 'rgba(255, 0, 0, 0.3)', 'rgba(0, 255, 0, 0.3)', 'rgba(0, 0, 255, 0.3)'];
+          
+            for (let i = 0; i < response.data.length; i++) {
+              let newDataset = {
+                label: labeleKasa[i],
                     fill: false,
                     lineTension: 0.8,
                     backgroundColor: 'rgba(75,192,192,0.4)',
-                    borderColor: '#DAA520', //GoldenRod
+                    borderColor: boje[i%4], //GoldenRod
                     borderCapStyle: 'butt',
                     borderDash: [],
                     borderDashOffset: 0.0,
@@ -148,15 +160,22 @@ class Statistics extends React.Component{
                     pointHoverBorderWidth: 2,
                     pointRadius: 4,
                     pointHitRadius: 10,
-                    data: vrijednosti
-                  }
-                ],
+                    data: vrijednostiKasa[i]
+              }
+              datasetsKasa.push(newDataset);
+            }
+            let newData = {
+              id: response.data[0].id,
+              cashRegisterName: response.data[0].name,
+              barData: {
+                labels: nizDatumaLabel,
+                datasets: datasetsKasa
                 
               },
               barOptions: {
                 title: {
                   display: true,
-                  text: response.data[i].name
+                  text: "Cash registers"
                 },
                 legend: {
                   display: true
@@ -164,18 +183,16 @@ class Statistics extends React.Component{
               }
             }
             newDataArray.push(newData);
-          }
+          
           Axios
           .get(`https://main-server-si.herokuapp.com/api/offices/${id}/employees`, { headers: { Authorization: 'Bearer ' + getToken() } })
           .then(response => {
             this.setState({
               chartData: newDataArray,
           });}).catch(err => console.log(err));
-        }
-      })
-              }).catch(error => {message.error('error');});
-        
-      } 
+      }})
+    }).catch(error => {message.error('error');});    
+  }
 
   fetchShops = callback => {
       Axios
@@ -223,15 +240,14 @@ class Statistics extends React.Component{
         <h3 id = "employeesTraffic"/>
         <div id = "dijagrami">
         <List
-                grid={{  column: 2 }}
-                dataSource={this.state.chartData}
-                renderItem={item => (
-                <List.Item key={item.id}>
-                    <div style={{ width: "100%" }}>
-                        <Line redraw={true} data={item.barData} options={item.barOptions}/>
-                    </div>
-                </List.Item>
-                )}
+          dataSource={this.state.chartData}
+          renderItem={item => (
+          <List.Item key={item.id}>
+              <div id = "graf">
+                  <Line redraw={true} data={item.barData} options={item.barOptions}/>
+              </div>
+          </List.Item>
+          )}
           />
           </div>
       </div>
