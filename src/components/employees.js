@@ -291,14 +291,11 @@ class Employees extends React.Component {
         return (
         <div>
           <div id = "TabelaNaslov"><h1 > List of employees </h1> </div>
-            <Form layout = "inline"
-            className = "components-table-demo-control-bar"
-            style = {
-                { marginBottom: 16 }
-            } >
+            <Form layout = "inline" className = "components-table-demo-control-bar">
             </Form>
-            <div className="table-operations"><Button onClick={this.clearAll}>Clear filters and sorters</Button></div> 
-
+            <div className="table-operations">
+              <Button onClick={this.clearAll}>Clear filters and sorters</Button>
+            </div> 
             <Table id ="tabelaUposlenika" {...this.state }
             columns = { tableColumns }
             dataSource = { this.state.data}

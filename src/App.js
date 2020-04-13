@@ -18,6 +18,8 @@ import AddNewWorkshop from './components/add-new-workshop';
 import Profile from './components/profile';
 import ShopProduct from './components/products';
 
+import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
+
 import { Layout, Menu } from 'antd';
 import './components/main-page.css';
 import { Avatar } from 'antd';
@@ -36,7 +38,6 @@ function App(props) {
   return (
     <BrowserRouter>
       <div className="App">
-
         <Layout style={{ height: '100vh' }}>
 
           <Sider style={{ paddingTop: '15px' }}
@@ -146,11 +147,11 @@ function App(props) {
                 <Route exact path="/recover-password/:email" component={Recover} />
                 <Route path="*" component={NotFound} />
               </Switch>
-
+            
             </Content>
-            <Footer id="footer"> <CopyrightOutlined /> Softverski inženjering - LIMA 2019/2020</Footer>
           </Layout>
         </Layout>
+
       </div>
     </BrowserRouter>
   );

@@ -344,12 +344,17 @@ class Workshop extends React.Component {
 
         <div className="table-operations">
           <Button onClick={this.clearAll}>Clear filters and sorters</Button>
-
         </div>
-
         <div>
-          <Table id = "tabelaPoslovnica" columns={columns} expandable={expandable} dataSource={this.state.workshop} onChange={this.handleChange} />
-        </div></div>
+          <Table id = "tabelaPoslovnica"
+            size={"middle"}
+            columns={columns} 
+            expandable={expandable}
+            dataSource={this.state.workshop} 
+            onChange={this.handleChange}
+          />
+        </div>
+      </div>
     );
 
   }
