@@ -22,7 +22,7 @@ import './help.css';
         },
         {
           title: 'How can You contact us ?',
-          description:"In the field 'About us' you can find our E-mail adress if you want to know more informations."
+          description:"In the field 'About us' you can find our E-mail address if you want to know more informations."
           },
       ];
 

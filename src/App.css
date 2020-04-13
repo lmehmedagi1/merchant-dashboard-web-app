@@ -37,11 +37,11 @@
   margin-right: 2%;
 }
 
-#footer {
-  text-align: center;
-    font-style: italic;
-    font-size: 15px;
-    margin-bottom: 0;
+
+#listaProizvoda {
+  position: relative;
+  margin-top: 2%;
+  margin-bottom: 5%;
 }
 
 #naslovNotifikacije h1 {
@@ -97,10 +97,7 @@
 #tabelaPoslovnica {
   margin-top: 1%;
   color:black;
-}
-
-#listaProizvoda {
-  margin-top: 2%;
+  height: 90%;
 }
 
 #InfoProduktKartica {
@@ -127,7 +124,6 @@
   color: #04619f;
   font-weight: 600;
   margin-top: 1%;
-
 }
 
 #employeesTraffic {
@@ -146,4 +142,10 @@
 #graf {
   width: 67%;
   margin: 0 auto;
+}
+
+#dodavanjePoslovniceButton {
+  width: 60%;
+  margin: 0 auto;
+  padding-bottom: 10%;
 }

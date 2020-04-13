@@ -14,8 +14,9 @@ const { Option } = Select;
 const dateFormat = "DD.MM.YYYY";
 
 
-let startDate, endDate = ""
+let startDate, endDate = "";
 let nizDatumaLabel = [];
+let nazivPoslovnice = "";
 
 function onBlur() {}
  
@@ -60,6 +61,7 @@ class Statistics extends React.Component{
   };
 
   componentDidMount() {
+    nizDatumaLabel = [];
     this.fetchShops(res => {
       this.setState({
         poslovnice: res,
@@ -73,6 +75,7 @@ class Statistics extends React.Component{
       return;
     }
     nizDatumaLabel = rasponDatuma(values[0]._d,values[1]._d);
+    this.onChange(nazivPoslovnice);
   }
 
   round(value, decimals) {
@@ -80,6 +83,7 @@ class Statistics extends React.Component{
 }
 
   onChange = id => {
+    nazivPoslovnice = id;
     this.setState({allReceipts: [], chartData: [], uposlenici: []});
     Axios
         .post(`https://main-server-si.herokuapp.com/api/receipts/filtered`, 
@@ -132,10 +136,19 @@ class Statistics extends React.Component{
 
           vrijednostiKasa.push(vrijednosti);
         }
+          let tries = 0;
           document.getElementById('employeesTraffic').innerHTML = "";
-          for (let username of mapaUposlenika.keys()) 
+          for (let username of mapaUposlenika.keys())  {
+            tries++;
             document.getElementById('employeesTraffic').innerHTML += "<br/> Employee " + username + " has " + mapaUposlenika.get(username) + " KM" + " of traffic.";
-          
+          }
+          if (tries) 
+            document.getElementById('trafficH2').innerHTML = "Total traffic by employees: ";
+          else {
+            document.getElementById('employeesTraffic').innerHTML = "";
+            document.getElementById('trafficH2').innerHTML = "No traffic recorded";
+          }
+
           
             let datasetsKasa = [];
             let boje = ['#DAA520', 'rgba(255, 0, 0, 0.3)', 'rgba(0, 255, 0, 0.3)', 'rgba(0, 0, 255, 0.3)'];
@@ -191,7 +204,7 @@ class Statistics extends React.Component{
               chartData: newDataArray,
           });}).catch(err => console.log(err));
       }})
-    }).catch(error => {message.error('error');});    
+    }).catch(error => {message.error('No date selected!');});    
   }
 
   fetchShops = callback => {
@@ -236,7 +249,7 @@ class Statistics extends React.Component{
         </Select>
         </div>
         </div>
-        <h2 id = "trafficH2">Total traffic by employees: </h2>
+        <h2 id = "trafficH2"/>
         <h3 id = "employeesTraffic"/>
         <div id = "dijagrami">
         <List

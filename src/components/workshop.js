@@ -9,13 +9,18 @@ const Workshop = () => {
             <div id="kalendar" >
                 <div style={{display:'inline'}}>
                     <InfiniteListExample>
- 
+
                     </InfiniteListExample>
                    
                 </div>
-                <Button onClick={() => { window.location.href='/addShop' }} type="dashed" block>
-                    Add shop
-                </Button>
+                <div id="dodavanjePoslovniceButton">
+                    <Button 
+                    onClick={() => { window.location.href='/addShop' }}
+                    type="dashed" block
+                    >
+                        Add shop
+                    </Button>
+                </div>
             </div>
             <div>
             </div>

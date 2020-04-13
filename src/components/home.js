@@ -110,16 +110,12 @@ class Home extends React.Component {
             if (response.data.length === 0) {
                 message.info("There are no notifications!");
             }
-            let nizDatuma = [];
-            for (let i = 0; i < response.data.length; i++)
-                nizDatuma.push(response.data[i].date);
+            let nizDatuma = response.data;
             nizDatuma.sort(function(a, b){
-                a = a.split('.');
-                b = b.split('.');
+                a = a.date.split('.');
+                b = b.date.split('.');
                 return b[2] - a[2] || b[1] - a[1] || b[0] - a[0];
             });
-            for (let i = 0; i < response.data.length; i++)
-                response.data[i].date = nizDatuma[i];
             this.setState({
                 data: response.data,
                 loading: false

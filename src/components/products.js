@@ -5,10 +5,14 @@ import { TreeSelect, Card, List } from 'antd';
 import { getToken } from '../auth';
 import Axios from 'axios';
 import { DollarOutlined, BarcodeOutlined, FieldNumberOutlined } from '@ant-design/icons';
+import '../App.css';
+import { relativeTimeRounding } from 'moment';
+
 
 
 let mapaProizvoda = new Map();
 let keyMapa = [];
+let trenutnoOdabrano = '';
 
 class ShopProduct extends React.Component {
   state = {
@@ -17,9 +21,11 @@ class ShopProduct extends React.Component {
     products: [],
     allReceipts: [],
     prodaniProizvodi: new Map(),
+    loading: false,
   };
 
   componentWillMount() {
+    trenutnoOdabrano = '';
     this.fetchProducts();
     console.log(this.state.products);
     this.fetchShops(async res => {
@@ -68,11 +74,20 @@ class ShopProduct extends React.Component {
   fetchProducts = async() => {
     let proizvodi = await Axios
     .get('https://main-server-si.herokuapp.com/api/products', { headers: { Authorization: 'Bearer ' + getToken() } });
-    this.setState({products: proizvodi.data});
+    this.setState({products: proizvodi.data, loading: false});
+    this.onChange(trenutnoOdabrano);
   };
 
 
   onChange = async value => {
+    this.setState({loading: true});
+    trenutnoOdabrano = value;
+    if(trenutnoOdabrano == '') {
+      this.setState({loading: false});
+    }
+    if(trenutnoOdabrano === '') {
+      return;
+    }
     mapaProizvoda = new Map();
     keyMapa = [];
     let idKasa = [];
@@ -92,13 +107,13 @@ class ShopProduct extends React.Component {
           let info = {};
           let cijenaProizvoda = (100 - stavkeRacuna[j].discountPercentage)/100 * stavkeRacuna[j].price;
           let brojProdanihProizvoda = stavkeRacuna[j].quantity;
-          info = {price: cijenaProizvoda, quantity: brojProdanihProizvoda, unit: stavkeRacuna[j].unit, barcode: stavkeRacuna[j].barcode, slika: ""};
+          info = {price: cijenaProizvoda*brojProdanihProizvoda, quantity: brojProdanihProizvoda, unit: stavkeRacuna[j].unit, barcode: stavkeRacuna[j].barcode, slika: ""};
           if(!mapaProizvoda.has(stavkeRacuna[j].productName)) 
             mapaProizvoda.set(stavkeRacuna[j].productName, info);
           else {  
             let oldInfoProdukt = {};
             oldInfoProdukt = mapaProizvoda.get(stavkeRacuna[j].productName);
-            let ukupnaProdajnaCijena = oldInfoProdukt.price + cijenaProizvoda;
+            let ukupnaProdajnaCijena = oldInfoProdukt.price + cijenaProizvoda*brojProdanihProizvoda;
             let ukupnoProdanihProizvoda = oldInfoProdukt.quantity + brojProdanihProizvoda;
             info = {price: ukupnaProdajnaCijena, quantity: ukupnoProdanihProizvoda, unit: stavkeRacuna[j].unit, barcode: stavkeRacuna[j].barcode, slika: ""};
             mapaProizvoda.set(stavkeRacuna[j].productName,info);
@@ -120,6 +135,8 @@ class ShopProduct extends React.Component {
       }
     }
     this.setState({prodaniProizvodi: sviProdani, value: value});
+    if(sviProdani.length !== 0) 
+      this.setState({loading: false});
   };
 
   render() {
@@ -132,10 +149,11 @@ class ShopProduct extends React.Component {
         treeData={this.state.treeData}
         placeholder="Please select shop or cash register to display data"
         treeDefaultExpandAll
-        onChange={this.onChange}
+        onSelect={this.onChange}
       />
       <div id = "listaProizvoda">
         <List 
+          loading={this.state.loading}
           grid={{  column: 3, gutter: 16}}
           dataSource={this.state.prodaniProizvodi}
           renderItem={item => (
