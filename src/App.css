@@ -119,30 +119,6 @@
   background-size: cover;
 }
 
-#trafficH2 {
-  float: left;
-  color: #04619f;
-  font-weight: 600;
-  margin-top: 1%;
-}
-
-#employeesTraffic {
-  color: rgb(60, 169, 189);
-  text-align: left;
-  margin-top: 3%;
-  margin-left: 3%;
-}
-
-
-#dijagrami {
-  margin-bottom: 5%;
-  height: 70%;
-}
-
-#graf {
-  width: 67%;
-  margin: 0 auto;
-}
 
 #dodavanjePoslovniceButton {
   width: 60%;
