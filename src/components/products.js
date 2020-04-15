@@ -1,18 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
-import { TreeSelect, Card, List, DatePicker, Select, message } from 'antd';
+import { TreeSelect, Card, List, DatePicker, Input, message } from 'antd';
 import { getToken } from '../auth';
 import Axios from 'axios';
 import { DollarOutlined, BarcodeOutlined, FieldNumberOutlined } from '@ant-design/icons';
 import '../App.css';
-import { relativeTimeRounding } from 'moment';
 
 
+const { Search } = Input;
 
 let mapaProizvoda = new Map();
 let keyMapa = [];
 let trenutnoOdabrano = '';
+let petMinutaProslo = true;
+let nizPrijeSearcha;
 
 const { RangePicker } = DatePicker;
 const dateFormat = "DD.MM.YYYY";
@@ -21,8 +23,16 @@ const Moment = require('moment');
 const MomentRange = require('moment-range');
 const moment = MomentRange.extendMoment(Moment);
 
-let startDate, endDate = "";
+var datum = new Date();
+var dd = String(datum.getDate()).padStart(2, '0');
+var mm = String(datum.getMonth() + 1).padStart(2, '0');
+var yyyy = datum.getFullYear();
+datum = dd + "." + mm + "." + yyyy;
+
+let startDate = '01.01.2000', endDate = datum;
 let nizDatumaLabel = [];
+
+var intervalID = setInterval(function () { petMinutaProslo = true; }, 300000);
 
 function disabledDate(current) {
   return current > moment().endOf('day');
@@ -59,15 +69,8 @@ class ShopProduct extends React.Component {
     loading: false,
   };
 
-
-  componentDidMount() {
-    // document.getElementById('range').disabled(true, true);
-  }
-
   componentWillMount() {
     trenutnoOdabrano = '';
-    this.fetchProducts();
-    console.log(this.state.products);
     this.fetchShops(async res => {
       this.setState({ treeData: [] });
       let noviNiz = [];
@@ -87,12 +90,6 @@ class ShopProduct extends React.Component {
       }
       this.setState({ treeData: noviNiz });
     });
-    var datum = new Date();
-    var dd = String(datum.getDate()).padStart(2, '0');
-    var mm = String(datum.getMonth() + 1).padStart(2, '0');
-    var yyyy = datum.getFullYear();
-    datum = dd + "." + mm + "." + yyyy;
-    this.fetchReceipts('01.01.2000', datum);
   }
 
   fetchShops = callback => {
@@ -107,8 +104,7 @@ class ShopProduct extends React.Component {
   fetchProducts = async () => {
     let proizvodi = await Axios
       .get('https://main-server-si.herokuapp.com/api/products', { headers: { Authorization: 'Bearer ' + getToken() } });
-    this.setState({ products: proizvodi.data, loading: false });
-    this.onChange(trenutnoOdabrano);
+    this.setState({ products: proizvodi.data });
   };
 
   fetchReceipts = async (from, to) => {
@@ -119,19 +115,31 @@ class ShopProduct extends React.Component {
   };
 
   onChangeDate = async values => {
+    if (values == null) {
+      startDate = '01.01.2000';
+      endDate = datum;
+      await this.fetchReceipts(startDate, endDate);
+      this.onChange(trenutnoOdabrano);
+      return;
+    }
     nizDatumaLabel = rasponDatuma(values[0]._d, values[1]._d);
     await this.fetchReceipts(startDate, endDate);
     this.onChange(trenutnoOdabrano);
   }
 
   onChange = async value => {
+    nizPrijeSearcha = null;
     this.setState({ loading: true });
     trenutnoOdabrano = value;
     if (trenutnoOdabrano == '') {
       this.setState({ loading: false });
       return;
     }
-
+    if (petMinutaProslo == true) {
+      await this.fetchProducts();
+      await this.fetchReceipts(startDate, endDate);
+      petMinutaProslo = false;
+    }
     mapaProizvoda = new Map();
     keyMapa = [];
     let idKasa = [];
@@ -169,7 +177,7 @@ class ShopProduct extends React.Component {
       return a[0].localeCompare(b[0]);
     }));
     keyMapa = Array.from(sortedMap.keys());
-    
+
     let sviProdani = [];
     for (let i = 0; i < keyMapa.length; i++) {
       let info = sortedMap.get(keyMapa[i]);
@@ -185,8 +193,27 @@ class ShopProduct extends React.Component {
     this.setState({ prodaniProizvodi: sviProdani, value: value });
     if (sviProdani.length !== 0)
       this.setState({ loading: false });
+    if (sviProdani.length === 0 && trenutnoOdabrano != '')
+      this.setState({ loading: false });
 
   };
+
+  searchProducts(value) {
+    if (value != '') {
+      if(nizPrijeSearcha == null)
+        nizPrijeSearcha = this.state.prodaniProizvodi;
+      let noviNiz = [];
+      for (let i = 0; i < nizPrijeSearcha.length; i++) {
+        if (nizPrijeSearcha[i].name.toLowerCase().includes(value.toLowerCase())) {
+          noviNiz.push(nizPrijeSearcha[i]);
+        }
+      }
+      this.setState({ prodaniProizvodi: noviNiz });
+      return;
+    }
+    if(nizPrijeSearcha != null)
+    this.setState({ prodaniProizvodi: nizPrijeSearcha });
+  }
 
   render() {
     return (
@@ -208,6 +235,9 @@ class ShopProduct extends React.Component {
             format={dateFormat}
             id='range'>
           </RangePicker>
+        </div>
+        <div>
+          <Search style={{ width: '280px' }} placeholder="Input product name" onSearch={value => this.searchProducts(value)} enterButton />
         </div>
         <div id="listaProizvoda">
           <List
