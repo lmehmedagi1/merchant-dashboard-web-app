@@ -380,7 +380,7 @@ class Statistics extends React.Component{
         <Select
           showSearch
           style={{ width: 276 }}
-          placeholder="Select a shop"
+          placeholder=" Select a shop "
           optionFilterProp="children"
           onChange={this.onChange}
           onFocus={onFocus}
