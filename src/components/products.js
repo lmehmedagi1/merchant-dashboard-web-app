@@ -213,6 +213,7 @@ class ShopProduct extends React.Component {
     }
     if(nizPrijeSearcha != null)
     this.setState({ prodaniProizvodi: nizPrijeSearcha });
+    
   }
 
   render() {
