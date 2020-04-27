@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import { TreeSelect, Card, List, DatePicker, Input, message } from 'antd';
 import { getToken } from '../auth';
 import Axios from 'axios';
-import { DollarOutlined, BarcodeOutlined, FieldNumberOutlined } from '@ant-design/icons';
+import { DollarOutlined, BarcodeOutlined, FieldNumberOutlined, NumberOutlined } from '@ant-design/icons';
 import '../App.css';
 
 
@@ -33,6 +33,8 @@ let startDate = '01.01.2000', endDate = datum;
 let nizDatumaLabel = [];
 
 var intervalID = setInterval(function () { petMinutaProslo = true; }, 300000);
+
+var IDposlovnice = -1;
 
 function disabledDate(current) {
   return current > moment().endOf('day');
@@ -78,6 +80,7 @@ class ShopProduct extends React.Component {
         let objekat = {};
         objekat.title = res[i].address + ' ' + res[i].city;
         objekat.value = 'p ' + res[i].id;
+        IDposlovnice = res[i].id;
         let kase = await Axios
           .get(`https://main-server-si.herokuapp.com/api/business/offices/${res[i].id}/cashRegisters`, { headers: { Authorization: 'Bearer ' + getToken() } });
         let children = [];
@@ -103,7 +106,7 @@ class ShopProduct extends React.Component {
 
   fetchProducts = async () => {
     let proizvodi = await Axios
-      .get('https://main-server-si.herokuapp.com/api/products', { headers: { Authorization: 'Bearer ' + getToken() } });
+      .get(`https://main-server-si.herokuapp.com/api/offices/${IDposlovnice}/products`, { headers: { Authorization: 'Bearer ' + getToken() } });
     this.setState({ products: proizvodi.data });
   };
 
@@ -113,7 +116,6 @@ class ShopProduct extends React.Component {
       { headers: { Authorization: 'Bearer ' + getToken() } });
     this.setState({ allReceipts: racuni.data });
   };
-
   onChangeDate = async values => {
     if (values == null) {
       startDate = '01.01.2000';
@@ -158,16 +160,16 @@ class ShopProduct extends React.Component {
         for (let j = 0; j < stavkeRacuna.length; j++) {
           let info = {};
           let cijenaProizvoda = (100 - stavkeRacuna[j].discountPercentage) / 100 * stavkeRacuna[j].price;
-          let brojProdanihProizvoda = stavkeRacuna[j].quantity;
-          info = { price: cijenaProizvoda * brojProdanihProizvoda, quantity: brojProdanihProizvoda, unit: stavkeRacuna[j].unit, barcode: stavkeRacuna[j].barcode, slika: "" };
+          let brojProdanihProizvoda = stavkeRacuna[j].quantity; 
+          info = { price: cijenaProizvoda * brojProdanihProizvoda, sold: brojProdanihProizvoda, unit: stavkeRacuna[j].unit, barcode: stavkeRacuna[j].barcode, slika: "" };
           if (!mapaProizvoda.has(stavkeRacuna[j].productName))
             mapaProizvoda.set(stavkeRacuna[j].productName, info);
           else {
             let oldInfoProdukt = {};
             oldInfoProdukt = mapaProizvoda.get(stavkeRacuna[j].productName);
             let ukupnaProdajnaCijena = oldInfoProdukt.price + cijenaProizvoda * brojProdanihProizvoda;
-            let ukupnoProdanihProizvoda = oldInfoProdukt.quantity + brojProdanihProizvoda;
-            info = { price: ukupnaProdajnaCijena, quantity: ukupnoProdanihProizvoda, unit: stavkeRacuna[j].unit, barcode: stavkeRacuna[j].barcode, slika: "" };
+            let ukupnoProdanihProizvoda = oldInfoProdukt.sold + brojProdanihProizvoda;
+            info = { price: ukupnaProdajnaCijena, sold: ukupnoProdanihProizvoda, unit: stavkeRacuna[j].unit, barcode: stavkeRacuna[j].barcode, slika: "" };
             mapaProizvoda.set(stavkeRacuna[j].productName, info);
           }
         }
@@ -183,8 +185,9 @@ class ShopProduct extends React.Component {
       let info = sortedMap.get(keyMapa[i]);
       info.name = keyMapa[i];
       for (let j = 0; j < this.state.products.length; j++) {
-        if (this.state.products[j].name == info.name) {
-          info.slika = this.state.products[j].image;
+        if (this.state.products[j].product.name == info.name) {
+          info.slika = this.state.products[j].product.image; 
+          info.quantity = this.state.products[j].quantity;
           sviProdani.push(info);
           break;
         }
@@ -251,8 +254,9 @@ class ShopProduct extends React.Component {
                   <Card title={item.name} bordered={false}>
                     <div id="InfoProduktKartica">
                       <p><DollarOutlined /> Total traffic: {item.price.toFixed(2)} KM</p>
-                      <p><FieldNumberOutlined /> Total {item.unit} sold: {item.quantity}</p>
+                      <p><FieldNumberOutlined /> Total {item.unit} sold: {item.sold}</p>
                       <p><BarcodeOutlined /> Barcode: {item.barcode}</p>
+                      <p><NumberOutlined/> Quantity in shop: {item.quantity}</p>
                     </div>
                     <div id="divSlike" >
                       <img id="slikaPr" src={item.slika}></img>
