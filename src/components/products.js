@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
-import { TreeSelect, Card, List, DatePicker, Input, message } from 'antd';
+import InfiniteScroll from 'react-infinite-scroller';
+import {Spin, InputNumber, TreeSelect, Card, List, DatePicker, Input, Tabs } from 'antd';
 import { getToken } from '../auth';
 import Axios from 'axios';
 import { DollarOutlined, BarcodeOutlined, FieldNumberOutlined, NumberOutlined } from '@ant-design/icons';
@@ -9,12 +10,14 @@ import '../App.css';
 
 
 const { Search } = Input;
+const { TabPane } = Tabs;
 
 let mapaProizvoda = new Map();
 let keyMapa = [];
 let trenutnoOdabrano = '';
 let petMinutaProslo = true;
 let nizPrijeSearcha;
+let currentTab = "Products";
 
 const { RangePicker } = DatePicker;
 const dateFormat = "DD.MM.YYYY";
@@ -116,6 +119,7 @@ class ShopProduct extends React.Component {
       { headers: { Authorization: 'Bearer ' + getToken() } });
     this.setState({ allReceipts: racuni.data });
   };
+
   onChangeDate = async values => {
     if (values == null) {
       startDate = '01.01.2000';
@@ -199,8 +203,11 @@ class ShopProduct extends React.Component {
       this.setState({ loading: false });
     if (sviProdani.length === 0 && trenutnoOdabrano != '')
       this.setState({ loading: false });
-
   };
+
+  onChangeQuantity = async value => {
+
+  }
 
   searchProducts(value) {
     if (value != '') {
@@ -218,6 +225,23 @@ class ShopProduct extends React.Component {
     if(nizPrijeSearcha != null)
     this.setState({ prodaniProizvodi: nizPrijeSearcha });
     
+  }
+
+  productsTabSelected = () => {
+
+  }
+
+  requestsTabSelected = () => {
+
+  }
+
+  newTabSelected = key => {
+    currentTab = key;
+
+    if (currentTab == "products") 
+      this.productsTabSelected();
+    else if (currentTab == "requests") 
+      this.requestsTabSelected();
   }
 
   render() {
@@ -244,31 +268,74 @@ class ShopProduct extends React.Component {
         <div>
           <Search style={{ width: '280px' }} placeholder="Input product name" onSearch={value => this.searchProducts(value)} enterButton />
         </div>
-        <div id="listaProizvoda">
-          <List
-            loading={this.state.loading}
-            grid={{ column: 3, gutter: 16 }}
-            dataSource={this.state.prodaniProizvodi}
-            renderItem={item => (
-              <List.Item>
-                <div style={{ width: "100%" }}>
-                  <Card title={item.name} bordered={false}>
-                    <div id="InfoProduktKartica">
-                      <p><DollarOutlined /> Total traffic with taxes: {(item.price*((100+item.pdv)/100)).toFixed(2)} KM</p>
-                      <p><FieldNumberOutlined /> Total {item.unit} sold: {item.sold}</p>
-                      <p><BarcodeOutlined /> Barcode: {item.barcode}</p>
-                      <p><NumberOutlined/> Quantity in shop: {item.quantity}</p>
-                      <p><NumberOutlined/> Tax for product: {item.pdv}%</p>
-                    </div>
-                    <div id="divSlike" >
-                      <img id="slikaPr" src={item.slika}></img>
-                    </div>
-                  </Card>
-                </div>
-              </List.Item>
-            )}
-          />
+        <br/>
+        <div className="card-container">
+          <Tabs type="card" onChange={this.newTabSelected}>
+            <TabPane tab="Products" key="products">
+            <div id="listaProizvoda">
+            <List
+              loading={this.state.loading}
+              grid={{ column: 3, gutter: 16 }}
+              dataSource={this.state.prodaniProizvodi}
+              renderItem={item => (
+                <List.Item>
+                  <div style={{ width: "100%" }}>
+                    <Card title={item.name} bordered={false}>
+                      <div id="InfoProduktKartica">
+                        <p><DollarOutlined /> Total traffic inc taxes: {(item.price*((100+item.pdv)/100)).toFixed(2)} KM</p>
+                        <p><FieldNumberOutlined /> Total {item.unit} sold: {item.sold}</p>
+                        <p><BarcodeOutlined /> Barcode: {item.barcode}</p>
+                        <p><NumberOutlined/> Quantity in shop: {item.quantity}</p>
+                        <p><NumberOutlined/> Tax for product: {item.pdv}%</p>
+                      </div>
+                      <div id="divSlike" >
+                        <img id="slikaPr" src={item.slika}></img>
+                      </div>
+                    </Card>
+                  </div>
+                </List.Item>
+              )}
+            />
         </div>
+            </TabPane>
+            <TabPane tab="Request for products" key="requests">
+              <div id = "ZahtjeviProizvod">
+              <InfiniteScroll
+                initialLoad={false}
+                pageStart={0}
+                loadMore={this.handleInfiniteOnLoad}
+                hasMore={!this.state.loading && this.state.hasMore}
+                useWindow={false}
+            >
+            <List id="listaProizvodaZahtjevi"
+                itemLayout="horizontal"
+                dataSource={this.state.products}
+                renderItem={item => (
+                <List.Item key={item.product.id}>
+                  
+                  <img id="slikaListaProizvodZahtjev" src={item.product.image}></img>
+                    <List.Item.Meta 
+                        title={item.product.name}
+                        description={"Quantity: " + item.quantity}
+                    />
+                    <div  id="components-dropdown-dmo-dropdown-button">
+                      <InputNumber min={0} max={20000} defaultValue={0} onChange={this.onChangeQuantity} />
+                    </div>
+                </List.Item>
+                )}
+            >
+            {this.state.loading && this.state.hasMore && (
+              <div className="demo-loading-container">
+                <Spin />
+              </div>
+            )}
+            </List>
+            </InfiniteScroll>
+              </div>
+            </TabPane>
+            </Tabs>
+            </div>
+        
       </div>
     );
   }
