@@ -188,6 +188,7 @@ class ShopProduct extends React.Component {
         if (this.state.products[j].product.name == info.name) {
           info.slika = this.state.products[j].product.image; 
           info.quantity = this.state.products[j].quantity;
+          info.pdv = this.state.products[j].product.pdv;
           sviProdani.push(info);
           break;
         }
@@ -253,10 +254,11 @@ class ShopProduct extends React.Component {
                 <div style={{ width: "100%" }}>
                   <Card title={item.name} bordered={false}>
                     <div id="InfoProduktKartica">
-                      <p><DollarOutlined /> Total traffic: {item.price.toFixed(2)} KM</p>
+                      <p><DollarOutlined /> Total traffic with taxes: {(item.price*((100+item.pdv)/100)).toFixed(2)} KM</p>
                       <p><FieldNumberOutlined /> Total {item.unit} sold: {item.sold}</p>
                       <p><BarcodeOutlined /> Barcode: {item.barcode}</p>
                       <p><NumberOutlined/> Quantity in shop: {item.quantity}</p>
+                      <p><NumberOutlined/> Tax for product: {item.pdv}%</p>
                     </div>
                     <div id="divSlike" >
                       <img id="slikaPr" src={item.slika}></img>

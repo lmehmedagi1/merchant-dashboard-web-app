@@ -14,13 +14,20 @@
     margin-right: 10%;
 }
 
-#footer {
-    text-align: center;
-    font-style: italic;
-    font-size: 15px;
-    margin-bottom: 0;
+#welcomeText h1{
+    float: left;
+    margin-top: 5%;
 }
 
+#mainBusiness {
+    float: right;
+    margin-left: 5%;
+    text-align: left;
+}
+
+#welcomeiBusiness{
+    float: top;
+}
 
 #notifikacijeMain {
     width: 60%;
@@ -46,7 +53,7 @@
 }
 
 #listaNotifikacija {
-    min-height: 250px;
+    min-height: 370px;
 }
 
 hr {

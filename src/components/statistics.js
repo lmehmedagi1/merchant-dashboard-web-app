@@ -93,8 +93,12 @@ class Statistics extends React.Component{
   onChange = id => {
     nazivPoslovnice = id;
 
-    if (nizDatumaLabel.length == 0 || nazivPoslovnice == '') {
+    if (nizDatumaLabel.length == 0) {
       message.error('No date selected!');
+      return;
+    }
+    if(nazivPoslovnice == '') {
+      message.error('No shop selected!');
       return;
     }
 
@@ -170,7 +174,7 @@ class Statistics extends React.Component{
             }
 
             let oldAmount = productsMap.get(receiptItems[k].productName);
-            let newAmount = receiptItems[k].price*receiptItems[k].quantity*(100-receiptItems[k].discountPercentage)/100;
+            let newAmount = receiptItems[k].price*receiptItems[k].quantity*(100-receiptItems[k].discountPercentage)*(100+receiptItems[k].pdv)/10000;
             
             productsMap.set(receiptItems[k].productName, this.round(oldAmount+newAmount, 2));
           } 
