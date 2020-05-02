@@ -17,7 +17,6 @@ let clickedNotificationID = "";
 let cardTitle = "";
 let glavnaPoslovnica = {};
 let svePoslovnice = [];
-let options = {};
 
 let ids = [];
 let username = "";
@@ -25,14 +24,7 @@ if (getUser() != null && getUser().name != null && getUser().surname != null) {
     username = getUser().name + " " + getUser().surname;
     cardTitle = username + "'s main bussiness";
 }
- 
-
-  
-  function cancel(e) {
-    console.log(e);
-    message.error('Click on No');
-  }
-  
+   
 class Home extends React.Component {
     potvrda = async () => {
         ids = [];
@@ -88,7 +80,6 @@ class Home extends React.Component {
     axios.get(URL, { headers: { 'Authorization': AuthStr } })
     .then((response) => {
         if (response.data.length === 0) return;
-        console.log(response.data);
         for (let i = 0; i < svePoslovnice.length; i++) {
             if (svePoslovnice[i].id == response.data.mainOfficeId) {
                 glavnaPoslovnica.location = svePoslovnice[i].address + ", " + svePoslovnice[i].city + ", " + svePoslovnice[i].country;

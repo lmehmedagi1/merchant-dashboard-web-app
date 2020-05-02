@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import InfiniteScroll from 'react-infinite-scroller';
-import {Spin, InputNumber, TreeSelect, Card, List, DatePicker, Input, Tabs } from 'antd';
+import {Button, Popconfirm, Spin, InputNumber, TreeSelect, Card, List, DatePicker, Input, Tabs, message} from 'antd';
 import { getToken } from '../auth';
 import Axios from 'axios';
-import { DollarOutlined, BarcodeOutlined, FieldNumberOutlined, NumberOutlined } from '@ant-design/icons';
+import {QuestionCircleOutlined, DollarOutlined, BarcodeOutlined, FieldNumberOutlined, NumberOutlined } from '@ant-design/icons';
 import '../App.css';
 
 
@@ -18,6 +18,7 @@ let trenutnoOdabrano = '';
 let petMinutaProslo = true;
 let nizPrijeSearcha;
 let currentTab = "Products";
+let mapaZahtjeva = new Map();
 
 const { RangePicker } = DatePicker;
 const dateFormat = "DD.MM.YYYY";
@@ -72,7 +73,35 @@ class ShopProduct extends React.Component {
     allReceipts: [],
     prodaniProizvodi: new Map(),
     loading: false,
+    requestProducts: [],
   };
+
+  potvrda = async () => {
+    //IDposlovnice ... officeId 
+    let nizZahtjeva = [];
+    if(mapaZahtjeva.size == 0) {
+      message.error("Trying to send zero products!");
+      return;
+    }
+    for (let [k, v] of mapaZahtjeva) 
+      nizZahtjeva.push({"id": k, "quantity": v});
+    let gotovo = await Axios
+      .post('https://main-server-si.herokuapp.com/api/',
+      {
+        /* "officeId": IDposlovnice,
+            "products": nizZahtjeva,
+        */
+      }, 
+      { headers: { Authorization: 'Bearer ' + getToken()}}).then((response) => {
+        if (response.data.statusCode !== 200) {
+          message.error("Something went wrong!");
+          return;
+        }
+        message.success("Your request was successfully sent")
+      }).catch(error => {message.error('error');});
+  }
+
+  cancel = async () => {}
 
   componentWillMount() {
     trenutnoOdabrano = '';
@@ -205,8 +234,10 @@ class ShopProduct extends React.Component {
       this.setState({ loading: false });
   };
 
-  onChangeQuantity = async value => {
-
+  onChangeQuantity = id => value => {
+    if (value == null || value == '') return;
+    mapaZahtjeva.set(id,value);
+    console.log(mapaZahtjeva);
   }
 
   searchProducts(value) {
@@ -298,7 +329,18 @@ class ShopProduct extends React.Component {
             />
         </div>
             </TabPane>
-            <TabPane tab="Request for products" key="requests">
+            <TabPane tab="Request for products" key="requests">   
+              <div>
+              <Popconfirm
+                title="Are you sure you want to send this type of request?" icon={<QuestionCircleOutlined style={{ color: 'blue' }}/>}
+                onConfirm={this.potvrda}
+                onCancel={this.cancel}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button type="primary">Send request</Button>
+            </Popconfirm>
+            </div>
               <div id = "ZahtjeviProizvod">
               <InfiniteScroll
                 initialLoad={false}
@@ -318,8 +360,8 @@ class ShopProduct extends React.Component {
                         title={item.product.name}
                         description={"Quantity: " + item.quantity}
                     />
-                    <div  id="components-dropdown-dmo-dropdown-button">
-                      <InputNumber min={0} max={20000} defaultValue={0} onChange={this.onChangeQuantity} />
+                    <div id="divSpinnerQuantity">
+                      <InputNumber min={0} max={20000} defaultValue={0} onChange={this.onChangeQuantity(item.product.id)} />
                     </div>
                 </List.Item>
                 )}
@@ -334,8 +376,9 @@ class ShopProduct extends React.Component {
               </div>
             </TabPane>
             </Tabs>
+            <br/>
+            <br/>
             </div>
-        
       </div>
     );
   }

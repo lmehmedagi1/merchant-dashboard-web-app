@@ -6,7 +6,6 @@ import { message } from 'antd';
 export const getUser = () => {
   
   const userStr = localStorage.getItem('user');
-  console.log("********************************", userStr);
   if (userStr) return JSON.parse(userStr);
   else return null;
 }

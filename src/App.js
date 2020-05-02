@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import ReactDOM from "react-dom";
 import './App.css';
 
@@ -27,14 +27,57 @@ import { SolutionOutlined, DashboardFilled, ShopOutlined, ShoppingCartOutlined, 
 import auth from "./auth";
 import { getUser } from "./auth";
 
+
+import * as SockJS from 'sockjs-client';
+import * as Stomp from 'stompjs';
+
 const { SubMenu } = Menu;
 const {Content, Sider } = Layout;
-
 let userName = "";
-if (getUser() != null && getUser().name != null)
-  userName = getUser().name + " " + getUser().surname;
+if (getUser() != null && getUser().name != null) userName = getUser().name + " " + getUser().surname;
+
+const SERVER_URL = 'http://log-server-si.herokuapp.com/ws';
+let stompClient;
+
 
 function App(props) {
+  /*const [response, setResponse] = useState([]);
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    // Create new socket from endpoint
+    const socket = new SockJS(SERVER_URL);
+
+    // Create the stomp client instance from socket
+    stompClient = Stomp.over(socket);
+
+    // connect the stomp client
+    // first arg is headers,
+    // second arg is onConnected callback,
+    // third arg is onError callback
+    stompClient.connect({}, () => {
+      stompClient.subscribe(`/topic/merchant_dashboard`, msg => {
+        const data = JSON.parse(msg.body);
+        setResponse(res => [data, ...res]);
+      });
+    }, err => console.error(err));
+
+    return () => stompClient.disconnect();
+  }, []);
+
+  const handleHi = e => {
+    if((e.key && e.key !== 'Enter') || e.target.value === '') {
+      return;
+    }
+    
+    // Send message to the server:
+    // first arg is the endpoint
+    // second arg is the headers
+    // third arg is the data to be sent
+    stompClient.send('/app/news', {}, message);
+    setMessage('');
+  }*/
+
   return (
     <BrowserRouter>
       <div className="App">
@@ -44,7 +87,6 @@ function App(props) {
             breakpoint="lg"
             collapsedWidth="0"
             onBreakpoint={broken => {
-              console.log(broken);
             }}
             onCollapse={(collapsed, type) => {
               console.log(collapsed, type);
