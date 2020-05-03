@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from "react-dom";
+import ReactDOM from 'react-dom';
 import './App.css';
 
 import { ProtectedRoute } from "./protected.route";
@@ -17,24 +17,29 @@ import NotFound from './components/not-found';
 import AddNewWorkshop from './components/add-new-workshop';
 import Profile from './components/profile';
 import ShopProduct from './components/products';
+import UserLog from './components/userlog';
 
-import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
+import Notifications from './components/notifications';
 
 import { Layout, Menu } from 'antd';
 import './components/main-page.css';
 import { Avatar } from 'antd';
-import { CopyrightOutlined, DashboardFilled, ShopOutlined, ShoppingCartOutlined, TeamOutlined, AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
+import { SolutionOutlined, DashboardFilled, ShopOutlined, ShoppingCartOutlined, TeamOutlined, AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined } from '@ant-design/icons';
 import auth from "./auth";
 import { getUser } from "./auth";
 
+
 const { SubMenu } = Menu;
-const { Footer, Content, Sider } = Layout;
-
+const {Content, Sider } = Layout;
 let userName = "";
-if (getUser() != null && getUser().name != null)
-  userName = getUser().name + " " + getUser().surname;
+if (getUser() != null && getUser().name != null) userName = getUser().name + " " + getUser().surname;
 
-function App(props) {
+
+class App extends React.Component {
+
+
+  render() {
+
   return (
     <BrowserRouter>
       <div className="App">
@@ -44,7 +49,6 @@ function App(props) {
             breakpoint="lg"
             collapsedWidth="0"
             onBreakpoint={broken => {
-              console.log(broken);
             }}
             onCollapse={(collapsed, type) => {
               console.log(collapsed, type);
@@ -68,6 +72,12 @@ function App(props) {
                       <SettingFilled />
                       <span className="nav-text">Profile</span>
                     </Link>
+                  </Menu.Item>
+                  <Menu.Item key='userlog'>
+                    <Link to='./userlog'>
+                      <SolutionOutlined />
+                      <span className="nav-text">User log</span>
+                    </Link>
 
                   </Menu.Item>
                   <Menu.Item key='LogOut' onClick={() => {
@@ -76,7 +86,7 @@ function App(props) {
                     });
                   }}>
                     <CloseCircleFilled />
-        Log Out</Menu.Item>
+                    Log Out</Menu.Item>
                 </Menu.ItemGroup>
               </SubMenu>
               <Menu.Item className="subMenuItem" key="1">
@@ -129,7 +139,13 @@ function App(props) {
             <div id="NaslovApp">
               <div><DashboardFilled /> Merchant Dashboard</div>
             </div>
+            <div id="notificationBell"> 
+            <div className='artboard'>
+              <Notifications/>
+            </div>
+            </div>
             <Content id="bodyMain">
+              
 
               <Switch>
                 <Route exact path="/" component={Login} />
@@ -142,7 +158,7 @@ function App(props) {
                 <ProtectedRoute exact path="/addShop" component={AddNewWorkshop} />
                 <ProtectedRoute exact path="/profile" component={Profile} />
                 <ProtectedRoute exact path="/products" component={ShopProduct} />
-
+                <ProtectedRoute exact path="/userlog" component={UserLog} />
                 <Route exact path="/recover-password" component={Recover} />
                 <Route exact path="/recover-password/:email" component={Recover} />
                 <Route path="*" component={NotFound} />
@@ -154,8 +170,11 @@ function App(props) {
 
       </div>
     </BrowserRouter>
-  );
+  );}
 }
+
+
+
 
 
 const rootElement = document.getElementById("root");

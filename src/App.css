@@ -51,6 +51,8 @@
 
 #ikonaNotifikacije {
   font-size: 2em;
+  float: left;
+  padding: 10px;
   padding-right: 1em;
 }
 
@@ -102,7 +104,7 @@
 
 #InfoProduktKartica {
   text-align: left;
-  width: 50%;
+  width: 60%;
   padding-top: 5%;
   float: left;
 }
@@ -119,33 +121,33 @@
   background-size: cover;
 }
 
-#trafficH2 {
-  float: left;
-  color: #04619f;
-  font-weight: 600;
-  margin-top: 1%;
-}
-
-#employeesTraffic {
-  color: rgb(60, 169, 189);
-  text-align: left;
-  margin-top: 3%;
-  margin-left: 3%;
-}
-
-
-#dijagrami {
-  margin-bottom: 5%;
-  height: 70%;
-}
-
-#graf {
-  width: 67%;
-  margin: 0 auto;
-}
 
 #dodavanjePoslovniceButton {
   width: 60%;
   margin: 0 auto;
   padding-bottom: 10%;
 }
+
+
+#ZahtjeviProizvod .ant-tabs-nav {
+  width: 100%;
+}
+
+#ZahtjeviProizvod .ant-tabs-nav :first-child  {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+#slikaListaProizvodZahtjev {
+  float:  left;
+  width:  100px;
+  height: 100px;
+  background-size: cover;
+}
+
+#ZahtjeviProizvod{
+  width: 70%;
+  margin: 0 auto;
+}
+

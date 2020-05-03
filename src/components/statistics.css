@@ -1,0 +1,73 @@
+/* Izgled stranice Statistics */
+
+#selectShopStatistics {
+    margin-top: -15px;
+}
+
+#naslovStatistics h1 {
+    color: #04619f;
+    font-weight: bold;
+}
+
+#naslovStatistics {
+    margin-top: -40px;
+    margin-bottom: 15px;
+}
+
+#statistikaTabovi .ant-tabs-nav {
+    width: 100%;
+}
+#statistikaTabovi .ant-tabs-nav :first-child  {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+
+#statistikaTabovi .card-container .ant-tabs-tab, #statistikaTabovi .card-container .ant-tabs-tab-active {
+    display: block;
+    font-weight: 600;
+}
+
+#pieChartStatistics {
+    width: 100%;
+}
+
+#lineChartStatistics {
+    width: 80%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#chartListContainerStatistics {
+    margin-top: 30px;
+}
+
+[data-theme='compact'] .card-container > .ant-tabs-card > .ant-tabs-content,
+.card-container > .ant-tabs-card > .ant-tabs-content {
+
+  margin-top: -16px;
+}
+
+[data-theme='compact'] .card-container > .ant-tabs-card > .ant-tabs-content > .ant-tabs-tabpane,
+.card-container > .ant-tabs-card > .ant-tabs-content > .ant-tabs-tabpane {
+  background: #fff;
+  padding: 16px;
+}
+
+[data-theme='compact'] .card-container > .ant-tabs-card > .ant-tabs-bar,
+.card-container > .ant-tabs-card > .ant-tabs-bar {
+  border-color: #fff;
+}
+
+[data-theme='compact'] .card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab,
+.card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
+  border-color: transparent;
+  background: transparent;
+}
+
+[data-theme='compact'] .card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active,
+.card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
+  border-color: #fff;
+  background: #fff;
+}

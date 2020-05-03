@@ -1,85 +1,113 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import InfiniteScroll from 'react-infinite-scroller';
-import { Input, Calendar, message, List, Radio, Menu, Dropdown, Button, Spin  } from 'antd';
-import { MailOutlined, EllipsisOutlined, ShopOutlined} from '@ant-design/icons';
+import { message, Input, Calendar, List, Spin, Card  } from 'antd';
+import { MailOutlined, MailTwoTone, HourglassTwoTone, EnvironmentTwoTone, PhoneTwoTone} from '@ant-design/icons';
 import { getUser, getToken } from '../auth';
+import { getNotifications } from './notifications.js';
 import '../App.css';
 import './main-page.css';
 import axios from 'axios';
-import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-const { TextArea } = Input;
- 
+import { Link } from 'react-router-dom';
+
+const { TextArea } = Input; 
 const onChange = e => {};
 const AuthStr = 'Bearer ' + (getToken());
 let URL = 'https://main-server-si.herokuapp.com/api/notifications/unread';
-let mode = "unread";
-let otherMode = "read";
 let clickedNotificationID = "";
- 
+let cardTitle = "";
+let glavnaPoslovnica = {};
+let svePoslovnice = [];
+
 let ids = [];
 let username = "";
 if (getUser() != null && getUser().name != null && getUser().surname != null) {
     username = getUser().name + " " + getUser().surname;
+    cardTitle = username + "'s main bussiness";
 }
- 
-const options = {
-    title: 'Confirmation',
-    message: 'Do you really want to delete all notifications?',
-    buttons: [
-      {
-        label: 'Yes',
-        onClick: async () => {
- 
-          for (let i = 0; i < ids.length; i++) {
-                clickedNotificationID = ids[i];
-                let gotovo = await axios
-                .post(`https://main-server-si.herokuapp.com/api/notifications/${clickedNotificationID}/delete`, {},  { headers: { 'Authorization': AuthStr } });
-                Home.showMessages();
-            }
-        }
-      },
-      {
-        label: 'No',
-        onClick: () => {
- 
-        }
-      }
-    ]
-  };
- 
+
 class Home extends React.Component {
+    potvrda = async () => {
+        ids = [];
+        for (let i = 0; i < this.state.data.length; i++) {
+            ids.push(this.state.data[i].id);
+        }
+        for (let i = 0; i < ids.length; i++) {
+            clickedNotificationID = ids[i];
+            let gotovo = await axios
+            .delete(`https://main-server-si.herokuapp.com/api/notifications/${clickedNotificationID}`,{ headers: { 'Authorization': AuthStr }}, {});
+            this.showMessages();
+        }
+            message.success("Deleted all notifications!");
+      }
+      cancel = async () => {}
+
     state = {
         data: [],
         loading: false,
         hasMore: true,
+        notifications: []
     };
- 
-    constructor() {
-        super();
-        this.showMessages();
+
+    constructor(props) {
+        super(props);
+        this.getOffices();
+        this.getMainOffice();
     }
- 
-    menu = (
-        <Menu onClick={(e) => {this.markMessage(e)}}>
-            <Menu.Item key="1">
-            <div id="porukaMark">
-            Mark as {otherMode}
-            </div>
-            </Menu.Item>
-            <Menu.Item key="2">
-            <div id="porukaDelete">
-            Delete
-            </div>
-            </Menu.Item>
-        </Menu>
-    );
- 
+
     componentDidMount() {
+        this.getOffices();
+        this.getMainOffice();
+        this.setState({notifications: getNotifications()});
         this.showMessages();
+
+        setInterval(() => { 
+            let noveNotifikacije = getNotifications().reverse();
+            for (let i=0; i<noveNotifikacije.length; i++) {
+                let action = noveNotifikacije[i].payload.action;
+                if (action.includes("ire"))
+                    noveNotifikacije[i].location = '/employees';
+                else if (action.includes("_office"))
+                    noveNotifikacije[i].location = '/shops';
+                else 
+                    noveNotifikacije[i].location = '/products';
+            }
+            this.setState({notifications: noveNotifikacije}); 
+            this.showMessages();
+        }, 10000);
     }
  
+    
+    getOffices() {
+        axios.get('https://main-server-si.herokuapp.com/api/business/offices', { headers: { Authorization: 'Bearer ' + getToken() } })
+        .then(response => {
+            svePoslovnice = response.data;
+        })
+        .catch(err => console.log(err));
+    };
+
+    getMainOffice() {
+    let URL = `https://main-server-si.herokuapp.com/api/business/${1}/mainOffice`;
+    axios.get(URL, { headers: { 'Authorization': AuthStr } })
+    .then((response) => {
+        if (response.data.length === 0) return;
+        for (let i = 0; i < svePoslovnice.length; i++) {
+            if (svePoslovnice[i].id == response.data.mainOfficeId) {
+                glavnaPoslovnica.location = svePoslovnice[i].address + ", " + svePoslovnice[i].city + ", " + svePoslovnice[i].country;
+                glavnaPoslovnica.email = svePoslovnice[i].email;
+                glavnaPoslovnica.phoneNumber = svePoslovnice[i].phoneNumber;
+                glavnaPoslovnica.workHours = svePoslovnice[i].workDayStart + " - " + svePoslovnice[i].workDayEnd;
+                break;
+            }
+        }
+        console.log(glavnaPoslovnica);
+    }).catch(error => {
+        if (window.location.href == '\app')
+             message.error("Something went wrong!");
+        console.log(error);
+    });
+    };
+
     handleInfiniteOnLoad = () => {
         let { data } = this.state;
         this.setState({
@@ -96,20 +124,10 @@ class Home extends React.Component {
         this.showMessages();
       };
  
- 
-    ispisiPoruku = (hired, name, surname, time) => {
-        if (hired)
-          return name + " " + surname + " was hired at " + time + ".";
-        return name + " " + surname + " was fired at " + time + ".";
-    }
- 
     showMessages = () => {
         axios
         .get(URL, { headers: { 'Authorization': AuthStr } })
         .then((response) => {
-            if (response.data.length === 0) {
-                message.info("There are no notifications!");
-            }
             let nizDatuma = response.data;
             nizDatuma.sort(function(a, b){
                 a = a.date.split('.');
@@ -127,106 +145,26 @@ class Home extends React.Component {
         });
     };
  
-    buttonClick = id => {
-        clickedNotificationID = id;
-        this.menu = (
-            <Menu onClick={(e) => {this.markMessage(e)}}>
-                <Menu.Item key="1">
-                <div id="porukaMark">
-                Mark as {otherMode}
-                </div>
-                </Menu.Item>
-                <Menu.Item key="2">
-                <div id="porukaDelete">
-                Delete
-                </div>
-                </Menu.Item>
-            </Menu>
-        );
-    }
- 
-    markMessage = (menuKey) => {
-        let notificationURL = `https://main-server-si.herokuapp.com/api/notifications/${clickedNotificationID}/markRead`;
- 
-        if (menuKey.key == "1") {
-            axios
-            .post(notificationURL, {},  { headers: { 'Authorization': AuthStr } })
-            .then((response) => {
-                if (!response.data.id) {
-                    message.error("Something went wrong!");
-                    return;
-                }
-                this.showMessages();
-            }).catch(error => {
-                message.error("Something went wrong!");
-            });
-        }
-        else if (menuKey.key == "2") {
-            notificationURL = `https://main-server-si.herokuapp.com/api/notifications/${clickedNotificationID}`;
-            axios
-            .delete(notificationURL, { headers: { 'Authorization': AuthStr } }, {})
-            .then((response) => {
-                if (response.data.length == 0) {
-                    message.error("Something went wrong!");
-                    return;
-                }
-                this.showMessages();
-            }).catch(error => {
-                message.error("Something went wrong!");
-            });
-        }
- 
-        
-    }
- 
-    switchedNotifications = e => {
-        otherMode = mode;
-        mode = e.target.value;
-        URL = "https://main-server-si.herokuapp.com/api/notifications/" + mode;
-        this.showMessages();
-    }
- 
- 
-    markAll = async () => {
-        let ids = [];
-        let i = 0;
-        for (i = 0; i < this.state.data.length; i++) {
-            ids.push(this.state.data[i].id);
-        }
- 
-        for (i = 0; i < ids.length; i++) {
-            clickedNotificationID = ids[i];
-            let gotovo = await axios
-            .post(`https://main-server-si.herokuapp.com/api/notifications/${clickedNotificationID}/markRead`, {},  { headers: { 'Authorization': AuthStr } });
-            this.showMessages();
-        }
-    }
- 
-    deleteAll = async () => {
-        ids = [];
-        for (let i = 0; i < this.state.data.length; i++) {
-            ids.push(this.state.data[i].id);
-        }
- 
-        confirmAlert(options);
-    }
- 
     render() {
-       
     return (
         <div id = "mainPageContent">
-        <div id="welcomeText">
-            <h1>Welcome, {username}</h1>
+        <div id="welcomeiBusiness">
+            <div id="welcomeText">
+                <h1>Welcome to your Merchant Dashboard, {username}!</h1>
+            </div>
+            <div id="mainBusiness">
+                <Card title={cardTitle} style={{ width: 400 }} hoverable={true}>
+                    <p><EnvironmentTwoTone /> Location: {glavnaPoslovnica.location}</p>
+                    <p><HourglassTwoTone /> Working hours: {glavnaPoslovnica.workHours}</p>
+                    <p> <MailTwoTone /> E-mail: {glavnaPoslovnica.email}</p>
+                    <p><PhoneTwoTone /> Phone number: {glavnaPoslovnica.phoneNumber}</p>
+                </Card>
+           </div>
         </div>
         <div id="notifikacijeIKalendar">
-           
             <div id="notifikacijeMain">
             <div id="naslovNotifikacijeMain">
                 <h2>Notifications </h2>
-                <Radio.Group onChange={this.switchedNotifications} value={mode} style={{ marginBottom: 8 }}>
-                    <Radio.Button value="read">Read</Radio.Button>
-                    <Radio.Button value="unread">Unread</Radio.Button>
-                </Radio.Group>
             </div>
             <InfiniteScroll
                 initialLoad={false}
@@ -237,20 +175,18 @@ class Home extends React.Component {
             >
             <List id="listaNotifikacija"
                 itemLayout="horizontal"
-                dataSource={this.state.data}
+                dataSource={this.state.notifications}
                 renderItem={item => (
-                <List.Item key={item.id}>
+                <List.Item>
+                    <Link to={item.location}>
+                    <div style={{"cursor": "pointer", "width": "100%"}} >
                     <MailOutlined id = "ikonaNotifikacije"/>
                     <List.Item.Meta
-                        title={item.date}
-                        description={this.ispisiPoruku(item.hired, item.employee.name, item.employee.surname, item.time)}
+                        title={item.type}
+                        description={item.payload.description}
                     />
-                    <div  id="components-dropdown-dmo-dropdown-button">
-                    <Dropdown overlay={this.menu} placement="bottomRight" onClick={() => {this.buttonClick(item.id)}} trigger='click'>
-                        <Button><EllipsisOutlined /></Button>
-                    </Dropdown>
-                       
                     </div>
+                    </Link>
                 </List.Item>
                 )}
             >
@@ -262,13 +198,10 @@ class Home extends React.Component {
             </List>
             </InfiniteScroll>
             <hr/>
-            <Button type="link" onClick={this.markAll}> Mark all as {otherMode} </Button>
-            <Button type="link" onClick={this.deleteAll}> Delete all </Button>
             </div>
             <div id="kalendarMain">
             <Calendar fullscreen={false}/>
             </div>
- 
         </div>
  
         <div id="notes">
@@ -279,8 +212,4 @@ class Home extends React.Component {
     }
 };
  
-const rootElement = document.getElementById("root");
-ReactDOM.render( <Home/> , rootElement);
- 
-       
 export default Home;

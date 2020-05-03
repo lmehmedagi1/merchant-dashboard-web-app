@@ -11,3 +11,12 @@
 #tabelaUposlenika {
     margin-top: 1%;
 }
+
+th {
+    text-align: center !important;
+    color: black !important;
+  }
+
+td {
+    color: black !important;
+}
