@@ -14,17 +14,17 @@
     margin-bottom: 15px;
 }
 
-.ant-tabs-nav {
+#statistikaTabovi .ant-tabs-nav {
     width: 100%;
 }
-.ant-tabs-nav :first-child  {
+#statistikaTabovi .ant-tabs-nav :first-child  {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 }
 
 
-.card-container .ant-tabs-tab, .card-container .ant-tabs-tab-active {
+#statistikaTabovi .card-container .ant-tabs-tab, #statistikaTabovi .card-container .ant-tabs-tab-active {
     display: block;
     font-weight: 600;
 }

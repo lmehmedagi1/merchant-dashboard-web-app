@@ -51,6 +51,8 @@
 
 #ikonaNotifikacije {
   font-size: 2em;
+  float: left;
+  padding: 10px;
   padding-right: 1em;
 }
 
@@ -127,26 +129,14 @@
 }
 
 
-.ant-tabs-nav {
+#ZahtjeviProizvod .ant-tabs-nav {
   width: 100%;
 }
 
-.ant-tabs-nav :first-child  {
+#ZahtjeviProizvod .ant-tabs-nav :first-child  {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-.card-container .ant-tabs-tab, .card-container .ant-tabs-tab-active {
-  display: block;
-  font-weight: 600;
-}
-
-
-[data-theme='compact'] .card-container > .ant-tabs-card > .ant-tabs-content,
-.card-container > .ant-tabs-card > .ant-tabs-content {
-
-  margin-top: -20px;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 #slikaListaProizvodZahtjev {

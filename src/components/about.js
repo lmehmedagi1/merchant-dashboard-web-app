@@ -5,7 +5,7 @@ const About = () => {
     return (
         <div>
             <div>
-                <img src={require('./slike/about.jpeg')} />
+                <img src={require('./slike/about.jpeg')} alt="Slika" />
             </div>
             <Alert
                 message="Creators"

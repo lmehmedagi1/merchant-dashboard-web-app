@@ -266,7 +266,7 @@ class Employees extends React.Component {
                           break;
                       }
                       allRoles += data[i].rolename;
-                      if (i != data.length-1) allRoles += ", ";
+                      if (i !== data.length-1) allRoles += ", ";
                     }
                     return <a className = "contentOfTable" > {allRoles} </a>
             } 
@@ -309,8 +309,10 @@ class Employees extends React.Component {
         );
     }
 };
-const rootElement = document.getElementById("root");
 
+/*
+const rootElement = document.getElementById("root");
 ReactDOM.render( <Employees/> , rootElement);
+*/
 
 export default Employees;

@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 import './App.css';
 
 import { ProtectedRoute } from "./protected.route";
@@ -19,64 +19,26 @@ import Profile from './components/profile';
 import ShopProduct from './components/products';
 import UserLog from './components/userlog';
 
+import Notifications from './components/notifications';
 
 import { Layout, Menu } from 'antd';
 import './components/main-page.css';
 import { Avatar } from 'antd';
-import { SolutionOutlined, DashboardFilled, ShopOutlined, ShoppingCartOutlined, TeamOutlined, AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
+import { SolutionOutlined, DashboardFilled, ShopOutlined, ShoppingCartOutlined, TeamOutlined, AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined } from '@ant-design/icons';
 import auth from "./auth";
 import { getUser } from "./auth";
 
-
-import * as SockJS from 'sockjs-client';
-import * as Stomp from 'stompjs';
 
 const { SubMenu } = Menu;
 const {Content, Sider } = Layout;
 let userName = "";
 if (getUser() != null && getUser().name != null) userName = getUser().name + " " + getUser().surname;
 
-const SERVER_URL = 'http://log-server-si.herokuapp.com/ws';
-let stompClient;
+
+class App extends React.Component {
 
 
-function App(props) {
-  /*const [response, setResponse] = useState([]);
-  const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    // Create new socket from endpoint
-    const socket = new SockJS(SERVER_URL);
-
-    // Create the stomp client instance from socket
-    stompClient = Stomp.over(socket);
-
-    // connect the stomp client
-    // first arg is headers,
-    // second arg is onConnected callback,
-    // third arg is onError callback
-    stompClient.connect({}, () => {
-      stompClient.subscribe(`/topic/merchant_dashboard`, msg => {
-        const data = JSON.parse(msg.body);
-        setResponse(res => [data, ...res]);
-      });
-    }, err => console.error(err));
-
-    return () => stompClient.disconnect();
-  }, []);
-
-  const handleHi = e => {
-    if((e.key && e.key !== 'Enter') || e.target.value === '') {
-      return;
-    }
-    
-    // Send message to the server:
-    // first arg is the endpoint
-    // second arg is the headers
-    // third arg is the data to be sent
-    stompClient.send('/app/news', {}, message);
-    setMessage('');
-  }*/
+  render() {
 
   return (
     <BrowserRouter>
@@ -124,7 +86,7 @@ function App(props) {
                     });
                   }}>
                     <CloseCircleFilled />
-        Log Out</Menu.Item>
+                    Log Out</Menu.Item>
                 </Menu.ItemGroup>
               </SubMenu>
               <Menu.Item className="subMenuItem" key="1">
@@ -177,7 +139,13 @@ function App(props) {
             <div id="NaslovApp">
               <div><DashboardFilled /> Merchant Dashboard</div>
             </div>
+            <div id="notificationBell"> 
+            <div className='artboard'>
+              <Notifications/>
+            </div>
+            </div>
             <Content id="bodyMain">
+              
 
               <Switch>
                 <Route exact path="/" component={Login} />
@@ -191,8 +159,6 @@ function App(props) {
                 <ProtectedRoute exact path="/profile" component={Profile} />
                 <ProtectedRoute exact path="/products" component={ShopProduct} />
                 <ProtectedRoute exact path="/userlog" component={UserLog} />
-
-
                 <Route exact path="/recover-password" component={Recover} />
                 <Route exact path="/recover-password/:email" component={Recover} />
                 <Route path="*" component={NotFound} />
@@ -204,8 +170,11 @@ function App(props) {
 
       </div>
     </BrowserRouter>
-  );
+  );}
 }
+
+
+
 
 
 const rootElement = document.getElementById("root");

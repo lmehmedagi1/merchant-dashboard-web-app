@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Input, Button ,Switch, message} from 'antd';
+import { Form, Input, Button, message} from 'antd';
 import { TimePicker } from 'antd';
 import { getToken } from '../auth';
 
@@ -45,11 +45,11 @@ const layout = {
   const validateMessages = {
     required: 'This field is required!',
     types: {
-      email: 'Not a validate email!',
-      number: 'Not a validate number!',
+      email: 'Not a valid email!',
+      number: 'Not a valid number!',
     },
     number: {
-      range: 'Must be between ${min} and ${max}',
+      range: `Must be between and `,
     },
   };
   
@@ -85,11 +85,6 @@ const layout = {
         </Form.Item>
       </Form>
     );
-
-
-
-
-    return 
 }
 
 export default AddNewWorkshop;
