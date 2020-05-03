@@ -51,15 +51,11 @@ class UserLog extends React.Component {
                     delete log.action;
                     return log;
                 });
-                this.setState({ initialLogs: logs, logs: logs }, () => {
-                    console.log(this.state.logs);
-                })
-            })
+                this.setState({ initialLogs: logs, logs: logs }, () => {})})
             .catch(err => console.log(err));
     }
 
     handleChange = (pagination, filters, sorter) => {
-        console.log('Various parameters', pagination, filters, sorter);
         this.setState({
             filteredInfo: filters,
             sortedInfo: sorter,
@@ -121,7 +117,6 @@ class UserLog extends React.Component {
     });
 
     handleSearch = (selectedKeys, confirm, dataIndex) => {
-        console.log(this.state);
         confirm();
         this.setState({
             searchText: selectedKeys[0],
@@ -145,7 +140,6 @@ class UserLog extends React.Component {
             }
         }
 
-        // filtriranje
         let newLog = this.state.logs.filter((log) => {
             for (let element of filtered) {
                 if (!log[element.key].toString().toLowerCase().includes(element.value)) {
@@ -155,7 +149,6 @@ class UserLog extends React.Component {
             return true;
         });
 
-        // sortiranje
         if (this.state.sortedInfo !== null) {
             if (this.state.sortedInfo.order) {
                 key = this.state.sortedInfo.columnKey

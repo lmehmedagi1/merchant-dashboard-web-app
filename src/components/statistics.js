@@ -149,9 +149,8 @@ class Statistics extends React.Component{
     
     //            orange     blue       red        green      purple     yellow     dark green black
     let colors = ['#DAA520', '#7CB9E8', '#FF0800', '#00FF40', '#8806CE', '#FFD300', '#3B7A57', '#000000'];
-    let backgroundColors = []; // mozemo i na hover pojacat boje myb
+    let backgroundColors = []; 
 
-    // map for easier access to data
     let productsMap = new Map();
 
     let options = {
@@ -167,7 +166,6 @@ class Statistics extends React.Component{
 
           let receiptItems = trenutniRacuni[j].receiptItems;
 
-          console.log("IMA RACUNA ", receiptItems); 
           for (let k = 0; k < receiptItems.length; k++) {
             if (!productsMap.has(receiptItems[k].productName)) {
               productsMap.set(receiptItems[k].productName, 0);
@@ -181,18 +179,11 @@ class Statistics extends React.Component{
         }
     }
 
-    console.log(productsMap);
-
     let sortedMap = new Map([...productsMap].sort((a, b) => {
         return a[1] < b[1];
     }));
 
-    
-    console.log(sortedMap);
-
-
     for (const [key, value] of sortedMap.entries()) {
-        console.log(key, value);
         labels.push(key);
         dataValues.push(value);
         backgroundColors.push(colors[i%8]);
@@ -213,27 +204,23 @@ class Statistics extends React.Component{
     let trenutneKase = this.state.cashRegisters.data;
 
     let chartData = [];
-    let labels    = []; // employees are the same for every cash register
+    let labels    = []; 
     
     //            orange     blue       red        green      purple     yellow     dark green black
     let colors = ['#DAA520', '#7CB9E8', '#FF0800', '#00FF40', '#8806CE', '#FFD300', '#3B7A57', '#000000'];
-    let backgroundColors = []; // mozemo i na hover pojacat boje myb
+    let backgroundColors = []; 
 
-
-    // define labels and colors
     for (let i = 0; i < trenutniUposlenici.length; i++) {
       labels.push(trenutniUposlenici[i].name + " " + trenutniUposlenici[i].surname);
       backgroundColors.push(colors[i%8]);
     }
 
-    // define options and datasets
     for (let i = 0; i < trenutneKase.length; i++) {
       let options = {
         title:  { display: true, text: trenutneKase[i].name },
         legend: { display: true, position: 'right' }
       };
 
-      // map for easier access to data
       let employeesMap = new Map();
 
       for (let i = 0; i < trenutniUposlenici.length; i++) {
@@ -308,7 +295,7 @@ class Statistics extends React.Component{
               fill: false,
               lineTension: 0.8,
               backgroundColor: 'rgba(75,192,192,0.4)',
-              borderColor: boje[i%4], //GoldenRod
+              borderColor: boje[i%4], 
               borderCapStyle: 'butt',
               borderDash: [],
               borderDashOffset: 0.0,

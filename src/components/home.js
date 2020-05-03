@@ -49,8 +49,6 @@ class Home extends React.Component {
         notifications: []
     };
 
-    
- 
     constructor(props) {
         super(props);
         this.getOffices();
@@ -204,7 +202,6 @@ class Home extends React.Component {
             <div id="kalendarMain">
             <Calendar fullscreen={false}/>
             </div>
- 
         </div>
  
         <div id="notes">
@@ -214,10 +211,5 @@ class Home extends React.Component {
     );
     }
 };
-
-/*
-const rootElement = document.getElementById("root");
-ReactDOM.render( <Home/> , rootElement);
-*/
-       
+ 
 export default Home;

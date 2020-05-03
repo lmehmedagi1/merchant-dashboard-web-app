@@ -90,7 +90,7 @@ class ShopProduct extends React.Component {
         "products": nizZahtjeva
       }, 
       { headers: { Authorization: 'Bearer ' + getToken()}}).then((response) => {
-        if (response.data.statusCode !== 200) {
+        if (response.data.statusCode !== 201) {
           message.error("Something went wrong!");
           return;
         }
@@ -235,7 +235,6 @@ class ShopProduct extends React.Component {
   onChangeQuantity = id => value => {
     if (value == null || value == '') return;
     mapaZahtjeva.set(id,value);
-    console.log(mapaZahtjeva);
   }
 
   searchProducts(value) {
@@ -384,9 +383,5 @@ class ShopProduct extends React.Component {
   }
 }
 
-/*
-const rootElement = document.getElementById("root");
-ReactDOM.render(<ShopProduct />, rootElement);
-*/
 
 export default ShopProduct;

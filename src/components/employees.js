@@ -1,11 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import '../App.css';
 import { getToken } from '../auth';
 import Axios from 'axios';
 import './employees.css';
 import { Table, Form, Input, Button } from 'antd';
-import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
 
 const data = [];
 const URL = 'https://main-server-si.herokuapp.com/api/employees';
@@ -309,10 +308,5 @@ class Employees extends React.Component {
         );
     }
 };
-
-/*
-const rootElement = document.getElementById("root");
-ReactDOM.render( <Employees/> , rootElement);
-*/
 
 export default Employees;

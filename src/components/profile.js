@@ -1,8 +1,8 @@
 import React from 'react';
-  import { getUser } from '../auth';
-  import '../App.css';
-  import { Card } from 'antd'
-  import 'antd/dist/antd.css';
+import { getUser } from '../auth';
+import '../App.css';
+import { Card } from 'antd'
+import 'antd/dist/antd.css';
 
 
   let user = getUser();
