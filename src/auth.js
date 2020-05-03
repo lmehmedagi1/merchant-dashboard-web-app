@@ -28,20 +28,6 @@ export const setUserSession = (token, user) => {
   localStorage.setItem('user', JSON.stringify(user));
 }
 
-// keep all current notifications in local storage
-export const getNotifications = () => {  
-  const notificationsStr = localStorage.getItem('notifications');
-  console.log("Ucitavam ", notificationsStr);
-  if (notificationsStr) return JSON.parse(notificationsStr);
-  else return [];
-}
-
-export const setNotifications = (notifications) => { 
-  console.log("Dodajem ", notifications);
-  localStorage.setItem('notifications', JSON.stringify(notifications));
-}
-
-
 class Auth extends React.Component {
     constructor() {
       super();

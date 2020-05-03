@@ -2,11 +2,9 @@ import React from 'react';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import './notifications.css';
-import {setNotifications} from './../auth.js';
 import { Link } from 'react-router-dom';
 
 let socket, stompClient;
-let currentNotification = "";
 let allCurrentNotifications = [];
 
 export const getNotifications = () => {
@@ -23,7 +21,7 @@ class Notifications extends React.Component {
         isAnimating: false,
         mute: false,
         allNotifications: []
-      }
+    }
 
     constructor(props) {
         super(props);
@@ -45,13 +43,9 @@ class Notifications extends React.Component {
             stompClient.subscribe('/topic/merchant_dashboard', (notif) => {
 
                 let e = JSON.parse(notif.body);
-                currentNotification = e.payload.description;
-
                 let oldNotifications = this.state.allNotifications;
                 oldNotifications.push(e);
                 this.setState({allNotifications: oldNotifications});
-                setNotifications(oldNotifications);
-
                 allCurrentNotifications = oldNotifications;
 
                 this.notify();
