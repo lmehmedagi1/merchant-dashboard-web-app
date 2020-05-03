@@ -67,7 +67,7 @@ const Recover = (props) => {
             <div id="okvir">
                  <div id="loginforma">
                     <h2>Merchant Dashboard Login</h2>
-                    <article class="mw7 center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
+                    <article className="mw7 center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
                     
                     <Form id="forma"
                     name="normal_login"
@@ -152,7 +152,7 @@ const Recover = (props) => {
             <div id="okvir">
                 <div id="loginforma">
                     <h2>Merchant Dashboard Login</h2>
-                    <article class="mw7 center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
+                    <article className="mw7 center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
                     
                     <Form id="forma"
                     name="normal_login"
@@ -167,12 +167,6 @@ const Recover = (props) => {
                     </Form.Item>
                     <Form.Item
                         name="email"
-                        rules={[
-                        {
-                            required: true,
-                            message: 'Please input your Email!',
-                        },
-                        ]}
                         rules={[
                             {
                                 required: true,

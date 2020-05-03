@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import InfiniteScroll from 'react-infinite-scroller';
 import {Button, Popconfirm, Spin, InputNumber, TreeSelect, Card, List, DatePicker, Input, Tabs, message} from 'antd';
@@ -7,6 +6,7 @@ import { getToken } from '../auth';
 import Axios from 'axios';
 import {QuestionCircleOutlined, DollarOutlined, BarcodeOutlined, FieldNumberOutlined, NumberOutlined } from '@ant-design/icons';
 import '../App.css';
+import './notifications.css';
 
 
 const { Search } = Input;
@@ -35,8 +35,6 @@ datum = dd + "." + mm + "." + yyyy;
 
 let startDate = '01.01.2000', endDate = datum;
 let nizDatumaLabel = [];
-
-var intervalID = setInterval(function () { petMinutaProslo = true; }, 300000);
 
 var IDposlovnice = -1;
 
@@ -76,21 +74,20 @@ class ShopProduct extends React.Component {
     requestProducts: [],
   };
 
-  potvrda = async () => {
-    //IDposlovnice ... officeId 
-    let nizZahtjeva = [];
-    if(mapaZahtjeva.size == 0) {
-      message.error("Trying to send zero products!");
-      return;
-    }
-    for (let [k, v] of mapaZahtjeva) 
-      nizZahtjeva.push({"id": k, "quantity": v});
-    let gotovo = await Axios
-      .post('https://main-server-si.herokuapp.com/api/',
+  potvrda = () => {
+      let nizZahtjeva = [];
+      if(mapaZahtjeva.size === 0) {
+        message.error("Trying to send zero products!");
+        return;
+      }
+      for (let [k, v] of mapaZahtjeva) 
+        nizZahtjeva.push({"id": k, "quantity": v});
+    
+      Axios
+      .post('https://main-server-si.herokuapp.com/api/merchant_dashboard/inventory_requests',
       {
-        /* "officeId": IDposlovnice,
-            "products": nizZahtjeva,
-        */
+        "officeId": IDposlovnice,
+        "products": nizZahtjeva
       }, 
       { headers: { Authorization: 'Bearer ' + getToken()}}).then((response) => {
         if (response.data.statusCode !== 200) {
@@ -103,7 +100,7 @@ class ShopProduct extends React.Component {
 
   cancel = async () => {}
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     trenutnoOdabrano = '';
     this.fetchShops(async res => {
       this.setState({ treeData: [] });
@@ -166,11 +163,11 @@ class ShopProduct extends React.Component {
     nizPrijeSearcha = null;
     this.setState({ loading: true });
     trenutnoOdabrano = value;
-    if (trenutnoOdabrano == '') {
+    if (trenutnoOdabrano === '') {
       this.setState({ loading: false });
       return;
     }
-    if (petMinutaProslo == true) {
+    if (petMinutaProslo === true) {
       await this.fetchProducts();
       await this.fetchReceipts(startDate, endDate);
       petMinutaProslo = false;
@@ -179,7 +176,8 @@ class ShopProduct extends React.Component {
     keyMapa = [];
     let idKasa = [];
     let x = value[0];
-    if (x == "p") {
+    if (x === "p") {
+      IDposlovnice = value.slice(2);
       let kase = await Axios
         .get(`https://main-server-si.herokuapp.com/api/business/offices/${value.slice(2)}/cashRegisters`, { headers: { Authorization: 'Bearer ' + getToken() } });
       for (let j = 0; j < kase.data.length; j++)
@@ -300,6 +298,7 @@ class ShopProduct extends React.Component {
           <Search style={{ width: '280px' }} placeholder="Input product name" onSearch={value => this.searchProducts(value)} enterButton />
         </div>
         <br/>
+        <div id="taboviZahtjeva">
         <div className="card-container">
           <Tabs type="card" onChange={this.newTabSelected}>
             <TabPane tab="Products" key="products">
@@ -332,7 +331,7 @@ class ShopProduct extends React.Component {
             <TabPane tab="Request for products" key="requests">   
               <div>
               <Popconfirm
-                title="Are you sure you want to send this type of request?" icon={<QuestionCircleOutlined style={{ color: 'blue' }}/>}
+                title="Are you sure you want to send this request?" icon={<QuestionCircleOutlined style={{ color: 'blue' }}/>}
                 onConfirm={this.potvrda}
                 onCancel={this.cancel}
                 okText="Yes"
@@ -380,12 +379,14 @@ class ShopProduct extends React.Component {
             <br/>
             </div>
       </div>
+      </div>
     );
   }
 }
 
+/*
 const rootElement = document.getElementById("root");
-
 ReactDOM.render(<ShopProduct />, rootElement);
+*/
 
 export default ShopProduct;

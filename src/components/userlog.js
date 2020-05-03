@@ -24,7 +24,7 @@ class UserLog extends React.Component {
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.getLogs();
     }
 

@@ -1,13 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import InfiniteScroll from 'react-infinite-scroller';
-import {Popconfirm, message, Input, Calendar, List, Menu, Dropdown, Button, Spin, Card  } from 'antd';
-import { QuestionCircleOutlined, MailOutlined, EllipsisOutlined, MailTwoTone, HourglassTwoTone, EnvironmentTwoTone, PhoneTwoTone} from '@ant-design/icons';
+import { message, Input, Calendar, List, Spin, Card  } from 'antd';
+import { MailOutlined, MailTwoTone, HourglassTwoTone, EnvironmentTwoTone, PhoneTwoTone} from '@ant-design/icons';
 import { getUser, getToken } from '../auth';
+import { getNotifications } from './notifications.js';
 import '../App.css';
 import './main-page.css';
 import axios from 'axios';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { Link } from 'react-router-dom';
 
 const { TextArea } = Input; 
 const onChange = e => {};
@@ -24,7 +25,7 @@ if (getUser() != null && getUser().name != null && getUser().surname != null) {
     username = getUser().name + " " + getUser().surname;
     cardTitle = username + "'s main bussiness";
 }
-   
+
 class Home extends React.Component {
     potvrda = async () => {
         ids = [];
@@ -45,11 +46,13 @@ class Home extends React.Component {
         data: [],
         loading: false,
         hasMore: true,
+        notifications: []
     };
+
+    
  
-    constructor() {
-        super();
-        this.showMessages();
+    constructor(props) {
+        super(props);
         this.getOffices();
         this.getMainOffice();
     }
@@ -57,15 +60,25 @@ class Home extends React.Component {
     componentDidMount() {
         this.getOffices();
         this.getMainOffice();
-      }
+        this.setState({notifications: getNotifications()});
+        this.showMessages();
+
+        setInterval(() => { 
+            let noveNotifikacije = getNotifications().reverse();
+            for (let i=0; i<noveNotifikacije.length; i++) {
+                let action = noveNotifikacije[i].payload.action;
+                if (action.includes("ire"))
+                    noveNotifikacije[i].location = '/employees';
+                else if (action.includes("_office"))
+                    noveNotifikacije[i].location = '/shops';
+                else 
+                    noveNotifikacije[i].location = '/products';
+            }
+            this.setState({notifications: noveNotifikacije}); 
+            this.showMessages();
+        }, 10000);
+    }
  
-    menu = (
-        <Menu onClick={(e) => {this.markMessage(e)}}>
-            <Menu.Item key="2">
-            <div id="porukaDelete"> Delete </div>
-            </Menu.Item>
-        </Menu>
-    );
     
     getOffices() {
         axios.get('https://main-server-si.herokuapp.com/api/business/offices', { headers: { Authorization: 'Bearer ' + getToken() } })
@@ -97,10 +110,6 @@ class Home extends React.Component {
     });
     };
 
-    componentDidMount() {
-        this.showMessages();
-    }
- 
     handleInfiniteOnLoad = () => {
         let { data } = this.state;
         this.setState({
@@ -116,13 +125,6 @@ class Home extends React.Component {
         }
         this.showMessages();
       };
- 
- 
-    ispisiPoruku = (hired, name, surname, time) => {
-        if (hired)
-          return name + " " + surname + " was hired at " + time + ".";
-        return name + " " + surname + " was fired at " + time + ".";
-    }
  
     showMessages = () => {
         axios
@@ -145,42 +147,7 @@ class Home extends React.Component {
         });
     };
  
-    buttonClick = id => {
-        clickedNotificationID = id;
-        this.menu = (
-            <Menu onClick={(e) => {this.markMessage(e)}}>
-                <Menu.Item key="2">
-                <div id="porukaDelete">
-                Delete
-                </div>
-                </Menu.Item>
-            </Menu>
-        );
-    }
- 
-    markMessage = (menuKey) => {
-        let notificationURL = `https://main-server-si.herokuapp.com/api/notifications/${clickedNotificationID}`;
-        if (menuKey.key == "2") {
-            axios
-            .delete(notificationURL, { headers: { 'Authorization': AuthStr } }, {})
-            .then((response) => {
-                if (response.data.length == 0) {
-                    message.error("Something went wrong!");
-                    return;
-                }
-                else 
-                    this.showMessages();
-
-            }).catch(error => {
-                message.error("Something went wrong!");
-            });
-        }
- 
-        
-    }
- 
     render() {
-       
     return (
         <div id = "mainPageContent">
         <div id="welcomeiBusiness">
@@ -210,20 +177,18 @@ class Home extends React.Component {
             >
             <List id="listaNotifikacija"
                 itemLayout="horizontal"
-                dataSource={this.state.data}
+                dataSource={this.state.notifications}
                 renderItem={item => (
-                <List.Item key={item.id}>
+                <List.Item>
+                    <Link to={item.location}>
+                    <div style={{"cursor": "pointer", "width": "100%"}} >
                     <MailOutlined id = "ikonaNotifikacije"/>
                     <List.Item.Meta
-                        title={item.date}
-                        description={this.ispisiPoruku(item.hired, item.employee.name, item.employee.surname, item.time)}
+                        title={item.type}
+                        description={item.payload.description}
                     />
-                    <div  id="components-dropdown-dmo-dropdown-button">
-                    <Dropdown overlay={this.menu} placement="bottomRight" onClick={() => {this.buttonClick(item.id)}} trigger='click'>
-                        <Button><EllipsisOutlined /></Button>
-                    </Dropdown>
-                       
                     </div>
+                    </Link>
                 </List.Item>
                 )}
             >
@@ -235,15 +200,6 @@ class Home extends React.Component {
             </List>
             </InfiniteScroll>
             <hr/>
-            <Popconfirm
-                title="Are you sure you want to delete all notifications?" icon={<QuestionCircleOutlined style={{ color: 'red' }}/>}
-                onConfirm={this.potvrda}
-                onCancel={this.cancel}
-                okText="Yes"
-                cancelText="No"
-            >
-                <a href="#">Delete all</a>
-            </Popconfirm>
             </div>
             <div id="kalendarMain">
             <Calendar fullscreen={false}/>
@@ -258,9 +214,10 @@ class Home extends React.Component {
     );
     }
 };
- 
+
+/*
 const rootElement = document.getElementById("root");
 ReactDOM.render( <Home/> , rootElement);
- 
+*/
        
 export default Home;

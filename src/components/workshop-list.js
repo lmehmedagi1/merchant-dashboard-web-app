@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Input, Button, message, ReactDOM, Alert} from 'antd';
+import { Table, Input, Button, message } from 'antd';
 import { DeleteOutlined, SearchOutlined, CheckSquareOutlined } from '@ant-design/icons';
 import Axios from 'axios';
 import { getToken } from '../auth.js';
@@ -105,7 +105,7 @@ const getCashRegisterData = (id) => {
         kase += "<hr></hr><p> Total daily traffic : " + totalDaily.toFixed(2) + " KM </p>";
         kase += "<p> Total traffic : " + totalTotal.toFixed(2) + " KM </p>";
         kase += "</div>";
-        if (response.data.length == 0)
+        if (response.data.length === 0)
           document.getElementById(id).innerHTML ="No data";
         else
           document.getElementById(id).innerHTML = kase;
@@ -135,7 +135,7 @@ class Workshop extends React.Component {
       searchedColumn: '',
     }
   }
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.getWorkshops();
     this.getMainOffice();
   }
@@ -187,7 +187,7 @@ class Workshop extends React.Component {
   }
 
   setMainOffice(oficeID) {
-    if (IDMainOffice == oficeID) {
+    if (IDMainOffice === oficeID) {
       confirmAlert(alreadyMO);
     }
     else {

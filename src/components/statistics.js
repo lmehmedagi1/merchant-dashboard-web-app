@@ -93,11 +93,11 @@ class Statistics extends React.Component{
   onChange = id => {
     nazivPoslovnice = id;
 
-    if (nizDatumaLabel.length == 0) {
+    if (nizDatumaLabel.length === 0) {
       message.error('No date selected!');
       return;
     }
-    if(nazivPoslovnice == '') {
+    if(nazivPoslovnice === '') {
       message.error('No shop selected!');
       return;
     }
@@ -163,7 +163,7 @@ class Statistics extends React.Component{
       idKasa.push(trenutneKase[j].id);
 
     for (let j = 0; j < trenutniRacuni.length; j++) {
-        if (idKasa.includes(trenutniRacuni[j].cashRegisterId)  && trenutniRacuni[j].officeId == nazivPoslovnice) {
+        if (idKasa.includes(trenutniRacuni[j].cashRegisterId)  && trenutniRacuni[j].officeId === nazivPoslovnice) {
 
           let receiptItems = trenutniRacuni[j].receiptItems;
 
@@ -242,7 +242,7 @@ class Statistics extends React.Component{
 
       let datasets  = [];
       for (let j = 0; j < trenutniRacuni.length; j++) {
-        if (trenutniRacuni[j].cashRegisterId == trenutneKase[i].id && trenutniRacuni[j].officeId == nazivPoslovnice) {
+        if (trenutniRacuni[j].cashRegisterId === trenutneKase[i].id && trenutniRacuni[j].officeId === nazivPoslovnice) {
           let oldAmount = employeesMap.get(trenutniRacuni[j].username);
           let newAmount = trenutniRacuni[j].totalPrice; 
           employeesMap.set(trenutniRacuni[j].username, this.round(oldAmount+newAmount, 2));
@@ -282,7 +282,7 @@ class Statistics extends React.Component{
         mapaNovca.set(nizDatumaLabel[datum],iznos);
 
       for (let i = 0; i < filtriraniRacuni.length; i++) {
-        if (filtriraniRacuni[i].cashRegisterId == trenutneKase[k].id  && filtriraniRacuni[i].officeId == nazivPoslovnice) {
+        if (filtriraniRacuni[i].cashRegisterId === trenutneKase[k].id  && filtriraniRacuni[i].officeId === nazivPoslovnice) {
           let date = moment(filtriraniRacuni[i].timestamp).format("DD.MM.YYYY");
           let oldInfo = mapaNovca.get(date);
           let noviIznos = oldInfo+filtriraniRacuni[i].totalPrice;
@@ -353,15 +353,15 @@ class Statistics extends React.Component{
   newTabSelected = key => {
     currentTab = key;
 
-    if (this.state.receipts.length == 0 || this.state.cashRegisters.length == 0 || this.state.employees.length == 0) {
+    if (this.state.receipts.length === 0 || this.state.cashRegisters.length === 0 || this.state.employees.length === 0) {
       return;
     }
 
-    if (currentTab == "cashRegisters") 
+    if (currentTab === "cashRegisters") 
       this.cashRegistersTabSelected();
-    else if (currentTab == "employees") 
+    else if (currentTab === "employees") 
       this.employeesTabSelected();
-    else if (currentTab == "products") 
+    else if (currentTab === "products") 
       this.productsTabSelected();
   }
 
@@ -399,6 +399,7 @@ class Statistics extends React.Component{
         </Select>
         </div>
         </div>
+        <div id="statistikaTabovi">
         <div className="card-container">
           <Tabs type="card" onChange={this.newTabSelected}>
             <TabPane tab="Cash registers" key="cashRegisters">
@@ -446,6 +447,7 @@ class Statistics extends React.Component{
               </div>
             </TabPane>
           </Tabs>
+        </div>
         </div>
       </div>
     );
