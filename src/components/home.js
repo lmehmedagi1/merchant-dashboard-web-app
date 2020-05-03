@@ -13,34 +13,18 @@ import { Link } from 'react-router-dom';
 const { TextArea } = Input; 
 const onChange = e => {};
 const AuthStr = 'Bearer ' + (getToken());
-let URL = 'https://main-server-si.herokuapp.com/api/notifications/unread';
-let clickedNotificationID = "";
-let cardTitle = "";
-let glavnaPoslovnica = {};
-let svePoslovnice = [];
 
-let ids = [];
-let username = "";
+let cardTitle        = "";
+let glavnaPoslovnica = {};
+let svePoslovnice    = [];
+let username         = "";
+
 if (getUser() != null && getUser().name != null && getUser().surname != null) {
     username = getUser().name + " " + getUser().surname;
     cardTitle = username + "'s main bussiness";
 }
 
 class Home extends React.Component {
-    potvrda = async () => {
-        ids = [];
-        for (let i = 0; i < this.state.data.length; i++) {
-            ids.push(this.state.data[i].id);
-        }
-        for (let i = 0; i < ids.length; i++) {
-            clickedNotificationID = ids[i];
-            let gotovo = await axios
-            .delete(`https://main-server-si.herokuapp.com/api/notifications/${clickedNotificationID}`,{ headers: { 'Authorization': AuthStr }}, {});
-            this.showMessages();
-        }
-            message.success("Deleted all notifications!");
-      }
-      cancel = async () => {}
 
     state = {
         data: [],
@@ -58,11 +42,9 @@ class Home extends React.Component {
     componentDidMount() {
         this.getOffices();
         this.getMainOffice();
-        this.setState({notifications: getNotifications()});
-        this.showMessages();
 
         setInterval(() => { 
-            let noveNotifikacije = getNotifications().reverse();
+            let noveNotifikacije = getNotifications();
             for (let i=0; i<noveNotifikacije.length; i++) {
                 let action = noveNotifikacije[i].payload.action;
                 if (action.includes("ire"))
@@ -73,7 +55,6 @@ class Home extends React.Component {
                     noveNotifikacije[i].location = '/products';
             }
             this.setState({notifications: noveNotifikacije}); 
-            this.showMessages();
         }, 10000);
     }
  
@@ -92,15 +73,14 @@ class Home extends React.Component {
     .then((response) => {
         if (response.data.length === 0) return;
         for (let i = 0; i < svePoslovnice.length; i++) {
-            if (svePoslovnice[i].id == response.data.mainOfficeId) {
-                glavnaPoslovnica.location = svePoslovnice[i].address + ", " + svePoslovnice[i].city + ", " + svePoslovnice[i].country;
-                glavnaPoslovnica.email = svePoslovnice[i].email;
+            if (svePoslovnice[i].id === response.data.mainOfficeId) {
+                glavnaPoslovnica.location    = svePoslovnice[i].address + ", " + svePoslovnice[i].city + ", " + svePoslovnice[i].country;
+                glavnaPoslovnica.email       = svePoslovnice[i].email;
                 glavnaPoslovnica.phoneNumber = svePoslovnice[i].phoneNumber;
-                glavnaPoslovnica.workHours = svePoslovnice[i].workDayStart + " - " + svePoslovnice[i].workDayEnd;
+                glavnaPoslovnica.workHours   = svePoslovnice[i].workDayStart + " - " + svePoslovnice[i].workDayEnd;
                 break;
             }
         }
-        console.log(glavnaPoslovnica);
     }).catch(error => {
         if (window.location.href == '\app')
              message.error("Something went wrong!");
@@ -121,29 +101,8 @@ class Home extends React.Component {
           });
           return;
         }
-        this.showMessages();
-      };
- 
-    showMessages = () => {
-        axios
-        .get(URL, { headers: { 'Authorization': AuthStr } })
-        .then((response) => {
-            let nizDatuma = response.data;
-            nizDatuma.sort(function(a, b){
-                a = a.date.split('.');
-                b = b.date.split('.');
-                return b[2] - a[2] || b[1] - a[1] || b[0] - a[0];
-            });
-            this.setState({
-                data: response.data,
-                loading: false
-            });
-        }).catch(error => {
-            if (window.location.href == '\app')
-                 message.error("Something went wrong!");
-            console.log(error);
-        });
     };
+
  
     render() {
     return (

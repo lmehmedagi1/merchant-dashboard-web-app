@@ -9,29 +9,29 @@ import '../App.css';
 import './notifications.css';
 
 
-const { Search } = Input;
+const { Search }  = Input;
 const { TabPane } = Tabs;
 
 let mapaProizvoda = new Map();
+let mapaZahtjeva  = new Map();
 let keyMapa = [];
 let trenutnoOdabrano = '';
-let petMinutaProslo = true;
 let nizPrijeSearcha;
 let currentTab = "Products";
-let mapaZahtjeva = new Map();
+
 
 const { RangePicker } = DatePicker;
-const dateFormat = "DD.MM.YYYY";
+const dateFormat      = "DD.MM.YYYY";
 
-const Moment = require('moment');
+const Moment      = require('moment');
 const MomentRange = require('moment-range');
-const moment = MomentRange.extendMoment(Moment);
+const moment      = MomentRange.extendMoment(Moment);
 
 var datum = new Date();
-var dd = String(datum.getDate()).padStart(2, '0');
-var mm = String(datum.getMonth() + 1).padStart(2, '0');
-var yyyy = datum.getFullYear();
-datum = dd + "." + mm + "." + yyyy;
+var dd    = String(datum.getDate()).padStart(2, '0');
+var mm    = String(datum.getMonth() + 1).padStart(2, '0');
+var yyyy  = datum.getFullYear();
+datum     = dd + "." + mm + "." + yyyy;
 
 let startDate = '01.01.2000', endDate = datum;
 let nizDatumaLabel = [];
@@ -121,6 +121,8 @@ class ShopProduct extends React.Component {
 
       }
       this.setState({ treeData: noviNiz });
+      await this.fetchProducts();
+      mapaZahtjeva = new Map();
     });
   }
 
@@ -166,11 +168,6 @@ class ShopProduct extends React.Component {
     if (trenutnoOdabrano === '') {
       this.setState({ loading: false });
       return;
-    }
-    if (petMinutaProslo === true) {
-      await this.fetchProducts();
-      await this.fetchReceipts(startDate, endDate);
-      petMinutaProslo = false;
     }
     mapaProizvoda = new Map();
     keyMapa = [];
@@ -238,7 +235,7 @@ class ShopProduct extends React.Component {
   }
 
   searchProducts(value) {
-    if (value != '') {
+    if (value !== '') {
       if(nizPrijeSearcha == null)
         nizPrijeSearcha = this.state.prodaniProizvodi;
       let noviNiz = [];
@@ -250,26 +247,12 @@ class ShopProduct extends React.Component {
       this.setState({ prodaniProizvodi: noviNiz });
       return;
     }
-    if(nizPrijeSearcha != null)
-    this.setState({ prodaniProizvodi: nizPrijeSearcha });
-    
-  }
-
-  productsTabSelected = () => {
-
-  }
-
-  requestsTabSelected = () => {
-
+    if (nizPrijeSearcha !== null)
+      this.setState({ prodaniProizvodi: nizPrijeSearcha });
   }
 
   newTabSelected = key => {
     currentTab = key;
-
-    if (currentTab == "products") 
-      this.productsTabSelected();
-    else if (currentTab == "requests") 
-      this.requestsTabSelected();
   }
 
   render() {
