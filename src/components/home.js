@@ -55,7 +55,7 @@ class Home extends React.Component {
                     noveNotifikacije[i].location = '/products';
             }
             this.setState({notifications: noveNotifikacije}); 
-        }, 10000);
+        }, 1000);
     }
  
     
@@ -93,6 +93,7 @@ class Home extends React.Component {
         this.setState({
           loading: true,
         });
+        this.getMainOffice();
         if (data.length > 14) {
           message.warning('Infinite List loaded all');
           this.setState({
@@ -112,7 +113,7 @@ class Home extends React.Component {
                 <h1>Welcome to your Merchant Dashboard, {username}!</h1>
             </div>
             <div id="mainBusiness">
-                <Card title={cardTitle} style={{ width: 400 }} hoverable={true}>
+                <Card title={cardTitle} style={{ width: 415 }} hoverable={true}>
                     <p><EnvironmentTwoTone /> Location: {glavnaPoslovnica.location}</p>
                     <p><HourglassTwoTone /> Working hours: {glavnaPoslovnica.workHours}</p>
                     <p> <MailTwoTone /> E-mail: {glavnaPoslovnica.email}</p>

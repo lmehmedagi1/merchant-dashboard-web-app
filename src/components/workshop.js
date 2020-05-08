@@ -16,7 +16,7 @@ const Workshop = () => {
                 <div id="dodavanjePoslovniceButton">
                     <Button 
                     onClick={() => { window.location.href='/addShop' }}
-                    type="dashed" block
+                    type="default" block
                     >
                         Add shop
                     </Button>

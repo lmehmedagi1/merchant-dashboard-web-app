@@ -11,7 +11,7 @@ let IDMainOffice = -1;
 
 const options = {
   title: 'Confirmation',
-  message: 'Do you really want to delete this workshop?',
+  message: 'Do you really want to delete this shop?',
   buttons: [
     {
       label: 'Yes',
