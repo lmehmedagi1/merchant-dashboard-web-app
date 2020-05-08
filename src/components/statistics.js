@@ -93,12 +93,12 @@ class Statistics extends React.Component{
   onChange = id => {
     nazivPoslovnice = id;
 
-    if (nizDatumaLabel.length === 0) {
-      message.error('No date selected!');
+    if (nazivPoslovnice === '') {
+      message.warning('No shop has been selected!');
       return;
     }
-    if(nazivPoslovnice === '') {
-      message.error('No shop selected!');
+    if (nizDatumaLabel.length === 0) {
+      message.warning('No date has been selected!');
       return;
     }
 
@@ -139,7 +139,10 @@ class Statistics extends React.Component{
 
     let trenutniRacuni = this.state.receipts.data;
     let trenutneKase   = this.state.cashRegisters.data;
-
+    if (trenutneKase.length === 0) {
+      message.error("There are no sold products in this shop!");
+      return;
+    }
     let chartData  = [];
     let labels     = []; 
     let dataValues = [];
@@ -202,7 +205,10 @@ class Statistics extends React.Component{
     let trenutniUposlenici = this.state.employees.data;
     let trenutniRacuni = this.state.receipts.data;
     let trenutneKase = this.state.cashRegisters.data;
-
+    if (trenutniUposlenici.length === 0) {
+      message.error("There are no employees in this shop!");
+      return;
+    }
     let chartData = [];
     let labels    = []; 
     
@@ -258,7 +264,10 @@ class Statistics extends React.Component{
 
     let labeleKasa      = [];
     let vrijednostiKasa = [];
-
+    if (trenutneKase.length === 0) {
+      message.error("There are no cash registers in this shop!");
+      return;
+    }
     for (let k=0; k<trenutneKase.length; k++) {
       labeleKasa.push(trenutneKase[k].name);
 
