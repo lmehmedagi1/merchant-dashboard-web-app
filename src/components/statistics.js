@@ -379,7 +379,7 @@ class Statistics extends React.Component{
         <div id = "selectShopStatistics">
         <Select
           showSearch
-          style={{ width: 276 }}
+          style={{ width: '20%' }}
           placeholder=" Select a shop "
           optionFilterProp="children"
           onChange={this.onChange}

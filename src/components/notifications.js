@@ -75,13 +75,13 @@ class Notifications extends React.Component {
 
         return (
             <div>
-
                 <Link to='/app'>
                     <div>       
                         <Notification
                         count={ count }
                         isAnimating={ isAnimating }
-                        mute={ mute }  />
+                        mute={ mute }
+                        />
                     </div>
                 </Link>
             
