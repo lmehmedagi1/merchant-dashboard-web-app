@@ -41,7 +41,7 @@ import './help.css';
       <List.Item>
         <List.Item.Meta
           avatar={<Avatar src="upitnik.png"/>}
-          title={<a>{item.title}</a>}
+          title={item.title}
           description={item.description}
         />
       </List.Item>

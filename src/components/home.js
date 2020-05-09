@@ -82,7 +82,7 @@ class Home extends React.Component {
             }
         }
     }).catch(error => {
-        if (window.location.href == '\app')
+        if (window.location.href === '\app')
              message.error("Something went wrong!");
         console.log(error);
     });
