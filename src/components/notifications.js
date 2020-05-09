@@ -56,6 +56,13 @@ class Notifications extends React.Component {
         });
     }
 
+    onBellClick() {
+        this.setState({
+            count: 0
+        });
+
+    }
+
     notify() {
         if (this.state.mute) {
             return null;
@@ -76,7 +83,7 @@ class Notifications extends React.Component {
         return (
             <div>
                 <Link to='/app'>
-                    <div>       
+                    <div onClick={() => { this.onBellClick(); }}>       
                         <Notification
                         count={ count }
                         isAnimating={ isAnimating }

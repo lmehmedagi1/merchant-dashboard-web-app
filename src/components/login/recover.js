@@ -118,6 +118,7 @@ const Recover = (props) => {
                         placeholder="Password"
                     />
                     </Form.Item>
+                    <p>Input the code we sent to your Email!</p>
                     <Form.Item
                         name="token"
                         rules={[
@@ -127,7 +128,6 @@ const Recover = (props) => {
                         },
                         ]}
                     >
-                    <p>Input the code we sent to your Email!</p>
                     <Input 
                         prefix={<SecurityScanOutlined className="site-form-item-icon" />} 
                         placeholder="Code"

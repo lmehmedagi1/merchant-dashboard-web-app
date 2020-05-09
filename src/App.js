@@ -21,22 +21,41 @@ import UserLog from './components/userlog';
 
 import Notifications from './components/notifications';
 
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Avatar } from 'antd';
 import './components/main-page.css';
-import { Avatar } from 'antd';
 import { SolutionOutlined, DashboardFilled, ShopOutlined, ShoppingCartOutlined, TeamOutlined, AreaChartOutlined, DesktopOutlined, ReadOutlined, QuestionCircleFilled, SettingFilled, CloseCircleFilled, UserOutlined } from '@ant-design/icons';
 import auth from "./auth";
 import { getUser } from "./auth";
 
+const checkChangedTabs = () => {
+  let href = window.location.href.split('/');
+  href = href[href.length - 1];
+  return href;
+}
 
 const { SubMenu } = Menu;
 const {Content, Sider } = Layout;
 let userName = "";
 if (getUser() != null && getUser().name != null) userName = getUser().name + " " + getUser().surname;
 
-
 class App extends React.Component {
 
+  state = {
+    currentLocation: ''
+  } 
+
+  clickedMenu = () => {
+    this.setState({ currentLocation: checkChangedTabs() });
+  }
+
+
+  componentDidMount() {
+    this.setState({ currentLocation: checkChangedTabs() });
+
+    setInterval(() => { 
+      this.setState({ currentLocation: checkChangedTabs() });
+    }, 500);
+  }
 
   render() {
 
@@ -58,7 +77,7 @@ class App extends React.Component {
               <Avatar size="large" style={{ paddingBottom: '10px' }} icon={<UserOutlined />} />
             </div>
             <div className="logo" />
-            <Menu theme="dark" mode="inline">
+            <Menu theme="dark" mode="inline" defaultSelectedKeys={['/' + this.state.currentLocation]} selectedKeys={['/' + this.state.currentLocation]} onClick={() => { this.clickedMenu(); }}>
               <SubMenu style={{ textAlign: 'center' }}
                 title={
                   <span id="imeKorisnika">
@@ -67,13 +86,13 @@ class App extends React.Component {
                 } >
 
                 <Menu.ItemGroup key='Username' style={{ textAlign: 'left' }}>
-                  <Menu.Item key='accSettings'>
+                  <Menu.Item key='/profile'>
                     <Link to='./profile'>
                       <SettingFilled />
                       <span className="nav-text">Profile</span>
                     </Link>
                   </Menu.Item>
-                  <Menu.Item key='userlog'>
+                  <Menu.Item key='/userlog'>
                     <Link to='./userlog'>
                       <SolutionOutlined />
                       <span className="nav-text">User log</span>
@@ -89,43 +108,43 @@ class App extends React.Component {
                     Log Out</Menu.Item>
                 </Menu.ItemGroup>
               </SubMenu>
-              <Menu.Item className="subMenuItem" key="1">
+              <Menu.Item className="subMenuItem" key="/app">
                 <Link to='./app'>
                   <DesktopOutlined />
                   <span className="nav-text">Dashboard</span>
                 </Link>
               </Menu.Item>
-              <Menu.Item className="subMenuItem" key="2">
+              <Menu.Item className="subMenuItem" key="/shops">
                 <Link to='/shops'>
                   <ShopOutlined />
                   <span className="nav-text">Shops</span>
                 </Link>
               </Menu.Item>
-              <Menu.Item className="subMenuItem" key="3">
+              <Menu.Item className="subMenuItem" key="/employees">
                 <Link to='/employees'>
                   <TeamOutlined />
                   <span className="nav-text">Employees</span>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="4" className="subMenuItem">
+              <Menu.Item key="/statistics" className="subMenuItem">
                 <Link to='./statistics'>
                   <AreaChartOutlined />
                   <span className="nav-text">Statistics</span>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="5" className="subMenuItem">
+              <Menu.Item key="/products" className="subMenuItem">
                 <Link to='./products'>
                   <ShoppingCartOutlined />
                   <span className="nav-text">Products</span>
                 </Link>
               </Menu.Item>
-              <Menu.Item style={{ position: 'absolute', bottom: '40px' }} key="6" className="subMenuItem">
+              <Menu.Item style={{ position: 'absolute', bottom: '40px' }} key="/help" className="subMenuItem">
                 <Link to="./help">
                   <QuestionCircleFilled />
                   <span className="nav-text">Help</span>
                 </Link>
               </Menu.Item>
-              <Menu.Item style={{ position: 'absolute', bottom: '0' }} key="7" className="subMenuItem">
+              <Menu.Item style={{ position: 'absolute', bottom: '0' }} key="/about" className="subMenuItem">
                 <Link to='./about'>
                   <ReadOutlined />
                   <span className="nav-text">About us</span>
