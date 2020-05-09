@@ -8,17 +8,15 @@ import axios from 'axios';
 let email = "";
 let newPassword = "";
 let token = "";
-
 const Recover = (props) => {
 
     const onFinishPassword = values => {
         newPassword = values.password;
         token = values.token;
-
         axios
         .post('https://main-server-si.herokuapp.com/api/user/savePassword', {
-            token: token,
-            newPassword: newPassword
+            newPassword: newPassword,
+            token: token
         }).then((response) => {
             if (response.data.length === 0) {
                 message.error("Something went wrong!");
@@ -114,14 +112,12 @@ const Recover = (props) => {
                         }),
                         ]}
                     >
-                        <Input.Password 
+                    <Input.Password 
                         prefix={<LockOutlined className="site-form-item-icon" />}
                         type="password"
                         placeholder="Password"
-                        />
+                    />
                     </Form.Item>
-    
-    
                     <Form.Item
                         name="token"
                         rules={[
@@ -131,10 +127,12 @@ const Recover = (props) => {
                         },
                         ]}
                     >
-                        <p>Input the code we sent to your Email!</p>
-                        <Input prefix={<SecurityScanOutlined className="site-form-item-icon" />} placeholder="Code" />
+                    <p>Input the code we sent to your Email!</p>
+                    <Input 
+                        prefix={<SecurityScanOutlined className="site-form-item-icon" />} 
+                        placeholder="Code"
+                    />
                     </Form.Item>
-                    
                     <Form.Item>
                         <Button type="primary" htmlType="submit" className="login-form-button" > 
                         Confirm

@@ -17,6 +17,7 @@ let mapaZahtjeva  = new Map();
 let keyMapa = [];
 let trenutnoOdabrano = '';
 let nizPrijeSearcha;
+let requestNizPrijeSearcha;
 let currentTab = "Products";
 
 
@@ -163,10 +164,12 @@ class ShopProduct extends React.Component {
 
   onChange = async value => {
     nizPrijeSearcha = null;
+    requestNizPrijeSearcha = null;
     this.setState({ loading: true });
     trenutnoOdabrano = value;
     if (trenutnoOdabrano === '') {
       this.setState({ loading: false });
+      message.warning('No shop or cash register has been selected!');
       return;
     }
     mapaProizvoda = new Map();
@@ -251,6 +254,23 @@ class ShopProduct extends React.Component {
       this.setState({ prodaniProizvodi: nizPrijeSearcha });
   }
 
+  searchProductsRequest(value) {
+    if (value !== '') {
+      if(requestNizPrijeSearcha == null)
+      requestNizPrijeSearcha = this.state.products;
+      let noviNiz = [];
+      for (let i = 0; i < requestNizPrijeSearcha.length; i++) {
+        if (requestNizPrijeSearcha[i].product.name.toLowerCase().includes(value.toLowerCase())) {
+          noviNiz.push(requestNizPrijeSearcha[i]);
+        }
+      }
+      this.setState({ products: noviNiz });
+      return;
+    }
+    if (requestNizPrijeSearcha !== null)
+      this.setState({ products: requestNizPrijeSearcha });
+  }
+
   newTabSelected = key => {
     currentTab = key;
   }
@@ -258,32 +278,35 @@ class ShopProduct extends React.Component {
   render() {
     return (
       <div>
-        <TreeSelect
-          style={{ width: '100%' }}
-          value={this.state.value}
-          dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-          treeData={this.state.treeData}
-          placeholder="Please select shop or cash register to display data"
-          treeDefaultExpandAll
-          onSelect={this.onChange}
-        />
-        <div>
-          <RangePicker style={{ margin: '10px' }}
+        <div id="naslovStatistics">
+        <h1>Products</h1>
+      </div>
+        <RangePicker style={{ margin: '10px' }}
             onChange={this.onChangeDate}
             name={['datum', 'range']}
             disabledDate={disabledDate}
             format={dateFormat}
             id='range'>
           </RangePicker>
-        </div>
         <div>
-          <Search style={{ width: '280px' }} placeholder="Input product name" onSearch={value => this.searchProducts(value)} enterButton />
+          <TreeSelect
+            style={{ width: '20%' }}
+            value={this.state.value}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            treeData={this.state.treeData}
+            placeholder="Select a shop or cash register"
+            treeDefaultExpandAll
+            onSelect={this.onChange}
+          />
         </div>
         <br/>
         <div id="taboviZahtjeva">
         <div className="card-container">
           <Tabs type="card" onChange={this.newTabSelected}>
             <TabPane tab="Products" key="products">
+            <div>
+              <Search style={{ width: '280px' }} placeholder="Input product name" onSearch={value => this.searchProducts(value)} enterButton />
+            </div>
             <div id="listaProizvoda">
             <List
               loading={this.state.loading}
@@ -308,9 +331,13 @@ class ShopProduct extends React.Component {
                 </List.Item>
               )}
             />
-        </div>
+              </div>
             </TabPane>
             <TabPane tab="Request for products" key="requests">   
+              <div>
+                <Search style={{ width: '280px', margin: '0 auto', marginBottom: '10 px'}} placeholder="Input product name" onSearch={value => this.searchProductsRequest(value)} enterButton />
+              </div>
+              <br/>  
               <div>
               <Popconfirm
                 title="Are you sure you want to send this request?" icon={<QuestionCircleOutlined style={{ color: 'blue' }}/>}
