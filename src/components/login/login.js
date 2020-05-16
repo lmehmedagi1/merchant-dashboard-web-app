@@ -5,8 +5,12 @@ import './login.css';
 import auth, { getUser } from "../../auth";
 import { Link } from "react-router-dom";
 
-const Login = (props) => {
-  const onFinish = values => {
+class Login extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  onFinish = values => {
     auth.login(() => {
         if (getUser().name)
           document.getElementById("imeKorisnika").textContent=getUser().name + " " + getUser().surname;
@@ -14,6 +18,7 @@ const Login = (props) => {
     }, values);
   };
 
+  render() {
   return (
     <div id="okvir">
     <div id="loginforma">
@@ -26,7 +31,7 @@ const Login = (props) => {
       initialValues={{
         remember: true,
       }}
-      onFinish={onFinish}
+      onFinish={this.onFinish}
     >
       <Form.Item
         name="username"
@@ -76,6 +81,7 @@ const Login = (props) => {
     </div>
     </div>
   );
+}
 };
 
 export default Login;
