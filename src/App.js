@@ -192,17 +192,4 @@ class App extends React.Component {
   );}
 }
 
-
-
-
-
-const rootElement = document.getElementById("root");
-ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-  rootElement
-);
-
-
 export default App;
