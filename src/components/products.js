@@ -72,6 +72,7 @@ class ShopProduct extends React.Component {
     allReceipts: [],
     prodaniProizvodi: new Map(),
     loading: false,
+    loadMore: false,
     requestProducts: [],
   };
 
@@ -273,6 +274,10 @@ class ShopProduct extends React.Component {
 
   newTabSelected = key => {
     currentTab = key;
+  }
+
+  handleInfiniteOnLoad = () => {
+    
   }
 
   render() {
