@@ -405,7 +405,7 @@ class Statistics extends React.Component{
                     renderItem={item => (
                     <List.Item key={item.id}>
                         <div id = "lineChartStatistics">
-                            <Line redraw={true} data={item.barData} options={item.barOptions}/>
+                            <Line data={item.barData} options={item.barOptions}/>
                         </div>
                     </List.Item>
                     )}
