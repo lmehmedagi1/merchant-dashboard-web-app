@@ -17,12 +17,14 @@
     "bizcharts": "^3.5.8",
     "chart": "^0.1.2",
     "chart.js": "^2.9.3",
+    "chromedriver": "^81.0.0",
     "customize-cra": "^0.9.1",
     "data-set": "^4.0.0",
     "jquery": "^3.4.1",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
     "mdbreact": "^4.25.5",
+    "mocha": "^7.1.2",
     "moment": "^2.24.0",
     "moment-range": "^4.0.2",
     "react": "^16.13.1",
@@ -38,6 +40,7 @@
     "react-test-renderer": "^16.13.1",
     "react-visibility-sensor": "^5.1.1",
     "reqwest": "^2.0.5",
+    "selenium-webdriver": "^4.0.0-alpha.7",
     "sockjs-client": "^1.4.0",
     "stompjs": "^2.3.3",
     "tachyons": "^4.11.1"
@@ -47,7 +50,8 @@
     "build": "react-app-rewired build",
     "test": "set CI=true && react-scripts test",
     "test_linux": "CI=true react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "testSelenium": "mocha seleniumTest.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -67,5 +71,17 @@
   "devDependencies": {
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2"
-  }
+  },
+  "description": "**Članovi tima**:\r 1. [Jasmin Bajrić](https://github.com/jbajric)\r 2. [Arslan Turkušić](https://github.com/aturkusic)\r 3. [Lejla Mehmedagić](https://github.com/lmehmedagi1)\r 4. [Venesa Šeremet](https://github.com/vseremet1)\r 5. [Sara Makešoska-Džebo](https://github.com/smakesoska1)\r 6. [Adna Ćatić](https://github.com/acatic2)",
+  "main": "config-overrides.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbajric/merchant-dashboard-web-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jbajric/merchant-dashboard-web-app/issues"
+  },
+  "homepage": "https://github.com/jbajric/merchant-dashboard-web-app#readme"
 }
