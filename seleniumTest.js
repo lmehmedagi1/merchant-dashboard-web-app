@@ -4,7 +4,7 @@ const assert = require('assert')
 require('chromedriver');
 
 describe('Successful login', function() {
-  this.timeout(30000)
+  this.timeout(120000)
   let driver
   let vars
   beforeEach(async function() {
