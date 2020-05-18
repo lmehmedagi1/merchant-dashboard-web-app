@@ -51,7 +51,7 @@
     "test": "set CI=true && react-scripts test",
     "test_linux": "CI=true react-scripts test",
     "eject": "react-scripts eject",
-    "testSelenium": "mocha seleniumTest.js"
+    "testSelenium": "mocha seleniumTest.js --timeout 10000"
   },
   "eslintConfig": {
     "extends": "react-app"
