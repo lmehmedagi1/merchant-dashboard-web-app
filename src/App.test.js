@@ -43,7 +43,7 @@ describe("Test", () => {
     let passwordInput =  wrapper.find("input").at(1).instance();
 
     usernameInput.value = "jasmin";
-    passwordInput.value = "novaa";
+    passwordInput.value = "novaaa";
 
     wrapper.find('button').simulate('click');
 
