@@ -29,7 +29,7 @@ function AddNewWorkshop(props)
         
         fetch(`https://main-server-si.herokuapp.com/api/notifications/office/open`, requestOptions)
           .then(result => {
-              message.success("Your request was successfully sent");
+              message.success("Your request was successfully sent ");
               window.location.href = '/shops';
             });
     }
