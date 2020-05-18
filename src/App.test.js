@@ -59,7 +59,7 @@ describe("Test", () => {
       let usernameInput = wrapper.find("input").first().instance();
       let passwordInput = wrapper.find("input").at(1).instance();
       usernameInput.value = "jasmin";
-      passwordInput.value = "nova";
+      passwordInput.value = "password";
       wrapper.find('button').simulate('click');
       setTimeout(() => {
         expect(usernameInput).not.toBeVisible();
