@@ -532,7 +532,7 @@
     }, {
       "id": "e2e7fde6-3e41-403d-b949-e302292c9b73",
       "comment": "",
-      "command": "waitForElementPresent",
+      "command": "waitForElementVisible",
       "target": "id=imeKorisnika",
       "targets": [
         ["id=imeKorisnika", "id"],
@@ -590,6 +590,13 @@
         ["xpath=//input", "xpath:position"]
       ],
       "value": "${KEY_ENTER}"
+    }, {
+      "id": "b43ce57f-f399-4825-b103-d9ad9ac15408",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "linkText=Denis",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "44ba64ea-b351-47ab-9151-8f5fb7b79865",
       "comment": "",
@@ -856,6 +863,13 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
+      "id": "b6edda89-d3eb-4f7e-99ea-e12a193b3f85",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.chartjs-render-monitor",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "12d106a4-fd83-4f14-b0b8-6f926944d478",
       "comment": "",
       "command": "assertElementPresent",
@@ -881,7 +895,7 @@
     "persistSession": false,
     "parallel": false,
     "timeout": 300,
-    "tests": []
+    "tests": ["a6a22272-7562-4144-8721-e4da59b5552c", "87fa499b-1bef-424a-8403-2bc0acb9ab6e", "1c3995bc-f18a-4f1b-ba6a-a124f29823c1", "1e54d244-a258-4deb-aa15-1b85a036ace2", "77254e71-ea04-432d-969d-ef88bbb52812", "e337bd65-822a-4330-b210-338c2585760c"]
   }],
   "urls": ["https://merchant-dashboard.herokuapp.com/"],
   "plugins": []
