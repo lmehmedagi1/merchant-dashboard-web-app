@@ -16,12 +16,11 @@ describe('Successful login', function() {
   })
   it('Successful login', async function() {
     await driver.get("https://merchant-dashboard.herokuapp.com/")
-    await driver.manage().window().setRect(696, 974)
+    await driver.manage().window().setRect(974, 696)
     await driver.findElement(By.id("normal_login_username")).click()
     await driver.findElement(By.id("normal_login_username")).sendKeys("merchant")
     await driver.findElement(By.id("normal_login_password")).sendKeys("nova")
     await driver.findElement(By.css(".ant-btn > span")).click()
-    await driver.wait(until.elementLocated(By.css(".ant-card-head-title")), 30000)
     {
       const elements = await driver.findElements(By.css(".notification-bell__bow"))
       assert(elements.length)
