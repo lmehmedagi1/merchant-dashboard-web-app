@@ -71,17 +71,5 @@
   "devDependencies": {
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2"
-  },
-  "description": "**Članovi tima**:\r 1. [Jasmin Bajrić](https://github.com/jbajric)\r 2. [Arslan Turkušić](https://github.com/aturkusic)\r 3. [Lejla Mehmedagić](https://github.com/lmehmedagi1)\r 4. [Venesa Šeremet](https://github.com/vseremet1)\r 5. [Sara Makešoska-Džebo](https://github.com/smakesoska1)\r 6. [Adna Ćatić](https://github.com/acatic2)",
-  "main": "config-overrides.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jbajric/merchant-dashboard-web-app.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jbajric/merchant-dashboard-web-app/issues"
-  },
-  "homepage": "https://github.com/jbajric/merchant-dashboard-web-app#readme"
+  }
 }
