@@ -68,7 +68,7 @@ class Home extends React.Component {
     };
 
     getMainOffice() {
-    let URL = `https://main-server-si.herokuapp.com/api/business/${1}/mainOffice`;
+    let URL = `https://main-server-si.herokuapp.com/api/business/${54}/mainOffice`;
     axios.get(URL, { headers: { 'Authorization': AuthStr } })
     .then((response) => {
         if (response.data.length === 0) return;
