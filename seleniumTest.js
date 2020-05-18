@@ -30,7 +30,7 @@ describe('Successful login', function() {
 })
 
 describe('Wrong password test', function() {
-  this.timeout(30000)
+  this.timeout(120000)
   let driver
   let vars
   beforeEach(async function() {
@@ -53,7 +53,7 @@ describe('Wrong password test', function() {
 })
 
 describe('Wrong username test', function() {
-  this.timeout(30000)
+  this.timeout(120000)
   let driver
   let vars
   beforeEach(async function() {
