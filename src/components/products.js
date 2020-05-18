@@ -179,6 +179,7 @@ class ShopProduct extends React.Component {
     let x = value[0];
     if (x === "p") {
       IDposlovnice = value.slice(2);
+      this.fetchProducts();
       let kase = await Axios
         .get(`https://main-server-si.herokuapp.com/api/business/offices/${value.slice(2)}/cashRegisters`, { headers: { Authorization: 'Bearer ' + getToken() } });
       for (let j = 0; j < kase.data.length; j++)
