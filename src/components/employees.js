@@ -213,10 +213,6 @@ class Employees extends React.Component {
                       value: 'Merchant',
                     },
                     {
-                      text: 'OFFICE MANAGER',
-                      value: 'Office manager',
-                    },
-                    {
                       text: 'PR WORKER',
                       value: 'Public Relations worker' || 'Public Relations with Privileges',
                     },
